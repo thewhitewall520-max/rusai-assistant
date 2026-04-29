@@ -1,21 +1,46 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import OpenAI from 'openai';
-import Anthropic from '@anthropic-ai/sdk';
+import axios from 'axios';
 
 @Injectable()
 export class AiService {
   private readonly logger = new Logger(AiService.name);
-  private openai: OpenAI;
-  private anthropic: Anthropic;
+  private ollamaUrl: string;
+  private model: string;
 
   constructor(private configService: ConfigService) {
-    this.openai = new OpenAI({
-      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
-    });
-    this.anthropic = new Anthropic({
-      apiKey: this.configService.get<string>('ANTHROPIC_API_KEY'),
-    });
+    this.ollamaUrl = this.configService.get<string>('OLLAMA_URL', 'http://localhost:11434');
+    this.model = this.configService.get<string>('LOCAL_MODEL', 'qwen2.5:7b');
+  }
+
+  /**
+   * 调用本地 Ollama 模型
+   */
+  private async callOllama(prompt: string, system?: string) {
+    try {
+      const response = await axios.post(
+        `${this.ollamaUrl}/api/generate`,
+        {
+          model: this.model,
+          prompt: system ? `${system}\n\n${prompt}` : prompt,
+          stream: false,
+          options: {
+            temperature: 0.7,
+            num_predict: 4000,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      return response.data.response || '';
+    } catch (error) {
+      this.logger.error('Ollama API error:', error.message);
+      throw new Error('AI 生成失败，请检查 Ollama 服务是否运行');
+    }
   }
 
   /**
@@ -30,7 +55,7 @@ export class AiService {
     keyPoints?: string[];
   }): Promise<string> {
     const prompt = this.buildEmailPrompt(options);
-    return this.generateWithOpenAI(prompt);
+    return this.callOllama(prompt, '你是一个专业的写作助手，擅长多语言写作。');
   }
 
   /**
@@ -44,7 +69,7 @@ export class AiService {
     citations?: string;
   }): Promise<string> {
     const prompt = this.buildEssayPrompt(options);
-    return this.generateWithOpenAI(prompt);
+    return this.callOllama(prompt, '你是一个专业的学术写作助手。');
   }
 
   /**
@@ -67,109 +92,39 @@ ${text}
 
 改写后：`;
 
-    return this.generateWithOpenAI(prompt);
+    return this.callOllama(prompt, '你是一个专业的文本润色专家。');
   }
 
   /**
-   * 续写
+   * 翻译
    */
-  async continue(text: string, language: string): Promise<string> {
-    const prompt = `请续写以下内容，保持连贯性和一致性：
+  async translate(text: string, sourceLang: string, targetLang: string): Promise<string> {
+    const prompt = `请将以下${sourceLang}文本翻译成${targetLang}：
 
+原文：
 ${text}
 
-续写（使用${language}语言）：`;
-
-    return this.generateWithOpenAI(prompt);
-  }
-
-  /**
-   * 生成大纲
-   */
-  async generateOutline(topic: string, language: string): Promise<string> {
-    const prompt = `请为以下主题生成详细的大纲：
-
-主题：${topic}
-
 要求：
-1. 使用${language}语言
-2. 包含主要章节和子章节
-3. 每个章节简要说明内容要点
+1. 保持原文的语气和风格
+2. 确保翻译准确、自然
+3. 专业术语保持一致
 
-大纲：`;
+翻译：`;
 
-    return this.generateWithOpenAI(prompt);
-  }
-
-  /**
-   * 使用 OpenAI 生成
-   */
-  private async generateWithOpenAI(prompt: string): Promise<string> {
-    try {
-      const response = await this.openai.chat.completions.create({
-        model: this.configService.get('OPENAI_MODEL', 'gpt-4'),
-        messages: [
-          {
-            role: 'system',
-            content: '你是一个专业的写作助手，擅长多语言写作、翻译和文本优化。',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-        max_tokens: parseInt(this.configService.get('OPENAI_MAX_TOKENS', '4000')),
-        temperature: 0.7,
-      });
-
-      return response.choices[0]?.message?.content || '';
-    } catch (error) {
-      this.logger.error('OpenAI API error:', error);
-      throw new Error('AI 生成失败，请稍后重试');
-    }
-  }
-
-  /**
-   * 使用 Claude 生成 (备用)
-   */
-  private async generateWithClaude(prompt: string): Promise<string> {
-    try {
-      const response = await this.anthropic.messages.create({
-        model: this.configService.get('ANTHROPIC_MODEL', 'claude-3-opus-20240229'),
-        max_tokens: 4000,
-        messages: [
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-      });
-
-      return response.content[0]?.text || '';
-    } catch (error) {
-      this.logger.error('Claude API error:', error);
-      throw new Error('AI 生成失败，请稍后重试');
-    }
+    return this.callOllama(prompt, '你是一个专业的翻译专家，精通多种语言。');
   }
 
   /**
    * 构建邮件提示词
    */
-  private buildEmailPrompt(options: {
-    type: string;
-    recipient: string;
-    purpose: string;
-    tone: string;
-    language: string;
-    keyPoints?: string[];
-  }): string {
+  private buildEmailPrompt(options: any): string {
     return `请撰写一封${options.type}邮件：
 
 收件人：${options.recipient}
 目的：${options.purpose}
 语气：${options.tone === 'formal' ? '正式' : options.tone === 'friendly' ? '友好' : '随意'}
 语言：${options.language}
-${options.keyPoints?.length ? `要点：\n${options.keyPoints.map(p => `- ${p}`).join('\n')}` : ''}
+${options.keyPoints?.length ? `要点：\n${options.keyPoints.map((p: string) => `- ${p}`).join('\n')}` : ''}
 
 要求：
 1. 使用${options.language}语言撰写
@@ -183,13 +138,7 @@ ${options.keyPoints?.length ? `要点：\n${options.keyPoints.map(p => `- ${p}`)
   /**
    * 构建论文提示词
    */
-  private buildEssayPrompt(options: {
-    topic: string;
-    type: string;
-    length: string;
-    language: string;
-    citations?: string;
-  }): string {
+  private buildEssayPrompt(options: any): string {
     return `请撰写一篇${options.type}：
 
 主题：${options.topic}

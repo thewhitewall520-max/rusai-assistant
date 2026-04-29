@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import OpenAI from 'openai';
+import axios from 'axios';
 
 @Injectable()
 export class TranslationService {
   private readonly logger = new Logger(TranslationService.name);
-  private openai: OpenAI;
+  private ollamaUrl: string;
+  private model: string;
 
   // 支持的语言列表
   readonly supportedLanguages = [
@@ -72,9 +73,8 @@ export class TranslationService {
   ];
 
   constructor(private configService: ConfigService) {
-    this.openai = new OpenAI({
-      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
-    });
+    this.ollamaUrl = this.configService.get<string>('OLLAMA_URL', 'http://localhost:11434');
+    this.model = this.configService.get<string>('LOCAL_MODEL', 'qwen2.5:7b');
   }
 
   /**
@@ -106,26 +106,28 @@ ${text}
 翻译：`;
 
     try {
-      const response = await this.openai.chat.completions.create({
-        model: this.configService.get('OPENAI_MODEL', 'gpt-4'),
-        messages: [
-          {
-            role: 'system',
-            content: `你是一位专业的翻译专家，精通多种语言。你的翻译准确、自然，能够很好地传达原文的意思和风格。`,
+      const response = await axios.post(
+        `${this.ollamaUrl}/api/generate`,
+        {
+          model: this.model,
+          prompt: '你是一位专业的翻译专家，精通多种语言。你的翻译准确、自然，能够很好地传达原文的意思和风格。\n\n' + prompt,
+          stream: false,
+          options: {
+            temperature: 0.3,
+            num_predict: 4000,
           },
-          {
-            role: 'user',
-            content: prompt,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
           },
-        ],
-        max_tokens: parseInt(this.configService.get('OPENAI_MAX_TOKENS', '4000')),
-        temperature: 0.3,
-      });
+        }
+      );
 
-      return response.choices[0]?.message?.content || '';
+      return response.data.response || '';
     } catch (error) {
-      this.logger.error('Translation error:', error);
-      throw new Error('翻译失败，请稍后重试');
+      this.logger.error('Translation error:', error.message);
+      throw new Error('翻译失败，请检查 Ollama 服务是否运行');
     }
   }
 
@@ -163,22 +165,28 @@ ${text}
 语言代码：`;
 
     try {
-      const response = await this.openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'user',
-            content: prompt,
+      const response = await axios.post(
+        `${this.ollamaUrl}/api/generate`,
+        {
+          model: this.model,
+          prompt: prompt,
+          stream: false,
+          options: {
+            temperature: 0,
+            num_predict: 10,
           },
-        ],
-        max_tokens: 10,
-        temperature: 0,
-      });
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      const detected = response.choices[0]?.message?.content?.trim().toLowerCase() || 'en';
+      const detected = response.data.response?.trim().toLowerCase() || 'en';
       return this.normalizeLanguageCode(detected);
     } catch (error) {
-      this.logger.error('Language detection error:', error);
+      this.logger.error('Language detection error:', error.message);
       return 'en';
     }
   }
