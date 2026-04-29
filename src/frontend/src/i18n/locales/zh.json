@@ -1,0 +1,229 @@
+{
+  "app": {
+    "name": "AI写作助手",
+    "tagline": "多语言智能写作平台"
+  },
+  "nav": {
+    "home": "首页",
+    "editor": "编辑器",
+    "email": "邮件写作",
+    "essay": "论文写作",
+    "translate": "翻译",
+    "templates": "模板",
+    "documents": "文档",
+    "profile": "个人中心",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "submit": "提交",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "warning": "警告",
+    "confirm": "确认",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "copy": "复制",
+    "paste": "粘贴",
+    "cut": "剪切",
+    "undo": "撤销",
+    "redo": "重做",
+    "download": "下载",
+    "share": "分享",
+    "print": "打印"
+  },
+  "editor": {
+    "title": "编辑器",
+    "placeholder": "开始写作...",
+    "wordCount": "字数",
+    "charCount": "字符数",
+    "lastSaved": "最后保存",
+    "autoSave": "自动保存",
+    "tools": {
+      "heading": "标题",
+      "bold": "粗体",
+      "italic": "斜体",
+      "underline": "下划线",
+      "strikethrough": "删除线",
+      "list": "列表",
+      "orderedList": "有序列表",
+      "link": "链接",
+      "image": "图片",
+      "code": "代码",
+      "quote": "引用",
+      "table": "表格"
+    }
+  },
+  "email": {
+    "title": "邮件写作",
+    "type": "邮件类型",
+    "types": {
+      "business": "商务邮件",
+      "formal": "正式邮件",
+      "informal": "非正式邮件",
+      "marketing": "营销邮件",
+      "followUp": "跟进邮件",
+      "thankYou": "感谢邮件",
+      "apology": "道歉邮件",
+      "invitation": "邀请邮件"
+    },
+    "recipient": "收件人",
+    "purpose": "邮件目的",
+    "tone": "语气",
+    "tones": {
+      "formal": "正式",
+      "friendly": "友好",
+      "casual": "随意",
+      "urgent": "紧急"
+    },
+    "keyPoints": "要点",
+    "addPoint": "添加要点",
+    "generate": "生成邮件",
+    "subject": "主题",
+    "body": "正文",
+    "signature": "签名"
+  },
+  "essay": {
+    "title": "论文写作",
+    "topic": "主题",
+    "type": "论文类型",
+    "types": {
+      "research": "研究论文",
+      "review": "综述论文",
+      "caseStudy": "案例研究",
+      "report": "报告",
+      "proposal": "提案"
+    },
+    "length": "长度",
+    "lengths": {
+      "short": "短篇 (1000-2000字)",
+      "medium": "中篇 (2000-5000字)",
+      "long": "长篇 (5000-10000字)",
+      "thesis": "论文 (10000字以上)"
+    },
+    "citation": "引用格式",
+    "citations": {
+      "apa": "APA",
+      "mla": "MLA",
+      "chicago": "Chicago",
+      "gb": "GB/T 7714"
+    },
+    "generate": "生成论文",
+    "outline": "大纲",
+    "abstract": "摘要",
+    "keywords": "关键词",
+    "introduction": "引言",
+    "body": "正文",
+    "conclusion": "结论",
+    "references": "参考文献"
+  },
+  "translate": {
+    "title": "翻译",
+    "sourceLang": "源语言",
+    "targetLang": "目标语言",
+    "detect": "自动检测",
+    "translate": "翻译",
+    "translating": "翻译中...",
+    "swap": "交换语言",
+    "history": "翻译历史",
+    "clear": "清空",
+    "copySource": "复制原文",
+    "copyResult": "复制译文",
+    "document": "文档翻译",
+    "batch": "批量翻译"
+  },
+  "templates": {
+    "title": "模板",
+    "categories": {
+      "all": "全部",
+      "email": "邮件",
+      "essay": "论文",
+      "resume": "简历",
+      "report": "报告",
+      "letter": "信件",
+      "other": "其他"
+    },
+    "use": "使用模板",
+    "preview": "预览",
+    "create": "创建模板",
+    "myTemplates": "我的模板",
+    "systemTemplates": "系统模板"
+  },
+  "documents": {
+    "title": "我的文档",
+    "create": "新建文档",
+    "empty": "暂无文档",
+    "lastModified": "最后修改",
+    "type": "类型",
+    "status": "状态",
+    "actions": "操作"
+  },
+  "auth": {
+    "login": {
+      "title": "登录",
+      "email": "邮箱",
+      "password": "密码",
+      "submit": "登录",
+      "forgotPassword": "忘记密码？",
+      "noAccount": "还没有账号？",
+      "register": "立即注册"
+    },
+    "register": {
+      "title": "注册",
+      "name": "姓名",
+      "email": "邮箱",
+      "password": "密码",
+      "confirmPassword": "确认密码",
+      "submit": "注册",
+      "hasAccount": "已有账号？",
+      "login": "立即登录"
+    },
+    "errors": {
+      "invalidEmail": "无效的邮箱地址",
+      "passwordTooShort": "密码至少8位",
+      "passwordMismatch": "密码不一致",
+      "loginFailed": "登录失败，请检查邮箱和密码",
+      "registerFailed": "注册失败，请稍后重试"
+    }
+  },
+  "subscription": {
+    "free": "免费版",
+    "pro": "专业版",
+    "enterprise": "企业版",
+    "upgrade": "升级",
+    "features": {
+      "free": [
+        "基础写作功能",
+        "每月 100 次 AI 生成",
+        "基础翻译",
+        "5 个文档"
+      ],
+      "pro": [
+        "所有写作功能",
+        "无限 AI 生成",
+        "高级翻译",
+        "无限文档",
+        "优先支持"
+      ],
+      "enterprise": [
+        "所有专业版功能",
+        "API 访问",
+        "团队协作",
+        "自定义模型",
+        "专属客服"
+      ]
+    }
+  }
+}

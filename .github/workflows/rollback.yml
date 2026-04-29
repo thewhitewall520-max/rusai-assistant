@@ -1,0 +1,41 @@
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to rollback to (git tag or commit SHA)'
+        required: true
+        type: string
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Rollback to Previous Version
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.TEST_SERVER_HOST }}
+          username: ${{ secrets.TEST_SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            echo "🔄 Rolling back to ${{ github.event.inputs.version }}..."
+            
+            cd /opt/writing-assistant
+            
+            # 回滚到指定版本
+            git fetch origin
+            git reset --hard ${{ github.event.inputs.version }}
+            
+            # 重新部署
+            docker-compose pull
+            docker-compose up -d
+            
+            echo "✅ Rollback completed!"
+            
+            # 发送通知
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d "text=⚠️ Writing Assistant rolled back to ${{ github.event.inputs.version }}%0ATime: $(date)"
