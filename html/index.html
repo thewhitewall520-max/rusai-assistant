@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RusAI Assistant - 中俄AI写作助手</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 { font-size: 1.5rem; }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            opacity: 0.9;
+        }
+        .nav-links a:hover { opacity: 1; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .tool-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+        .tool-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        .editor-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .editor-toolbar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .editor-textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .login-modal.active {
+            display: flex;
+        }
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .login-form h2 {
+            margin-bottom: 1.5rem;
+            color: #667eea;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <h1>🚀 RusAI Assistant</h1>
+        <div class="nav-links">
+            <a href="#editor">編輯器</a>
+            <a href="#tools">工具</a>
+            <a href="#" onclick="showLogin()">登錄</a>
+        </div>
+    </nav>
+
+    <!-- 主內容 -->
+    <div class="container">
+        <!-- 工具卡片 -->
+        <div class="tools-grid" id="tools">
+            <div class="tool-card">
+                <h3>📝 AI 寫作</h3>
+                <p>智能生成郵件、論文、文章</p>
+                <button class="btn btn-primary" onclick="startWriting('email')">開始寫作</button>
+            </div>
+            <div class="tool-card">
+                <h3>🌐 智能翻譯</h3>
+                <p>中俄互譯，支持多種語氣</p>
+                <button class="btn btn-primary" onclick="startTranslate()">開始翻譯</button>
+            </div>
+            <div class="tool-card">
+                <h3>✨ 文本潤色</h3>
+                <p>改寫、擴寫、優化表達</p>
+                <button class="btn btn-primary" onclick="startPolish()">開始潤色</button>
+            </div>
+        </div>
+
+        <!-- 編輯器 -->
+        <div class="editor-section" id="editor">
+            <div class="editor-toolbar">
+                <select class="btn btn-secondary" id="docType">
+                    <option value="general">通用</option>
+                    <option value="email">郵件</option>
+                    <option value="essay">論文</option>
+                    <option value="translation">翻譯</option>
+                </select>
+                <select class="btn btn-secondary" id="language">
+                    <option value="zh">中文</option>
+                    <option value="en">English</option>
+                    <option value="ru">Русский</option>
+                </select>
+                <button class="btn btn-primary" onclick="useAI()">🤖 AI 輔助</button>
+                <button class="btn btn-primary" onclick="saveDocument()">保存</button>
+            </div>
+            <textarea 
+                class="editor-textarea" 
+                id="content"
+                placeholder="開始寫作..."
+            ></textarea>
+            <div class="status-bar">
+                <span id="wordCount">字數: 0</span>
+                <span id="saveStatus">已保存</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登錄彈窗 -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-form">
+            <h2>登錄</h2>
+            <div class="form-group">
+                <label>郵箱</label>
+                <input type="email" id="email" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+                <label>密碼</label>
+                <input type="password" id="password" placeholder="******">
+            </div>
+            <button class="btn btn-primary" onclick="login()" style="width: 100%">登錄</button>
+            <p style="text-align: center; margin-top: 1rem;">
+                還沒有賬號？ <a href="#" onclick="toggleRegister()">立即註冊</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 字數統計
+        document.getElementById('content').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('wordCount').textContent = `字數: ${count}`;
+            document.getElementById('saveStatus').textContent = '未保存';
+        });
+
+        // 自動保存
+        setInterval(() => {
+            const content = document.getElementById('content').value;
+            if (content) {
+                localStorage.setItem('draft', content);
+                document.getElementById('saveStatus').textContent = '已自動保存';
+            }
+        }, 30000);
+
+        // 恢復草稿
+        window.onload = () => {
+            const draft = localStorage.getItem('draft');
+            if (draft) {
+                document.getElementById('content').value = draft;
+            }
+        };
+
+        // 顯示登錄
+        function showLogin() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        // 登錄
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // TODO: 調用登錄 API
+            alert('登錄功能開發中...');
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        // AI 輔助
+        function useAI() {
+            const content = document.getElementById('content').value;
+            if (!content) {
+                alert('請先輸入內容');
+                return;
+            }
+            alert('AI 輔助功能開發中...');
+        }
+
+        // 保存文檔
+        function saveDocument() {
+            const content = document.getElementById('content').value;
+            localStorage.setItem('draft', content);
+            document.getElementById('saveStatus').textContent = '已保存';
+            alert('文檔已保存！');
+        }
+
+        // 開始寫作
+        function startWriting(type) {
+            document.getElementById('docType').value = type;
+            document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 開始翻譯
+        function startTranslate() {
+            document.getElementById('docType').value = 'translation';
+            document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 開始潤色
+        function startPolish() {
+            document.getElementById('docType').value = 'general';
+            document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
