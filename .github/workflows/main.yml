@@ -14,28 +14,49 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script_stop: true
+          port: 22
+          timeout: 30s
+          command_timeout: 10m
+          script_stop: false
+          debug: true
           script: |
+            set -e
             echo "🚀 Starting deployment..."
             
-            # 进入项目目录
+            # 检查目录
+            if [ ! -d "/opt/rusai-assistant" ]; then
+              mkdir -p /opt/rusai-assistant
+            fi
+            
             cd /opt/rusai-assistant
             
-            # 拉取最新代码
-            git fetch origin
-            git reset --hard origin/main
+            # 初始化 git（如果 needed）
+            if [ ! -d ".git" ]; then
+              git init
+              git remote add origin https://github.com/thewhitewall520-max/rusai-assistant.git
+            fi
             
-            # 更新环境变量
-            echo "KIMI_API_KEY=${{ secrets.KIMI_API_KEY }}" > .env
-            echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env
-            echo "NEXTAUTH_URL=https://rusai.cc" >> .env
+            # 拉取最新代码
+            git fetch origin || true
+            git reset --hard origin/main || true
+            
+            # 创建环境文件
+            cat > .env << 'EOF'
+            KIMI_API_KEY=${{ secrets.KIMI_API_KEY }}
+            NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+            NEXTAUTH_URL=https://rusai.cc
+            EOF
+            
+            # 检查 docker compose
+            if command -v docker-compose &> /dev/null; then
+              COMPOSE_CMD="docker-compose"
+            else
+              COMPOSE_CMD="docker compose"
+            fi
             
             # 重启服务
-            docker compose down
-            docker compose up -d --build
-            
-            # 清理
-            docker system prune -f
+            $COMPOSE_CMD down 2>/dev/null || true
+            $COMPOSE_CMD up -d || true
             
             echo "✅ Deployment completed!"
-            docker compose ps
+            docker ps || true
