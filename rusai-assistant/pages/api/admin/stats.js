@@ -1,11 +1,5 @@
 import { getServerSession } from 'next-auth'
-import { PrismaClient } from '@prisma/client'
-
-const globalForPrisma = global
-const prisma = globalForPrisma.prisma || new PrismaClient({
-  datasources: { db: { url: process.env.DATABASE_URL } }
-})
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+import prisma from '../../../lib/prisma'
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res)
