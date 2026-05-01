@@ -6,7 +6,9 @@ import styles from '../styles/Auth.module.css'
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true)
+  const [login, setLogin] = useState('')
   const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [error, setError] = useState('')
@@ -21,13 +23,13 @@ export default function Login() {
     
     if (isLogin) {
       const result = await signIn('credentials', {
-        email,
+        login: login,
         password,
         redirect: false
       })
       
       if (result.error) {
-        setError('登錄失敗，請檢查郵箱和密碼')
+        setError('登錄失敗，請檢查郵箱/用戶名和密碼')
       } else {
         router.push('/workspace')
       }
@@ -36,11 +38,15 @@ export default function Login() {
         const res = await fetch('/api/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, name })
+          body: JSON.stringify({ email: email || undefined, username: username || undefined, password, name })
         })
         
         if (res.ok) {
-          await signIn('credentials', { email, password, redirect: false })
+          await signIn('credentials', {
+            login: email || username,
+            password,
+            redirect: false
+          })
           router.push('/workspace')
         } else {
           const data = await res.json()
@@ -66,23 +72,42 @@ export default function Login() {
         {error && <div className={styles.error}>{error}</div>}
         
         <form onSubmit={handleSubmit} className={styles.form}>
-          {!isLogin && (
+          {isLogin ? (
             <input
               type="text"
-              placeholder="姓名"
-              value={name}
-              onChange={e => setName(e.target.value)}
+              placeholder="郵箱或用戶名"
+              value={login}
+              onChange={e => setLogin(e.target.value)}
+              required
               className={styles.input}
             />
+          ) : (
+            <>
+              <input
+                type="text"
+                placeholder="用戶名（可選）"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                className={styles.input}
+              />
+              <input
+                type="email"
+                placeholder="郵箱（可選）"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className={styles.input}
+              />
+              {!isLogin && (
+                <input
+                  type="text"
+                  placeholder="暱稱"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  className={styles.input}
+                />
+              )}
+            </>
           )}
-          <input
-            type="email"
-            placeholder="郵箱"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-            className={styles.input}
-          />
           <input
             type="password"
             placeholder="密碼"

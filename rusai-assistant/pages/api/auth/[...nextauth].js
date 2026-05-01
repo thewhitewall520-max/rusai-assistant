@@ -12,22 +12,33 @@ export default NextAuth({
     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' }
+        login: { label: '邮箱或用户名', type: 'text' },
+        password: { label: '密码', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null
-        
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+        if (!credentials?.login || !credentials?.password) return null
+
+        // Try email first, then username
+        let user = await prisma.user.findUnique({
+          where: { email: credentials.login }
         })
+        if (!user && credentials.login.includes('@')) {
+          user = await prisma.user.findUnique({
+            where: { email: credentials.login }
+          })
+        }
+        if (!user) {
+          user = await prisma.user.findUnique({
+            where: { username: credentials.login }
+          })
+        }
         
         if (!user || !user.password) return null
         
         const isValid = await bcrypt.compare(credentials.password, user.password)
         if (!isValid) return null
         
-        return { id: user.id, email: user.email, name: user.name }
+        return { id: user.id, email: user.email, name: user.name || user.username }
       }
     })
   ],
