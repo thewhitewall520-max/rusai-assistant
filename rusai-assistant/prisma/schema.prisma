@@ -3,7 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
+  // URL 定義在 prisma.config.ts
 }
 
 model User {
@@ -28,4 +29,9 @@ model History {
   createdAt DateTime @default(now())
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Provider {
+  sqlite
+  postgresql
 }
