@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-01T16:42:00.747Z",
+  "updatedAt": "2026-05-01T17:18:14.648Z",
   "entries": {
     "memory:memory/2026-05-01.md:1:16": {
       "key": "memory:memory/2026-05-01.md:1:16",
@@ -42,20 +42,21 @@
       "endLine": 31,
       "source": "memory",
       "snippet": "## 2026-05-01 → 05-02 重點記憶 ### RusAI 部署狀態 - **域名:** rusai.cc (Let's Encrypt SSL, HTTP→HTTPS, HTTP/2) - **伺服器:** 139.180.142.145 | 1GB RAM | Ubuntu 20.04 - **App:** Next.js (PM2 :3000), Nginx (443), PostgreSQL (Docker :5432), Ollama (11434) - **Gateway:** OpenClaw running (systemd, port 18789) ### 已完成的里程碑 | Phase | 完成內容 | |-------|----------| | P0 | API Key → .env, Ollama 優先(降級DeepSeek) | | P1 | SEO meta/OG tags, 骨架屏, Toast, 響應式佈局 | | P2 | PostgreSQL Docker + Prisma 遷移 | | P3 | 暗黑模式(CSS vars + ThemeContext), 管理後台(/admin), 後端用量限制 | | 擴展 | Google OAuth, 雙重登入(用戶名+郵箱), 多語言翻譯(200+), 中文擴寫 | ### 技術踩坑紀錄 1. **Prisma 7 不相容 next-auth** → 降 Prisma 6，schema 恢復 `url = env(\"DATABASE_URL\")` 2. **OAuth 缺 A",
-      "recallCount": 6,
+      "recallCount": 7,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5.241557762566274,
+      "totalScore": 6.241557762566274,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-01T16:33:45.027Z",
-      "lastRecalledAt": "2026-05-01T16:42:00.747Z",
+      "lastRecalledAt": "2026-05-01T17:18:14.648Z",
       "queryHashes": [
         "e4c2c5332fd1",
         "ddab52202b77",
         "25b662f9ea96",
         "64e089a56c2c",
         "172f9cda4094",
-        "7f510403dc44"
+        "7f510403dc44",
+        "de1a887c7541"
       ],
       "recallDays": [
         "2026-05-02"

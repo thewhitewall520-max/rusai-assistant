@@ -86,6 +86,8 @@ export default function Workspace() {
   const [history, setHistory] = useState([])
   const [showHistory, setShowHistory] = useState(false)
   const [useCount, setUseCount] = useState(0)
+  const [sourceLang, setSourceLang] = useState('zh')
+  const [targetLang, setTargetLang] = useState('ru')
   const [toast, setToast] = useState('')
   const [copied, setCopied] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
