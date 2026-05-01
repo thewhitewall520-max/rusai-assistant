@@ -2,9 +2,10 @@ import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import bcrypt from 'bcryptjs'
 import prisma from '../../../lib/prisma'
 
-export default NextAuth({
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -55,4 +56,6 @@ export default NextAuth({
       return session
     }
   }
-})
+}
+
+export default NextAuth(authOptions)

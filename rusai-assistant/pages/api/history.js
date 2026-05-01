@@ -1,12 +1,15 @@
-import { getSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
 import prisma from '../../lib/prisma'
+import { authOptions } from './auth/[...nextauth]'
 
 export default async function handler(req, res) {
-  const session = await getSession({ req })
-  if (!session) return res.status(401).json({ error: 'Unauthorized' })
+  const session = await getServerSession(req, res, authOptions)
+  if (!session || !session.user) return res.status(401).json({ error: 'Unauthorized' })
   
   const userId = session.user.id
   
+  if (!userId) return res.status(401).json({ error: 'Invalid session' })
+
   if (req.method === 'GET') {
     try {
       const histories = await prisma.history.findMany({
@@ -16,6 +19,7 @@ export default async function handler(req, res) {
       })
       res.status(200).json(histories)
     } catch (error) {
+      console.error('History fetch error:', error)
       res.status(500).json({ error: 'Failed to fetch history' })
     }
   } else if (req.method === 'POST') {
