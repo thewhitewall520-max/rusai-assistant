@@ -95,3 +95,41 @@ systemctl status ollama
 1. `git revert HEAD` 回到上一個版本
 2. `pm2 restart rusai` 重啟
 3. 通知老大
+
+## 已知 Agent 限制與處理方式
+
+### 1. Subagent 無 exec/SSH 工具
+spawn 的子 Agent 無法直接 SSH 到伺服器或執行 exec。
+
+**處理方式：**
+- 主 Agent（阿悄）負責所有 SSH/exec 操作
+- Subagent 負責分析、審計、方案設計等純文字工作
+- 主 Agent 把 SSH 結果餵給 subagent → subagent 分析 → 主 Agent 執行修復
+
+### 2. 本地模型多步任務掉 context
+qwen2.5:7b / mistral:7b 在執行超過 5 步的任務時，context 會被 truncate。
+
+**處理方式：**
+- 拆分任務為 < 5 步的小任務
+- 審計和複雜分析交給 deepseek（艾露莎）
+- 開發、測試等日常任務保持用本地模型
+
+### 3. output: 'standalone' 衝突
+`next start` 不支援 `output: standalone` 配置。
+
+**永遠不要加 `output: 'standalone'` 到 `next.config.js`**
+
+### 4. PM2 環境變數
+PM2 process 不會自動讀取 `.env` 文件。
+
+**處理方式：**
+- 透過 `ecosystem.config.js` 明確定義環境變數
+- `pm2 restart rusai --update-env` 更新環境
+- 重要：每次加新變數後要 `rm -rf .next && npx next build` 重建
+
+### 5. www.rusai.cc 登入問題
+www → 主域名的 301 跳轉會丟失 POST 資料。
+
+**處理方式：**
+- nginx 使用 308 跳轉（保留 POST body）
+- Google OAuth callback URI 要同時包含 rusai.cc 和 www.rusai.cc

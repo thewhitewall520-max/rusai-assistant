@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-01T12:40:53.206Z",
+  "updatedAt": "2026-05-01T16:42:00.747Z",
   "entries": {
     "memory:memory/2026-05-01.md:1:16": {
       "key": "memory:memory/2026-05-01.md:1:16",
@@ -9,18 +9,20 @@
       "endLine": 16,
       "source": "memory",
       "snippet": "## RusAI 部署決策（老大確認） | 決策項 | 結論 | |--------|------| | 域名 | rusai.cc → 解到 139.180.142.145 | | Writing Assistant 老版 | 已淘汰，保留在 repo 參考即可 | | GitHub Actions | 先不管，token 權限問題不處理 | | OpenClaw 伺服器 | 保留，主 Agent 走本地 Mac | | SSL/HTTPS | 後續再弄 | | 當前優先級 | 域名解析 + nginx 綁定 | ### 域名 DNS 現狀 - ✅ rusai.cc → 139.180.142.145（已解析） - ✅ www.rusai.cc → 139.180.142.145（已解析） - ✅ nginx server_name 已更新綁定域名",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.6345464545444546,
+      "totalScore": 1.2690929090889091,
       "maxScore": 0.6345464545444546,
       "firstRecalledAt": "2026-05-01T12:40:53.206Z",
-      "lastRecalledAt": "2026-05-01T12:40:53.206Z",
+      "lastRecalledAt": "2026-05-01T16:36:03.773Z",
       "queryHashes": [
-        "30767d00bfc3"
+        "30767d00bfc3",
+        "d517d0d73b7c"
       ],
       "recallDays": [
-        "2026-05-01"
+        "2026-05-01",
+        "2026-05-02"
       ],
       "conceptTags": [
         "rusai.cc",
@@ -31,6 +33,109 @@
         "rusai",
         "部署",
         "決策"
+      ]
+    },
+    "memory:memory/2026-05-02.md:1:31": {
+      "key": "memory:memory/2026-05-02.md:1:31",
+      "path": "memory/2026-05-02.md",
+      "startLine": 1,
+      "endLine": 31,
+      "source": "memory",
+      "snippet": "## 2026-05-01 → 05-02 重點記憶 ### RusAI 部署狀態 - **域名:** rusai.cc (Let's Encrypt SSL, HTTP→HTTPS, HTTP/2) - **伺服器:** 139.180.142.145 | 1GB RAM | Ubuntu 20.04 - **App:** Next.js (PM2 :3000), Nginx (443), PostgreSQL (Docker :5432), Ollama (11434) - **Gateway:** OpenClaw running (systemd, port 18789) ### 已完成的里程碑 | Phase | 完成內容 | |-------|----------| | P0 | API Key → .env, Ollama 優先(降級DeepSeek) | | P1 | SEO meta/OG tags, 骨架屏, Toast, 響應式佈局 | | P2 | PostgreSQL Docker + Prisma 遷移 | | P3 | 暗黑模式(CSS vars + ThemeContext), 管理後台(/admin), 後端用量限制 | | 擴展 | Google OAuth, 雙重登入(用戶名+郵箱), 多語言翻譯(200+), 中文擴寫 | ### 技術踩坑紀錄 1. **Prisma 7 不相容 next-auth** → 降 Prisma 6，schema 恢復 `url = env(\"DATABASE_URL\")` 2. **OAuth 缺 A",
+      "recallCount": 6,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5.241557762566274,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-01T16:33:45.027Z",
+      "lastRecalledAt": "2026-05-01T16:42:00.747Z",
+      "queryHashes": [
+        "e4c2c5332fd1",
+        "ddab52202b77",
+        "25b662f9ea96",
+        "64e089a56c2c",
+        "172f9cda4094",
+        "7f510403dc44"
+      ],
+      "recallDays": [
+        "2026-05-02"
+      ],
+      "conceptTags": [
+        "gateway",
+        "05-02",
+        "rusai.cc",
+        "http/2",
+        "139.180.142.145",
+        "20.04",
+        "next.js",
+        "meta/og"
+      ]
+    },
+    "memory:memory/2026-05-02.md:23:40": {
+      "key": "memory:memory/2026-05-02.md:23:40",
+      "path": "memory/2026-05-02.md",
+      "startLine": 23,
+      "endLine": 40,
+      "source": "memory",
+      "snippet": "5. **環境變數傳不進 PM2** → 用 ecosystem.config.js 明確定義 ### 記憶文件結構 - `memory/2026-05-01.md` — 簡短日誌 - `memory/rusai-deployment.md` — 部署配置與決策紀錄 - `memory/deployment-sop.md` — 標準部署 SOP（參考柯南團隊） - 不要全部塞同一份，按主題拆分 ### 待辦 - Google Cloud Console 添加 `www.rusai.cc` 到 redirect URIs - CI/CD GitHub Actions (token scope) - 伺服器 RAM 升級（對外開放前） - 社交登入測試 ### 關鍵人物 - **老大 (Wall White)** — Telegram 直接指令，擅長發現細節問題 - **令狐沖沖沖 (@linghuc2026)** — 柯南團隊 SOP 參考來源",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2.6077665267952446,
+      "maxScore": 0.8692555089317482,
+      "firstRecalledAt": "2026-05-01T16:41:42.589Z",
+      "lastRecalledAt": "2026-05-01T16:42:00.747Z",
+      "queryHashes": [
+        "ddab52202b77",
+        "172f9cda4094",
+        "7f510403dc44"
+      ],
+      "recallDays": [
+        "2026-05-02"
+      ],
+      "conceptTags": [
+        "ecosystem.config.js",
+        "memory/2026-05-01.md",
+        "memory/rusai-deployment.md",
+        "memory/deployment-sop.md",
+        "www.rusai.cc",
+        "ci/cd",
+        "環境",
+        "變數"
+      ]
+    },
+    "memory:memory/2026-05-01.md:1:28": {
+      "key": "memory:memory/2026-05-01.md:1:28",
+      "path": "memory/2026-05-01.md",
+      "startLine": 1,
+      "endLine": 28,
+      "source": "memory",
+      "snippet": "# 2026-05-01 工作日誌 ## 今天完成了 1. 伺服器 SSH 部署、nginx + SSL (Let's Encrypt) 2. RusAI Next.js 上線（PM2 管理） 3. OpenAI Gateway 啟動（systemd） 4. P0: API Key 安全 + Ollama 整合 5. P1: SEO / UX 骨架屏 / Toast / 響應式佈局 6. P2: PostgreSQL (Docker) + Prisma 遷移 7. P3: 暗黑模式 (CSS vars + ThemeContext) 8. 管理後台 + 後端用量限制 9. Google 社交登入 + 雙重認證（用戶名/郵箱） 10. Prisma 7→6 降版修復 next-auth 相容性 ## 決策詳情 見 `memory/rusai-deployment.md` ## 部署 SOP 妖精尾巴標準部署流程已寫入 `memory/deployment-sop.md` 參考柯南團隊 SOP 格式，包含： - 觸發條件 / 角色職責 / 紀律鐵律 - RusAI 標準部署命令序列 / 排查命令 / 回滾流程 ## 待辦 - Google Cloud Console 添加 www.rusai.cc callback - NEXTAUTH_URL 確保只有 rusai.cc - 團隊正式配置 Gateway（已做，待重啟生效）",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3.264304641032039,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-01T16:41:42.589Z",
+      "lastRecalledAt": "2026-05-01T16:41:57.364Z",
+      "queryHashes": [
+        "ddab52202b77",
+        "25b662f9ea96",
+        "64e089a56c2c",
+        "172f9cda4094"
+      ],
+      "recallDays": [
+        "2026-05-02"
+      ],
+      "conceptTags": [
+        "gateway",
+        "openai",
+        "next.js",
+        "用戶名/郵箱",
+        "next-auth",
+        "memory/rusai-deployment.md",
+        "memory/deployment-sop.md",
+        "www.rusai.cc"
       ]
     }
   }
