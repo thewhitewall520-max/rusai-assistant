@@ -26,6 +26,55 @@ const LANGUAGES = [
   { code: 'fa', name: 'فارسی' }, { code: 'ur', name: 'اردو' }, { code: 'sw', name: 'Kiswahili' },
 ]
 
+
+// 雙語輸出 + 占位高亮
+function BilingualOutput({ text }) {
+  if (!text) return null
+
+  // 分段：按 === 標題分割
+  const parts = text.split(/={3,}\s*/).filter(Boolean)
+  
+  // 高亮【】占位
+  const highlight = (str) => {
+    if (!str) return null
+    const segs = str.split(/(【.*?】)/g)
+    return segs.map((s, i) => {
+      if (/^【.*】$/.test(s)) {
+        return <mark key={i} className={styles.placeholder}>{s.slice(1, -1)}</mark>
+      }
+      return <span key={i}>{s}</span>
+    })
+  }
+
+  if (parts.length >= 2) {
+    const sections = []
+    for (let i = 0; i < parts.length; i += 2) {
+      const title = parts[i]?.trim()
+      const content = parts[i + 1]?.trim()
+      if (!content) continue
+      sections.push({ title, content })
+    }
+
+    return (
+      <div className={styles.bilingual}>
+        {sections.map((sec, i) => (
+          <div key={i} className={styles.bilingualSection}>
+            <div className={styles.bilingualLabel}>
+              {sec.title.includes('俄语') ? '🇷🇺 ' : sec.title.includes('中文') || sec.title.includes('对照') ? '🇨🇳 ' : ''}
+              {sec.title}
+            </div>
+            <div className={sec.title.includes('中文') || sec.title.includes('对照') || sec.title.includes('说明') ? styles.bilingualTextCn : styles.bilingualText}>
+              {highlight(sec.content)}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  // 沒標題格式：直接高亮任何【】占位後顯示
+  return <p className={styles.bilingualText}>{highlight(text)}</p>
+}
 export default function Workspace() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -120,54 +169,6 @@ export default function Workspace() {
     setLoading(false)
   }
 
-// 雙語輸出 + 占位高亮
-function BilingualOutput({ text }) {
-  if (!text) return null
-
-  // 分段：按 === 標題分割
-  const parts = text.split(/={3,}\s*/).filter(Boolean)
-  
-  // 高亮【】占位
-  const highlight = (str) => {
-    if (!str) return null
-    const segs = str.split(/(【.*?】)/g)
-    return segs.map((s, i) => {
-      if (/^【.*】$/.test(s)) {
-        return <mark key={i} className={styles.placeholder}>{s.slice(1, -1)}</mark>
-      }
-      return <span key={i}>{s}</span>
-    })
-  }
-
-  if (parts.length >= 2) {
-    const sections = []
-    for (let i = 0; i < parts.length; i += 2) {
-      const title = parts[i]?.trim()
-      const content = parts[i + 1]?.trim()
-      if (!content) continue
-      sections.push({ title, content })
-    }
-
-    return (
-      <div className={styles.bilingual}>
-        {sections.map((sec, i) => (
-          <div key={i} className={styles.bilingualSection}>
-            <div className={styles.bilingualLabel}>
-              {sec.title.includes('俄语') ? '🇷🇺 ' : sec.title.includes('中文') || sec.title.includes('对照') ? '🇨🇳 ' : ''}
-              {sec.title}
-            </div>
-            <div className={sec.title.includes('中文') || sec.title.includes('对照') || sec.title.includes('说明') ? styles.bilingualTextCn : styles.bilingualText}>
-              {highlight(sec.content)}
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  // 沒標題格式：直接高亮任何【】占位後顯示
-  return <p className={styles.bilingualText}>{highlight(text)}</p>
-}
 
   if (status === 'loading') return <div className={styles.loading}>加載中...</div>
 
