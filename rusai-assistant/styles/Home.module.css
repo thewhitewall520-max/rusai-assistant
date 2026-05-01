@@ -37,4 +37,20 @@
 .priceBtn { display: block; padding: 12px; background: #f1f5f9; color: #1a1a1a; text-decoration: none; border-radius: 8px; font-weight: 500; }
 .proBtn { background: #2563eb; color: #fff; }
 .footer { text-align: center; padding: 48px; color: #999; font-size: 14px; }
-@media (max-width: 600px) { .title { font-size: 32px; } .pricingGrid { grid-template-columns: 1fr; } }
+
+/* 響應式 */
+@media (max-width: 768px) {
+  .title { font-size: 32px; }
+  .pricingGrid { grid-template-columns: 1fr; }
+  .featureGrid { grid-template-columns: 1fr; }
+  .navLinks a { font-size: 13px; }
+  .hero { margin: 40px auto; }
+  .demoBox { padding: 20px; }
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 26px; }
+  .subtitle { font-size: 15px; }
+  .navLinks { gap: 12px; }
+  .navInner { padding: 12px 16px; }
+}

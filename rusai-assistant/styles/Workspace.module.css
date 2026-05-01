@@ -1,29 +1,71 @@
-.container { display: flex; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-.sidebar { width: 220px; background: #fafafa; border-right: 1px solid #eee; padding: 24px 16px; display: flex; flex-direction: column; }
+.container { display: flex; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; position: relative; }
+.toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 10px 24px; border-radius: 10px; font-size: 14px; z-index: 1000; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+.menuToggle { display: none; position: fixed; top: 12px; left: 12px; z-index: 200; padding: 8px 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 20px; cursor: pointer; }
+
+.sidebar { width: 220px; min-width: 220px; background: #fafafa; border-right: 1px solid #eee; padding: 24px 16px; display: flex; flex-direction: column; }
 .logo { font-size: 20px; font-weight: 700; color: #2563eb; margin-bottom: 32px; }
 .menu { flex: 1; display: flex; flex-direction: column; gap: 4px; }
 .menuLabel { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; padding: 16px 8px 4px; }
-.menuItem { display: block; width: 100%; padding: 10px 12px; border: none; background: none; border-radius: 8px; cursor: pointer; text-align: left; font-size: 14px; color: #444; }
-.menuItem:hover { background: #f1f5f9; }
+.menuItem { display: block; width: 100%; padding: 10px 12px; border: none; background: none; border-radius: 8px; cursor: pointer; text-align: left; font-size: 14px; color: #444; transition: background 0.15s; }
+.menuItem:hover { background: #e8f0fe; }
 .active { background: #eff6ff; color: #2563eb; font-weight: 500; }
-.upgradeBtn { margin-top: 16px; padding: 10px; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; }
+.userInfo { padding: 8px 12px; font-size: 13px; color: #666; }
 .useCount { margin-top: 8px; font-size: 13px; color: #999; text-align: center; }
-.main { flex: 1; padding: 40px; max-width: 800px; }
+
+.main { flex: 1; padding: 40px; max-width: 800px; min-width: 0; }
 .modeTitle { font-size: 24px; margin-bottom: 24px; }
-.input { width: 100%; padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 15px; resize: vertical; font-family: inherit; margin-bottom: 20px; }
+
+.input { width: 100%; padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 16px; resize: vertical; font-family: inherit; margin-bottom: 20px; box-sizing: border-box; }
 .input:focus { outline: none; border-color: #2563eb; }
+
 .options { display: flex; gap: 24px; margin-bottom: 20px; flex-wrap: wrap; }
-.optionGroup { }
 .optionGroup label { display: block; font-size: 13px; color: #666; margin-bottom: 8px; }
 .chips { display: flex; gap: 8px; flex-wrap: wrap; }
-.chip { padding: 6px 14px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; cursor: pointer; font-size: 13px; }
+.chip { padding: 6px 14px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+.chip:hover { border-color: #2563eb; }
 .chipActive { background: #2563eb; color: #fff; border-color: #2563eb; }
-.genBtn { padding: 12px 32px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; font-weight: 500; width: 100%; }
+
+.genBtn { padding: 12px 32px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; font-weight: 500; width: 100%; transition: opacity 0.15s; }
+.genBtn:hover:not(:disabled) { opacity: 0.9; }
 .genBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* 骨架屏 */
+.skeleton { margin-top: 24px; padding: 24px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; }
+.skeletonLine { height: 16px; background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: pulse 1.5s ease infinite; border-radius: 4px; margin-bottom: 12px; }
+@keyframes pulse { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
 .output { margin-top: 24px; padding: 24px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; }
 .output h3 { font-size: 14px; color: #666; margin-bottom: 12px; }
-.output p { font-size: 15px; line-height: 1.7; white-space: pre-wrap; }
-.outputActions { display: flex; gap: 8px; margin-top: 16px; }
-.outputActions button { padding: 6px 14px; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.output p { font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+.outputActions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.outputActions button { padding: 6px 14px; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 13px; transition: background 0.15s; }
 .outputActions button:hover { background: #f1f5f9; }
-@media (max-width: 768px) { .sidebar { width: 60px; padding: 16px 8px; } .sidebar .menuItem span, .sidebar .menuLabel, .sidebar .logo, .sidebar .useCount { display: none; } }
+
+.historyPanel { margin-top: 32px; }
+.historyPanel h3 { font-size: 18px; margin-bottom: 16px; }
+.historyItem { padding: 16px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; }
+.historyMeta { display: flex; justify-content: space-between; font-size: 12px; color: #999; margin-bottom: 8px; }
+.historyInput { font-size: 13px; color: #666; margin-bottom: 4px; }
+.historyOutput { font-size: 14px; line-height: 1.6; }
+.empty { color: #999; }
+
+.loading { display: flex; align-items: center; justify-content: center; height: 100vh; color: #666; font-size: 16px; }
+
+/* 響應式 */
+@media (max-width: 768px) {
+  .menuToggle { display: block; }
+  .sidebar { position: fixed; left: -260px; top: 0; bottom: 0; z-index: 150; transition: left 0.25s ease; box-shadow: 2px 0 12px rgba(0,0,0,0.1); }
+  .sidebarOpen { left: 0; }
+  .main { padding: 40px 20px; padding-top: 60px; }
+  .options { flex-direction: column; gap: 12px; }
+  .input { font-size: 16px; } /* 防止 iOS zoom */
+  .chips { gap: 6px; }
+  .chip { font-size: 12px; padding: 5px 12px; }
+}
+
+@media (max-width: 480px) {
+  .main { padding: 40px 12px; padding-top: 56px; }
+  .modeTitle { font-size: 20px; }
+}

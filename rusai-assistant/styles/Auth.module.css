@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
 }
 
 .card {
@@ -47,7 +48,7 @@
   padding: 0.875rem 1rem;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 16px;
   transition: border-color 0.2s;
 }
 
@@ -95,4 +96,14 @@
 
 .link:hover {
   text-decoration: underline;
+}
+
+/* 響應式 */
+@media (max-width: 768px) {
+  .card { padding: 2rem 1.5rem; }
+  .input { font-size: 16px; }
+}
+
+@media (max-width: 480px) {
+  .card { padding: 1.5rem 1rem; }
 }

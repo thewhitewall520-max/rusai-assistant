@@ -27,8 +27,18 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>RusAI - 用更地道的俄语表达自己</title>
-        <meta name="description" content="AI驱动的中俄翻译、邮件生成、学术表达工具" />
+        <title>RusAI - 用更地道的俄语表达自己 | AI俄语写作助手</title>
+        <meta name="description" content="RusAI 是专为留学生和外贸人打造的AI俄语写作助手，支持中俄翻译、俄语邮件生成、学术表达优化，让您的俄语更地道。" />
+        <meta name="keywords" content="俄语翻译,AI写作,俄语邮件,俄语学习,中俄翻译,俄语助手" />
+        <meta property="og:title" content="RusAI - 用更地道的俄语表达自己" />
+        <meta property="og:description" content="一键生成邮件 / 翻译 / 学术表达 — 专为留学生和外贸人打造" />
+        <meta property="og:url" content="https://rusai.cc" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="zh_CN" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="RusAI - AI俄语写作助手" />
+        <meta name="twitter:description" content="让俄语表达更简单" />
+        <link rel="canonical" href="https://rusai.cc" />
       </Head>
 
       <nav className={styles.nav}>

@@ -25,6 +25,14 @@ export default function Workspace() {
   const [history, setHistory] = useState([])
   const [showHistory, setShowHistory] = useState(false)
   const [useCount, setUseCount] = useState(0)
+  const [toast, setToast] = useState('')
+  const [copied, setCopied] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const showToast = (msg) => {
+    setToast(msg)
+    setTimeout(() => setToast(''), 3000)
+  }
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -52,14 +60,21 @@ export default function Workspace() {
     }
   }
 
+  const handleCopy = async (text) => {
+    await navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
   const handleGenerate = async () => {
     if (!input.trim()) return
     
     if (!session) {
-      if (useCount >= 10) { alert('免費次數已用完，請登錄或升級Pro'); return }
+      if (useCount >= 10) { showToast('免費次數已用完，請登錄或升級Pro'); return }
     }
     
     setLoading(true)
+    setOutput('')
     try {
       const res = await fetch('/api/generate', {
         method: 'POST',
@@ -87,7 +102,7 @@ export default function Workspace() {
           localStorage.setItem('rusai_history', JSON.stringify([entry, ...localHistory].slice(0, 50)))
         }
       }
-    } catch(e) { setOutput('出错了，请重试') }
+    } catch(e) { showToast('出错了，请重试') }
     setLoading(false)
   }
 
@@ -96,13 +111,20 @@ export default function Workspace() {
   return (
     <div className={styles.container}>
       <Head><title>RusAI 工作台</title></Head>
-      <div className={styles.sidebar}>
+      
+      {toast && <div className={styles.toast}>{toast}</div>}
+      
+      <button className={styles.menuToggle} onClick={() => setSidebarOpen(!sidebarOpen)}>
+        ☰
+      </button>
+      
+      <div className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.logo}>RusAI</div>
         <div className={styles.menu}>
           <div className={styles.menuLabel}>🧠 功能</div>
           {modes.map(m => (
             <button key={m.id} className={`${styles.menuItem} ${mode === m.id ? styles.active : ''}`}
-              onClick={() => { setMode(m.id); setOutput('') }}>
+              onClick={() => { setMode(m.id); setOutput(''); setSidebarOpen(false) }}>
               {m.icon} {m.label}
             </button>
           ))}
@@ -164,12 +186,22 @@ export default function Workspace() {
           {loading ? '生成中...' : '生成' + (mode === 'translate' ? '俄语' : '')}
         </button>
         
+        {loading && !output && (
+          <div className={styles.skeleton}>
+            <div className={styles.skeletonLine} style={{ width: '80%' }} />
+            <div className={styles.skeletonLine} style={{ width: '60%' }} />
+            <div className={styles.skeletonLine} style={{ width: '70%' }} />
+          </div>
+        )}
+        
         {output && (
           <div className={styles.output}>
             <h3>结果</h3>
             <p>{output}</p>
             <div className={styles.outputActions}>
-              <button onClick={() => navigator.clipboard.writeText(output)}>📋 复制</button>
+              <button onClick={() => handleCopy(output)}>
+                {copied ? '✅ 已复制!' : '📋 复制'}
+              </button>
               <button onClick={handleGenerate}>🔄 重新生成</button>
             </div>
           </div>

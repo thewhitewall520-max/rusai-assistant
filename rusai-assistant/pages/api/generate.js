@@ -29,31 +29,76 @@ export default async function handler(req, res) {
 
     const systemPrompt = systemPrompts[mode] || systemPrompts.translate
 
-    // Use DeepSeek API (we have it configured)
-    const response = await fetch('https://api.deepseek.com/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer sk-ac09fe11f4db4009a1afe9ab410073b5`
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: text }
-        ],
-        temperature: 0.7,
-        max_tokens: 2000
-      })
-    })
+    // 1) 嘗試本地 Ollama
+    const OLLAMA_URL = 'http://127.0.0.1:11434/v1/chat/completions'
+    const deepseekFallback = async () => {
+      const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY
+      if (!DEEPSEEK_KEY) {
+        return res.status(500).json({ error: 'API 密钥未配置' })
+      }
 
-    const data = await response.json()
-    
-    if (data.choices && data.choices[0]) {
-      res.status(200).json({ result: data.choices[0].message.content })
-    } else {
-      console.error('API error:', data)
-      res.status(500).json({ error: 'API调用失败' })
+      const dsRes = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${DEEPSEEK_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: text }
+          ],
+          temperature: 0.7,
+          max_tokens: 2000
+        })
+      })
+
+      const data = await dsRes.json()
+      if (data.choices && data.choices[0]) {
+        res.status(200).json({ result: data.choices[0].message.content })
+      } else {
+        console.error('API error:', data)
+        res.status(500).json({ error: 'API调用失败' })
+      }
+    }
+
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 30000)
+
+      const ollamaRes = await fetch(OLLAMA_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'qwen2.5:7b',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: text }
+          ],
+          temperature: 0.7,
+          max_tokens: 2000
+        }),
+        signal: controller.signal
+      })
+      clearTimeout(timeoutId)
+
+      if (!ollamaRes.ok) {
+        console.warn('Ollama 返回非 200，降级到 DeepSeek')
+        return deepseekFallback()
+      }
+
+      const ollamaData = await ollamaRes.json()
+
+      if (ollamaData.choices && ollamaData.choices[0]) {
+        res.status(200).json({ result: ollamaData.choices[0].message.content })
+      } else {
+        console.warn('Ollama 响应格式异常，降级到 DeepSeek')
+        return deepseekFallback()
+      }
+    } catch (ollamaErr) {
+      console.warn('Ollama 不可用（超时或连接失败），降级到 DeepSeek:', ollamaErr.message)
+      return deepseekFallback()
     }
   } catch (error) {
     console.error('Error:', error)
