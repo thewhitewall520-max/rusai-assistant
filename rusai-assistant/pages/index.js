@@ -3,6 +3,10 @@ import { useState } from 'react'
 import { useTheme } from '../lib/ThemeContext'
 import styles from '../styles/Home.module.css'
 
+export function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function Home() {
   const [demoInput, setDemoInput] = useState('')
   const [demoOutput, setDemoOutput] = useState('')

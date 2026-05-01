@@ -4,6 +4,10 @@ import { useRouter } from 'next/router'
 import { useTheme } from '../lib/ThemeContext'
 import styles from '../styles/Auth.module.css'
 
+export function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true)
   const [login, setLogin] = useState('')
