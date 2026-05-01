@@ -1,0 +1,7 @@
+# 忽略敏感文件
+.env
+*.log
+*.lock
+.DS_Store
+state/
+tmp/
