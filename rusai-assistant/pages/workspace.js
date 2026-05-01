@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { useTheme } from '../lib/ThemeContext'
 import styles from '../styles/Workspace.module.css'
 
 const modes = [
@@ -27,6 +28,7 @@ export default function Workspace() {
   const [useCount, setUseCount] = useState(0)
   const [toast, setToast] = useState('')
   const [copied, setCopied] = useState(false)
+  const { dark, toggleTheme } = useTheme()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const showToast = (msg) => {
@@ -119,7 +121,10 @@ export default function Workspace() {
       </button>
       
       <div className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
-        <div className={styles.logo}>RusAI</div>
+        <div className={styles.sidebarTop}>
+          <div className={styles.logo}>RusAI</div>
+          <button className="themeToggle" onClick={toggleTheme}>{dark ? '☀️' : '🌙'}</button>
+        </div>
         <div className={styles.menu}>
           <div className={styles.menuLabel}>🧠 功能</div>
           {modes.map(m => (

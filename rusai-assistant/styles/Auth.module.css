@@ -8,24 +8,24 @@
 }
 
 .card {
-  background: white;
+  background: var(--card-bg);
   padding: 3rem;
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   width: 100%;
   max-width: 400px;
+  color: var(--text);
 }
 
 .logo {
   text-align: center;
-  color: #667eea;
+  color: var(--primary);
   font-size: 2rem;
   margin-bottom: 0.5rem;
 }
 
 .card h2 {
   text-align: center;
-  color: #333;
   margin-bottom: 1.5rem;
 }
 
@@ -46,15 +46,17 @@
 
 .input {
   padding: 0.875rem 1rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border);
   border-radius: 8px;
   font-size: 16px;
   transition: border-color 0.2s;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--primary);
 }
 
 .btn {
@@ -82,13 +84,13 @@
 .switch {
   text-align: center;
   margin-top: 1.5rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .link {
   background: none;
   border: none;
-  color: #667eea;
+  color: var(--primary);
   cursor: pointer;
   font-weight: 600;
   margin-left: 0.25rem;
@@ -98,7 +100,6 @@
   text-decoration: underline;
 }
 
-/* 響應式 */
 @media (max-width: 768px) {
   .card { padding: 2rem 1.5rem; }
   .input { font-size: 16px; }
