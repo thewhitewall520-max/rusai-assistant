@@ -37,6 +37,17 @@
 @keyframes pulse { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 .output { margin-top: 24px; padding: 24px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; }
+
+/* 雙語輸出 */
+.bilingual { display: flex; flex-direction: column; gap: 16px; }
+.bilingualSection { }
+.bilingualLabel { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px; }
+.bilingualText { font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+.bilingualTextCn { font-size: 14px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; color: var(--text-secondary); border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+
+/* 【】占位高亮 */
+.placeholder { background: #fef3c7; color: #92400e; padding: 1px 4px; border-radius: 3px; font-size: 0.9em; font-weight: 500; }
+:global(.dark) .placeholder { background: #78350f; color: #fef3c7; }
 .output h3 { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
 .output p { font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
 .outputActions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }

@@ -108,6 +108,50 @@ export default function Workspace() {
     setLoading(false)
   }
 
+// 雙語輸出元件：自動解析 === 俄語 === / === 中文 === 格式，並高亮【】占位
+function BilingualOutput({ text }) {
+  if (!text) return null
+
+  // 嘗試分割俄語和中文部分
+  const ruMatch = text.match(/=== 俄語 ===\s*([\s\S]*?)(?:\n\s*=== 中文|$)/)
+  const cnMatch = text.match(/=== (?:中文對照|中文) ===\s*([\s\S]*?)$/)
+
+  // 高亮【】占位的函數
+  const highlightPlaceholders = (str) => {
+    if (!str) return null
+    const parts = str.split(/(【[^】]*】)/g)
+    return parts.map((part, i) => {
+      if (part.startsWith('【') && part.endsWith('】')) {
+        const content = part.slice(1, -1)
+        return <mark key={i} className={styles.placeholder}>{content}</mark>
+      }
+      return <span key={i}>{part}</span>
+    })
+  }
+
+  if (ruMatch) {
+    const russian = ruMatch[1].trim()
+    const chinese = cnMatch ? cnMatch[1].trim() : ''
+    return (
+      <div className={styles.bilingual}>
+        <div className={styles.bilingualSection}>
+          <div className={styles.bilingualLabel}>🇷🇺 俄语</div>
+          <div className={styles.bilingualText}>{highlightPlaceholders(russian)}</div>
+        </div>
+        {chinese && (
+          <div className={styles.bilingualSection}>
+            <div className={styles.bilingualLabel}>🇨🇳 中文对照</div>
+            <div className={styles.bilingualTextCn}>{highlightPlaceholders(chinese)}</div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // 沒偵測到格式，直接顯示（向後相容）
+  return <p className={styles.bilingualText}>{text}</p>
+}
+
   if (status === 'loading') return <div className={styles.loading}>加載中...</div>
 
   return (
@@ -202,7 +246,7 @@ export default function Workspace() {
         {output && (
           <div className={styles.output}>
             <h3>结果</h3>
-            <p>{output}</p>
+            <BilingualOutput text={output} />
             <div className={styles.outputActions}>
               <button onClick={() => handleCopy(output)}>
                 {copied ? '✅ 已复制!' : '📋 复制'}
