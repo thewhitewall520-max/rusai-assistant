@@ -32,3 +32,4 @@ init-fairytail.sh
 validate-fairytail.sh
 clean_sessions.*
 .openclaw/
+.github/
