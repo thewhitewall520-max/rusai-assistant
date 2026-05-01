@@ -46,8 +46,21 @@
 .bilingualTextCn { font-size: 14px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; color: var(--text-secondary); border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
 
 /* 【】占位高亮 */
-.placeholder { background: #fef3c7; color: #92400e; padding: 1px 4px; border-radius: 3px; font-size: 0.9em; font-weight: 500; }
-:global(.dark) .placeholder { background: #78350f; color: #fef3c7; }
+.placeholder {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 600;
+  border: 1px solid #fbbf24;
+  cursor: help;
+}
+:global(.dark) .placeholder {
+  background: #78350f;
+  color: #fbbf24;
+  border-color: #92400e;
+}
 .output h3 { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
 .output p { font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
 .outputActions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }

@@ -108,48 +108,53 @@ export default function Workspace() {
     setLoading(false)
   }
 
-// 雙語輸出元件：自動解析 === 俄語 === / === 中文 === 格式，並高亮【】占位
+// 雙語輸出 + 占位高亮
 function BilingualOutput({ text }) {
   if (!text) return null
 
-  // 嘗試分割俄語和中文部分
-  const ruMatch = text.match(/=== 俄語 ===\s*([\s\S]*?)(?:\n\s*=== 中文|$)/)
-  const cnMatch = text.match(/=== (?:中文對照|中文) ===\s*([\s\S]*?)$/)
-
-  // 高亮【】占位的函數
-  const highlightPlaceholders = (str) => {
+  // 分段：按 === 標題分割
+  const parts = text.split(/={3,}\s*/).filter(Boolean)
+  
+  // 高亮【】占位
+  const highlight = (str) => {
     if (!str) return null
-    const parts = str.split(/(【[^】]*】)/g)
-    return parts.map((part, i) => {
-      if (part.startsWith('【') && part.endsWith('】')) {
-        const content = part.slice(1, -1)
-        return <mark key={i} className={styles.placeholder}>{content}</mark>
+    const segs = str.split(/(【.*?】)/g)
+    return segs.map((s, i) => {
+      if (/^【.*】$/.test(s)) {
+        return <mark key={i} className={styles.placeholder}>{s.slice(1, -1)}</mark>
       }
-      return <span key={i}>{part}</span>
+      return <span key={i}>{s}</span>
     })
   }
 
-  if (ruMatch) {
-    const russian = ruMatch[1].trim()
-    const chinese = cnMatch ? cnMatch[1].trim() : ''
+  if (parts.length >= 2) {
+    const sections = []
+    for (let i = 0; i < parts.length; i += 2) {
+      const title = parts[i]?.trim()
+      const content = parts[i + 1]?.trim()
+      if (!content) continue
+      sections.push({ title, content })
+    }
+
     return (
       <div className={styles.bilingual}>
-        <div className={styles.bilingualSection}>
-          <div className={styles.bilingualLabel}>🇷🇺 俄语</div>
-          <div className={styles.bilingualText}>{highlightPlaceholders(russian)}</div>
-        </div>
-        {chinese && (
-          <div className={styles.bilingualSection}>
-            <div className={styles.bilingualLabel}>🇨🇳 中文对照</div>
-            <div className={styles.bilingualTextCn}>{highlightPlaceholders(chinese)}</div>
+        {sections.map((sec, i) => (
+          <div key={i} className={styles.bilingualSection}>
+            <div className={styles.bilingualLabel}>
+              {sec.title.includes('俄语') ? '🇷🇺 ' : sec.title.includes('中文') || sec.title.includes('对照') ? '🇨🇳 ' : ''}
+              {sec.title}
+            </div>
+            <div className={sec.title.includes('中文') || sec.title.includes('对照') ? styles.bilingualTextCn : styles.bilingualText}>
+              {highlight(sec.content)}
+            </div>
           </div>
-        )}
+        ))}
       </div>
     )
   }
 
-  // 沒偵測到格式，直接顯示（向後相容）
-  return <p className={styles.bilingualText}>{text}</p>
+  // 沒標題格式：直接高亮任何【】占位後顯示
+  return <p className={styles.bilingualText}>{highlight(text)}</p>
 }
 
   if (status === 'loading') return <div className={styles.loading}>加載中...</div>
