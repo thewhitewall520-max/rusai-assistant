@@ -1,12 +1,15 @@
 import { getServerSession } from 'next-auth'
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+const globalForPrisma = global
+const prisma = globalForPrisma.prisma || new PrismaClient({
+  datasources: { db: { url: process.env.DATABASE_URL } }
+})
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res)
   
-  // Only logged-in users can see stats
   if (!session) {
     return res.status(401).json({ error: '请先登录' })
   }

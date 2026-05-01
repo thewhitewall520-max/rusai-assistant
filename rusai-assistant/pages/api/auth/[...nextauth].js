@@ -3,9 +3,14 @@ import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
 
-const prisma = new PrismaClient()
+const globalForPrisma = global
+
+const prisma = globalForPrisma.prisma || new PrismaClient({
+  datasources: { db: { url: process.env.DATABASE_URL } }
+})
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),

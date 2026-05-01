@@ -1,7 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
-const prisma = new PrismaClient()
+const globalForPrisma = global
+const prisma = globalForPrisma.prisma || new PrismaClient({
+  datasources: { db: { url: process.env.DATABASE_URL } }
+})
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
@@ -10,7 +14,6 @@ export default async function handler(req, res) {
   if ((!email && !username) || !password) return res.status(400).json({ error: '邮箱或用户名 + 密码是必填的' })
   
   try {
-    // Check existing
     if (email) {
       const existing = await prisma.user.findUnique({ where: { email } })
       if (existing) return res.status(400).json({ error: '该邮箱已被注册' })
