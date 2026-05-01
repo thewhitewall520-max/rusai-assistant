@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import { useState } from 'react'
-import { useTheme } from '../lib/ThemeContext'
 import styles from '../styles/Home.module.css'
 
 export function getServerSideProps() {
@@ -11,7 +10,6 @@ export default function Home() {
   const [demoInput, setDemoInput] = useState('')
   const [demoOutput, setDemoOutput] = useState('')
   const [demoLoading, setDemoLoading] = useState(false)
-  const { dark, toggleTheme } = useTheme()
 
   const handleDemo = async () => {
     if (!demoInput.trim()) return
@@ -56,7 +54,6 @@ export default function Home() {
               <a href="#pricing">价格</a>
               <a href="/workspace" className={styles.loginBtn}>开始使用</a>
             </div>
-            <button className="themeToggle" onClick={toggleTheme}>{dark ? '☀️' : '🌙'}</button>
           </div>
         </div>
       </nav>

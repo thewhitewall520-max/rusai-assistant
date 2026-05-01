@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useTheme } from '../lib/ThemeContext'
 import styles from '../styles/Auth.module.css'
 
 export function getServerSideProps() {
@@ -17,7 +16,6 @@ export default function Login() {
   const [name, setName] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { dark, toggleTheme } = useTheme()
   const router = useRouter()
 
   const handleSubmit = async (e) => {
@@ -67,7 +65,6 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <div style={{position:'fixed',top:16,right:16,zIndex:10}}>
-        <button className="themeToggle" onClick={toggleTheme}>{dark ? '☀️' : '🌙'}</button>
       </div>
       <div className={styles.card}>
         <h1 className={styles.logo}>RusAI</h1>

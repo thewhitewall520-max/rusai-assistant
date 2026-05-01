@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { useTheme } from '../lib/ThemeContext'
 
 export function getServerSideProps() {
   return { props: {} }
@@ -11,7 +10,6 @@ export function getServerSideProps() {
 export default function Admin() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const { dark, toggleTheme } = useTheme()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -50,7 +48,6 @@ export default function Admin() {
         <h1 style={{fontSize:24}}>📊 RusAI 管理後台</h1>
         <div style={{display:'flex',gap:12,alignItems:'center'}}>
           <span style={{fontSize:14,color:'var(--text-secondary)'}}>{session?.user?.name}</span>
-          <button className="themeToggle" onClick={toggleTheme}>{dark ? '☀️' : '🌙'}</button>
           <a href="/workspace" style={{color:'var(--primary)',fontSize:14}}>← 工作台</a>
           <button onClick={signOut} style={{padding:'6px 14px',background:'var(--hover)',border:'1px solid var(--border)',borderRadius:8,cursor:'pointer',color:'var(--text)'}}>退出</button>
         </div>
