@@ -14,6 +14,18 @@ const modes = [
 
 const tones = { translate: ['日常', '正式', '学术', '商务'], email: ['礼貌', '正式', '强硬一点'] }
 
+const LANGUAGES = [
+  { code: 'zh', name: '中文' }, { code: 'en', name: 'English' }, { code: 'ru', name: 'Русский' },
+  { code: 'ja', name: '日本語' }, { code: 'ko', name: '한국어' }, { code: 'fr', name: 'Français' },
+  { code: 'de', name: 'Deutsch' }, { code: 'es', name: 'Español' }, { code: 'pt', name: 'Português' },
+  { code: 'it', name: 'Italiano' }, { code: 'ar', name: 'العربية' }, { code: 'hi', name: 'हिन्दी' },
+  { code: 'th', name: 'ไทย' }, { code: 'vi', name: 'Tiếng Việt' }, { code: 'id', name: 'Bahasa Indonesia' },
+  { code: 'ms', name: 'Bahasa Melayu' }, { code: 'tl', name: 'Filipino' }, { code: 'tr', name: 'Türkçe' },
+  { code: 'nl', name: 'Nederlands' }, { code: 'sv', name: 'Svenska' }, { code: 'pl', name: 'Polski' },
+  { code: 'uk', name: 'Українська' }, { code: 'el', name: 'Ελληνικά' }, { code: 'he', name: 'עברית' },
+  { code: 'fa', name: 'فارسی' }, { code: 'ur', name: 'اردو' }, { code: 'sw', name: 'Kiswahili' },
+]
+
 export default function Workspace() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -144,7 +156,7 @@ function BilingualOutput({ text }) {
               {sec.title.includes('俄语') ? '🇷🇺 ' : sec.title.includes('中文') || sec.title.includes('对照') ? '🇨🇳 ' : ''}
               {sec.title}
             </div>
-            <div className={sec.title.includes('中文') || sec.title.includes('对照') ? styles.bilingualTextCn : styles.bilingualText}>
+            <div className={sec.title.includes('中文') || sec.title.includes('对照') || sec.title.includes('说明') ? styles.bilingualTextCn : styles.bilingualText}>
               {highlight(sec.content)}
             </div>
           </div>
@@ -212,6 +224,22 @@ function BilingualOutput({ text }) {
           value={input} onChange={e => setInput(e.target.value)} />
         
         <div className={styles.options}>
+          {mode === 'translate' && (
+            <>
+              <div className={styles.optionGroup}>
+                <label>从</label>
+                <select className={styles.langSelect} value={sourceLang} onChange={e => setSourceLang(e.target.value)}>
+                  {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.name}</option>)}
+                </select>
+              </div>
+              <div className={styles.optionGroup}>
+                <label>到</label>
+                <select className={styles.langSelect} value={targetLang} onChange={e => setTargetLang(e.target.value)}>
+                  {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.name}</option>)}
+                </select>
+              </div>
+            </>
+          )}
           {mode !== 'optimize' && (
             <div className={styles.optionGroup}>
               <label>语气</label>
@@ -237,7 +265,7 @@ function BilingualOutput({ text }) {
         </div>
         
         <button className={styles.genBtn} onClick={handleGenerate} disabled={loading}>
-          {loading ? '生成中...' : '生成' + (mode === 'translate' ? '俄语' : '')}
+          {loading ? '生成中...' : '生成' + (mode === 'translate' ? (sourceLang === targetLang ? '扩写' : '') : '')}
         </button>
         
         {loading && !output && (

@@ -1,4 +1,25 @@
-// 每日用量限制（後端記憶體計數，伺服器重啟重置）
+// 語言映射表（ISO 639-1 → 語言名稱）
+const LANG_NAMES = {
+  zh: '中文', en: 'English', ru: 'Русский', ja: '日本語', ko: '한국어',
+  fr: 'Français', de: 'Deutsch', es: 'Español', pt: 'Português', it: 'Italiano',
+  ar: 'العربية', hi: 'हिन्दी', bn: 'বাংলা', pa: 'ਪੰਜਾਬੀ', ta: 'தமிழ்',
+  th: 'ไทย', vi: 'Tiếng Việt', ms: 'Bahasa Melayu', id: 'Bahasa Indonesia',
+  tl: 'Filipino', my: 'မြန်မာဘာသာ', km: 'ភាសាខ្មែរ', lo: 'ລາວ', mn: 'Монгол',
+  ne: 'नेपाली', si: 'සිංහල', ur: 'اردو', fa: 'فارسی', he: 'עברית',
+  tr: 'Türkçe', kk: 'Қазақ', uz: 'Oʻzbek', ky: 'Кыргызча', tg: 'Тоҷикӣ',
+  az: 'Azərbaycan', hy: 'Հայերեն', ka: 'ქართული', el: 'Ελληνικά',
+  pl: 'Polski', cs: 'Čeština', sk: 'Slovenčina', hu: 'Magyar',
+  ro: 'Română', bg: 'Български', sr: 'Српски', hr: 'Hrvatski',
+  sl: 'Slovenščina', et: 'Eesti', lv: 'Latviešu', lt: 'Lietuvių',
+  uk: 'Українська', be: 'Беларуская', nl: 'Nederlands', sv: 'Svenska',
+  no: 'Norsk', da: 'Dansk', fi: 'Suomi', is: 'Íslenska', ga: 'Gaeilge',
+  sw: 'Kiswahili', ha: 'Hausa', yo: 'Yorùbá', ig: 'Igbo', zu: 'isiZulu',
+  af: 'Afrikaans', am: 'አማርኛ', so: 'Soomaali',
+}
+
+const LANGUAGES = Object.entries(LANG_NAMES).map(([code, name]) => ({ code, name }))
+
+// 每日用量限制
 const DAILY_LIMIT = 10
 const ipUsage = new Map()
 const getDailyKey = (ip) => {
@@ -9,10 +30,10 @@ const getDailyKey = (ip) => {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
   
-  const { mode, text, tone, target } = req.body
+  const { mode, text, tone, target, sourceLang = 'zh', targetLang = 'ru' } = req.body
   if (!text) return res.status(400).json({ error: '请输入内容' })
 
-  // 後端用量限制（非登入用戶）
+  // 用量限制
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
              req.socket.remoteAddress || 'unknown'
   const key = getDailyKey(ip)
@@ -21,69 +42,86 @@ export default async function handler(req, res) {
     return res.status(429).json({ error: '每日免费次数已用完，请登录后继续使用' })
   }
 
+  const srcName = LANG_NAMES[sourceLang] || sourceLang
+  const tgtName = LANG_NAMES[targetLang] || targetLang
+  const isRewrite = sourceLang === targetLang
+
   try {
     const systemPrompts = {
-      translate: `你是一个专业的中俄翻译专家。请将用户输入的内容翻译成俄语，语气要求：${tone}。
+      translate: isRewrite
+        ? `你是一个专业的${srcName}写作优化专家。请对用户输入的${srcName}内容进行优化和扩写。
 要求：
-1. 翻译要地道自然，符合俄语母语者的表达习惯，不要直译
-2. 同时输出俄语和中文对照
-3. 用【】标记需要用户自定义修改的占位内容，并在中文对照中写明它的含义
+1. 保持原意，优化表达方式，使其更地道、更流畅
+2. 适当扩写，增加细节和修饰
+3. 用【】标记可以自定义调整的部分
+4. 输出优化后的原文和修改说明
 
-输出格式如下（严格按此格式）：
+输出格式：
 
-=== 俄语 ===
-[俄语翻译结果]
+=== 优化后 ===
+[优化扩写后的${srcName}内容]
 
-=== 中文对照 ===
-[中文翻译，与俄语逐句对应。例如：Уважаемый профессор【Фамилия】对应为：尊敬的教授【姓氏，请填写】]`,
+=== 修改说明 ===
+[简要说明做了哪些优化]`
+
+        : `你是一个专业的多语言翻译专家。请将用户输入的内容从${srcName}翻译成${tgtName}，语气要求：${tone}。
+要求：
+1. 翻译要地道自然，符合${tgtName}母语者的表达习惯，不要直译
+2. 同时输出${tgtName}原文和${srcName}对照
+3. 用【】标记需要用户自定义修改的占位内容，并在对照中写明它的含义
+
+输出格式（严格按此格式）：
+
+=== ${tgtName} ===
+[${tgtName}翻译结果]
+
+=== ${srcName}对照 ===
+[与${tgtName}逐句对应的${srcName}翻译]`,
       
       email: `你是一个专业的俄语邮件写作专家。请根据用户的需求生成一封完整的俄语邮件。
 收件人：${target}
 语气：${tone}
 要求：
-1. 包含俄语邮件的标准格式（称呼、正文、结束语），语气要符合${tone}的标准
-2. 用【】标记所有需要用户自定义填写的占位部分（如姓名、日期、具體原因等）
-3. 同时在中文对照中解释每个占位的含义
-4. 输出俄语原文和中文翻译的双语版本
+1. 包含俄语邮件的标准格式（称呼、正文、结束语）
+2. 用【】标记所有需要用户自定义填写的占位部分
+3. 输出俄语原文和中文翻译的双语版本
 
-输出格式如下（严格按此格式）：
+输出格式：
 
 === 俄语 ===
-[俄语邮件正文，用【】标记占位内容]
+[俄语邮件正文]
 
 === 中文对照 ===
-[逐句中文翻译，解釋每個【】占位的含義]`,
+[逐句中文翻译]`,
       
-      optimize: `你是一个俄语表达优化专家。请优化用户输入的俄语句子，使其更地道、更自然。
+      optimize: `你是一个俄语表达优化专家。请优化用户输入的俄语句子。
 要求：
 1. 保持原意，优化语法和用词
-2. 同时输出俄语优化版本和中文对照
-3. 用【】标记优化后仍需要用户调整的占位
+2. 区分原句和优化版
+3. 附上中文对照
 
-输出格式如下（严格按此格式）：
+输出格式：
 
 === 原句 ===
-[用户输入的原始俄语句子]
+[用户输入的原始句子]
 
-=== 优化后（俄语） ===
-[优化后的俄语版本]
+=== 优化后 ===
+[优化后的版本]
 
 === 中文对照 ===
-[优化部分的逐句中文翻译]`,
+[中文翻译]`,
       
-      academic: `你是一个俄语学术写作专家。请将用户输入的中文意思，用俄语生成3种不同的学术表达方式。
-适合论文或学术报告使用。
+      academic: `你是一个俄语学术写作专家。请将用户输入的意思，用俄语生成3种不同的学术表达方式。
 要求：
 1. 表达要正式、学术、地道
-2. 每一种表达都附上中文翻译
-3. 用【】标记需要自定义的部分
+2. 每种表达式附中文翻译
 
-输出格式如下（严格按此格式）：
+输出格式：
 
 === 俄语 ===
-1. [第一种学术表达]
-2. [第二种学术表达]
-3. [第三种学术表达]
+1. [第一种表达]
+2. [第二种表达]
+3. [第三种表达]
 
 === 中文对照 ===
 1. [第一种的中文翻译]
@@ -93,23 +131,14 @@ export default async function handler(req, res) {
 
     const systemPrompt = systemPrompts[mode] || systemPrompts.translate
 
-    // 扣除一次次数（只有在成功生成後才算）
     let deducted = false
-
-    // 1) 嘗試本地 Ollama
     const OLLAMA_URL = 'http://127.0.0.1:11434/v1/chat/completions'
     const deepseekFallback = async () => {
       const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY
-      if (!DEEPSEEK_KEY) {
-        return res.status(500).json({ error: 'API 密钥未配置' })
-      }
-
+      if (!DEEPSEEK_KEY) return res.status(500).json({ error: 'API 密钥未配置' })
       const dsRes = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${DEEPSEEK_KEY}`
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_KEY}` },
         body: JSON.stringify({
           model: 'deepseek-chat',
           messages: [
@@ -120,7 +149,6 @@ export default async function handler(req, res) {
           max_tokens: 2000
         })
       })
-
       const data = await dsRes.json()
       if (data.choices && data.choices[0]) {
         if (!deducted) { ipUsage.set(key, count + 1); deducted = true }
@@ -134,7 +162,6 @@ export default async function handler(req, res) {
     try {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 30000)
-
       const ollamaRes = await fetch(OLLAMA_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -150,27 +177,21 @@ export default async function handler(req, res) {
         signal: controller.signal
       })
       clearTimeout(timeoutId)
-
-      if (!ollamaRes.ok) {
-        console.warn('Ollama 返回非 200，降级到 DeepSeek')
-        return deepseekFallback()
-      }
-
+      if (!ollamaRes.ok) { console.warn('Ollama 返回非 200'); return deepseekFallback() }
       const ollamaData = await ollamaRes.json()
-
       if (ollamaData.choices && ollamaData.choices[0]) {
         if (!deducted) { ipUsage.set(key, count + 1); deducted = true }
         res.status(200).json({ result: ollamaData.choices[0].message.content })
-      } else {
-        console.warn('Ollama 响应格式异常，降级到 DeepSeek')
-        return deepseekFallback()
-      }
+      } else { return deepseekFallback() }
     } catch (ollamaErr) {
-      console.warn('Ollama 不可用（超时或连接失败），降级到 DeepSeek:', ollamaErr.message)
+      console.warn('Ollama 不可用，降级到 DeepSeek:', ollamaErr.message)
       return deepseekFallback()
     }
   } catch (error) {
     console.error('Error:', error)
-    res.status(500).json({ error: '服务器错误' })
+    return res.status(500).json({ error: '服务器错误' })
   }
 }
+
+// 導出語言列表供前端使用
+export { LANGUAGES }
