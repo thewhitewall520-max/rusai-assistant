@@ -1,8 +1,25 @@
+// 每日用量限制（後端記憶體計數，伺服器重啟重置）
+const DAILY_LIMIT = 10
+const ipUsage = new Map()
+const getDailyKey = (ip) => {
+  const today = new Date().toISOString().split('T')[0]
+  return `${ip}:${today}`
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
   
   const { mode, text, tone, target } = req.body
   if (!text) return res.status(400).json({ error: '请输入内容' })
+
+  // 後端用量限制（非登入用戶）
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
+             req.socket.remoteAddress || 'unknown'
+  const key = getDailyKey(ip)
+  const count = ipUsage.get(key) || 0
+  if (count >= DAILY_LIMIT) {
+    return res.status(429).json({ error: '每日免费次数已用完，请登录后继续使用' })
+  }
 
   try {
     const systemPrompts = {
@@ -28,6 +45,9 @@ export default async function handler(req, res) {
     }
 
     const systemPrompt = systemPrompts[mode] || systemPrompts.translate
+
+    // 扣除一次次数（只有在成功生成後才算）
+    let deducted = false
 
     // 1) 嘗試本地 Ollama
     const OLLAMA_URL = 'http://127.0.0.1:11434/v1/chat/completions'
@@ -56,6 +76,7 @@ export default async function handler(req, res) {
 
       const data = await dsRes.json()
       if (data.choices && data.choices[0]) {
+        if (!deducted) { ipUsage.set(key, count + 1); deducted = true }
         res.status(200).json({ result: data.choices[0].message.content })
       } else {
         console.error('API error:', data)
@@ -91,6 +112,7 @@ export default async function handler(req, res) {
       const ollamaData = await ollamaRes.json()
 
       if (ollamaData.choices && ollamaData.choices[0]) {
+        if (!deducted) { ipUsage.set(key, count + 1); deducted = true }
         res.status(200).json({ result: ollamaData.choices[0].message.content })
       } else {
         console.warn('Ollama 响应格式异常，降级到 DeepSeek')

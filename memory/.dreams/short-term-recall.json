@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-01T12:40:53.206Z",
+  "entries": {
+    "memory:memory/2026-05-01.md:1:16": {
+      "key": "memory:memory/2026-05-01.md:1:16",
+      "path": "memory/2026-05-01.md",
+      "startLine": 1,
+      "endLine": 16,
+      "source": "memory",
+      "snippet": "## RusAI 部署決策（老大確認） | 決策項 | 結論 | |--------|------| | 域名 | rusai.cc → 解到 139.180.142.145 | | Writing Assistant 老版 | 已淘汰，保留在 repo 參考即可 | | GitHub Actions | 先不管，token 權限問題不處理 | | OpenClaw 伺服器 | 保留，主 Agent 走本地 Mac | | SSL/HTTPS | 後續再弄 | | 當前優先級 | 域名解析 + nginx 綁定 | ### 域名 DNS 現狀 - ✅ rusai.cc → 139.180.142.145（已解析） - ✅ www.rusai.cc → 139.180.142.145（已解析） - ✅ nginx server_name 已更新綁定域名",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.6345464545444546,
+      "maxScore": 0.6345464545444546,
+      "firstRecalledAt": "2026-05-01T12:40:53.206Z",
+      "lastRecalledAt": "2026-05-01T12:40:53.206Z",
+      "queryHashes": [
+        "30767d00bfc3"
+      ],
+      "recallDays": [
+        "2026-05-01"
+      ],
+      "conceptTags": [
+        "rusai.cc",
+        "139.180.142.145",
+        "ssl/https",
+        "www.rusai.cc",
+        "server-name",
+        "rusai",
+        "部署",
+        "決策"
+      ]
+    }
+  }
+}
