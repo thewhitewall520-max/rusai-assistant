@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
@@ -9,6 +10,10 @@ const prisma = new PrismaClient()
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
       name: 'credentials',
       credentials: {
@@ -18,15 +23,9 @@ export default NextAuth({
       async authorize(credentials) {
         if (!credentials?.login || !credentials?.password) return null
 
-        // Try email first, then username
         let user = await prisma.user.findUnique({
           where: { email: credentials.login }
         })
-        if (!user && credentials.login.includes('@')) {
-          user = await prisma.user.findUnique({
-            where: { email: credentials.login }
-          })
-        }
         if (!user) {
           user = await prisma.user.findUnique({
             where: { username: credentials.login }
@@ -49,8 +48,9 @@ export default NextAuth({
     signIn: '/login'
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) token.id = user.id
+      if (account) token.provider = account.provider
       return token
     },
     async session({ session, token }) {

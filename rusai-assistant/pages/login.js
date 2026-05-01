@@ -119,6 +119,17 @@ export default function Login() {
           <button type="submit" disabled={loading} className={styles.btn}>
             {loading ? '處理中...' : (isLogin ? '登錄' : '註冊')}
           </button>
+          
+          <div style={{display:'flex',alignItems:'center',gap:12,margin:'8px 0'}}>
+            <div style={{flex:1,height:1,background:'var(--border)'}}></div>
+            <span style={{fontSize:13,color:'var(--text-secondary)'}}>或</span>
+            <div style={{flex:1,height:1,background:'var(--border)'}}></div>
+          </div>
+          
+          <button type="button" onClick={() => signIn('google', { callbackUrl: '/workspace' })}
+            style={{width:'100%',padding:'10px',background:'var(--card-bg)',border:'1px solid var(--border)',borderRadius:8,cursor:'pointer',fontSize:14,color:'var(--text)',display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
+            <span style={{fontSize:18}}>G</span> 使用 Google 登錄
+          </button>
         </form>
         
         <p className={styles.switch}>
