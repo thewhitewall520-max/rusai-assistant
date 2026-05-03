@@ -1,105 +1,86 @@
 import { useState, useEffect } from 'react'
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
-
-export function getServerSideProps() {
-  return { props: {} }
-}
 
 export default function Admin() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [stats, setStats] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [feedbacks, setFeedbacks] = useState([])
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login')
-      return
-    }
-    if (status === 'authenticated') {
-      fetchStats()
-    }
-  }, [status])
+    if (status === 'unauthenticated') router.push('/')
+  }, [status, router])
 
-  const fetchStats = async () => {
-    try {
-      const res = await fetch('/api/admin/stats')
-      if (res.ok) {
-        const data = await res.json()
-        setStats(data)
-      }
-    } catch (e) {
-      console.error(e)
-    }
-    setLoading(false)
-  }
+  useEffect(() => {
+    fetch('/api/admin/stats').then(r => r.json()).then(setStats).catch(console.error)
+    fetch('/api/admin/feedbacks').then(r => r.json()).then(d => setFeedbacks(d.feedbacks || [])).catch(console.error)
+  }, [])
 
-  if (status === 'loading' || loading) {
-    return <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh',color:'var(--text-secondary)'}}>載入中...</div>
-  }
+  if (status === 'loading') return <div>加载中...</div>
+  if (!session) return null
 
   return (
-    <div style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:'-apple-system,sans-serif',padding:40}}>
-      <Head><title>RusAI 管理後台</title></Head>
+    <div style={{ padding: '40px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+      <h1 style={{ fontSize: '24px', marginBottom: '24px' }}>📊 RusAI 管理后台</h1>
       
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:40}}>
-        <h1 style={{fontSize:24}}>📊 RusAI 管理後台</h1>
-        <div style={{display:'flex',gap:12,alignItems:'center'}}>
-          <span style={{fontSize:14,color:'var(--text-secondary)'}}>{session?.user?.name}</span>
-          <a href="/workspace" style={{color:'var(--primary)',fontSize:14}}>← 工作台</a>
-          <button onClick={signOut} style={{padding:'6px 14px',background:'var(--hover)',border:'1px solid var(--border)',borderRadius:8,cursor:'pointer',color:'var(--text)'}}>退出</button>
-        </div>
-      </div>
-
       {stats && (
-        <>
-          <div style={{display:'flex',gap:24,marginBottom:32}}>
-            <div style={{flex:1,padding:24,background:'var(--card-bg)',border:'1px solid var(--border)',borderRadius:12}}>
-              <div style={{fontSize:13,color:'var(--text-secondary)',marginBottom:8}}>👥 總用戶數</div>
-              <div style={{fontSize:36,fontWeight:700,color:'var(--primary)'}}>{stats.totalUsers}</div>
+        <section style={{ marginBottom: '32px' }}>
+          <h2 style={{ fontSize: '18px', marginBottom: '16px' }}>使用统计</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
+            <div style={{ padding: '20px', background: '#f5f0e8', borderRadius: '10px' }}>
+              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#5b7a5e' }}>{stats.totalUsage || 0}</div>
+              <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>总调用次数</div>
             </div>
-            <div style={{flex:1,padding:24,background:'var(--card-bg)',border:'1px solid var(--border)',borderRadius:12}}>
-              <div style={{fontSize:13,color:'var(--text-secondary)',marginBottom:8}}>📝 總生成次數</div>
-              <div style={{fontSize:36,fontWeight:700,color:'var(--primary)'}}>{stats.totalUsage}</div>
+            <div style={{ padding: '20px', background: '#f5f0e8', borderRadius: '10px' }}>
+              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#5b7a5e' }}>{stats.todayUsage || 0}</div>
+              <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>今日调用</div>
+            </div>
+            <div style={{ padding: '20px', background: '#f5f0e8', borderRadius: '10px' }}>
+              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#5b7a5e' }}>{(stats.goodRate || 0).toFixed(0)}%</div>
+              <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>好评率</div>
+            </div>
+            <div style={{ padding: '20px', background: '#f5f0e8', borderRadius: '10px' }}>
+              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#5b7a5e' }}>{stats.uniqueUsers || 0}</div>
+              <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>独立用户</div>
             </div>
           </div>
 
-          <h2 style={{fontSize:18,marginBottom:16}}>最近用戶</h2>
-          <div style={{background:'var(--card-bg)',border:'1px solid var(--border)',borderRadius:12,overflow:'hidden'}}>
-            <table style={{width:'100%',borderCollapse:'collapse'}}>
-              <thead>
-                <tr style={{background:'var(--bg-secondary)'}}>
-                  <th style={thStyle}>用戶</th>
-                  <th style={thStyle}>郵箱</th>
-                  <th style={thStyle}>用戶名</th>
-                  <th style={thStyle}>使用次數</th>
-                  <th style={thStyle}>註冊時間</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.recentUsers.map(u => (
-                  <tr key={u.id} style={{borderBottom:'1px solid var(--border)'}}>
-                    <td style={tdStyle}>{u.name || '-'}</td>
-                    <td style={tdStyle}>{u.email}</td>
-                    <td style={tdStyle}>{u.username || '-'}</td>
-                    <td style={tdStyle}>{u.usageCount}</td>
-                    <td style={tdStyle}>{new Date(u.createdAt).toLocaleString('zh-CN')}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {stats.modeDistribution && (
+            <div style={{ marginTop: '20px' }}>
+              <h3 style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>各模式使用分布</h3>
+              {Object.entries(stats.modeDistribution).map(([mode, count]) => (
+                <div key={mode} style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ width: '80px', fontSize: '13px' }}>{mode}</span>
+                  <div style={{ flex: 1, height: '20px', background: '#eee', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${(count / Math.max(...Object.values(stats.modeDistribution))) * 100}%`, background: '#5b7a5e', borderRadius: '4px', minWidth: '4px' }} />
+                  </div>
+                  <span style={{ fontSize: '12px', color: '#666', width: '40px', textAlign: 'right' }}>{count}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
+      {feedbacks.length > 0 && (
+        <section>
+          <h2 style={{ fontSize: '18px', marginBottom: '16px' }}>最近反馈</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {feedbacks.slice(0, 10).map((fb, i) => (
+              <div key={fb.id || i} style={{ padding: '12px', background: '#faf6ef', border: '1px solid #e0d8cc', borderRadius: '8px', fontSize: '13px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <span style={{ fontWeight: '600' }}>{fb.mode} {fb.rating === 'good' ? '👍' : '👎'}</span>
+                  <span style={{ color: '#888' }}>{fb.sourceLang}→{fb.targetLang}</span>
+                </div>
+                <div style={{ color: '#555', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{fb.input}</div>
+              </div>
+            ))}
           </div>
-        </>
+        </section>
       )}
-      
-      {!stats && !loading && (
-        <p style={{color:'var(--text-secondary)'}}>無法載入統計數據</p>
-      )}
+
+      {!stats && !feedbacks.length && <div style={{ color: '#888' }}>暂无数据</div>}
     </div>
   )
 }
-
-const thStyle = {padding:'12px 16px',textAlign:'left',fontSize:13,color:'var(--text-secondary)',fontWeight:500,borderBottom:'1px solid var(--border)'}
-const tdStyle = {padding:'12px 16px',fontSize:14}

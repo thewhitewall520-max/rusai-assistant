@@ -1,38 +1,30 @@
-import { getServerSession } from 'next-auth'
-import prisma from '../../../lib/prisma'
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
-  const session = await getServerSession(req, res)
-  
-  if (!session) {
-    return res.status(401).json({ error: '请先登录' })
-  }
+  const today = new Date().toISOString().split('T')[0]
 
   try {
-    const [userCount, historyCount, recentUsers] = await Promise.all([
-      prisma.user.count(),
-      prisma.history.count(),
-      prisma.user.findMany({
-        orderBy: { createdAt: 'desc' },
-        take: 20,
-        select: { id: true, email: true, username: true, name: true, createdAt: true, _count: { select: { histories: true } } }
-      })
+    const [totalUsage, todayUsage, feedbacks, uniqueIps] = await Promise.all([
+      prisma.usage.aggregate({ _sum: { count: true } }),
+      prisma.usage.findUnique({ where: { ip_date: { ip: 'total', date: today } } }),
+      prisma.feedback.findMany({ orderBy: { createdAt: 'desc' }, take: 100 }),
+      prisma.usage.groupBy({ by: ['ip'], _count: true }),
     ])
 
+    const goodCount = feedbacks.filter(f => f.rating === 'good').length
+    const badCount = feedbacks.filter(f => f.rating === 'bad').length
+
     res.status(200).json({
-      totalUsers: userCount,
-      totalUsage: historyCount,
-      recentUsers: recentUsers.map(u => ({
-        id: u.id,
-        email: u.email,
-        username: u.username,
-        name: u.name,
-        createdAt: u.createdAt,
-        usageCount: u._count.histories
-      }))
+      totalUsage: totalUsage._sum.count || 0,
+      todayUsage: todayUsage?.count || 0,
+      goodRate: (goodCount + badCount) > 0 ? (goodCount / (goodCount + badCount)) * 100 : 0,
+      totalFeedbacks: feedbacks.length,
+      uniqueUsers: uniqueIps.length || 0,
+      modeDistribution: {},
     })
   } catch (error) {
     console.error('Stats error:', error)
-    res.status(500).json({ error: '获取统计失败' })
+    res.status(200).json({ totalUsage: 0, todayUsage: 0, goodRate: 0, totalFeedbacks: 0, uniqueUsers: 0, modeDistribution: {} })
   }
 }

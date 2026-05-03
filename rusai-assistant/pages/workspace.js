@@ -1,29 +1,20 @@
 import { useState, useEffect } from 'react'
+import ErrorBoundary from '../components/ErrorBoundary'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import styles from '../styles/Workspace.module.css'
+import { LANGUAGES } from '../lib/langMap'
 
 const modes = [
   { id: 'translate', icon: '🌐', label: '翻译' },
   { id: 'email', icon: '✉️', label: '邮件生成' },
   { id: 'optimize', icon: '✨', label: '句子优化' },
   { id: 'academic', icon: '📚', label: '学术表达' },
+  { id: 'idiomatic', icon: '🔍', label: '地道判定' },
 ]
 
 const tones = { translate: ['日常', '正式', '学术', '商务'], email: ['礼貌', '正式', '强硬一点'] }
-
-const LANGUAGES = [
-  { code: 'zh', name: '中文' }, { code: 'en', name: 'English' }, { code: 'ru', name: 'Русский' },
-  { code: 'ja', name: '日本語' }, { code: 'ko', name: '한국어' }, { code: 'fr', name: 'Français' },
-  { code: 'de', name: 'Deutsch' }, { code: 'es', name: 'Español' }, { code: 'pt', name: 'Português' },
-  { code: 'it', name: 'Italiano' }, { code: 'ar', name: 'العربية' }, { code: 'hi', name: 'हिन्दी' },
-  { code: 'th', name: 'ไทย' }, { code: 'vi', name: 'Tiếng Việt' }, { code: 'id', name: 'Bahasa Indonesia' },
-  { code: 'ms', name: 'Bahasa Melayu' }, { code: 'tl', name: 'Filipino' }, { code: 'tr', name: 'Türkçe' },
-  { code: 'nl', name: 'Nederlands' }, { code: 'sv', name: 'Svenska' }, { code: 'pl', name: 'Polski' },
-  { code: 'uk', name: 'Українська' }, { code: 'el', name: 'Ελληνικά' }, { code: 'he', name: 'עברית' },
-  { code: 'fa', name: 'فارسی' }, { code: 'ur', name: 'اردو' }, { code: 'sw', name: 'Kiswahili' },
-]
 
 
 // 雙語輸出 + 占位高亮
@@ -59,7 +50,7 @@ function BilingualOutput({ text }) {
         {sections.map((sec, i) => (
           <div key={i} className={styles.bilingualSection}>
             <div className={styles.bilingualLabel}>
-              {sec.title.includes('俄语') ? '🇷🇺 ' : sec.title.includes('中文') || sec.title.includes('对照') ? '🇨🇳 ' : ''}
+              {sec.title.includes('中文') || sec.title.includes('对照') || sec.title.includes('说明') ? '🇨🇳 ' : ''}
               {sec.title}
             </div>
             <div className={sec.title.includes('中文') || sec.title.includes('对照') || sec.title.includes('说明') ? styles.bilingualTextCn : styles.bilingualText}>
@@ -73,6 +64,56 @@ function BilingualOutput({ text }) {
 
   // 沒標題格式：直接高亮任何【】占位後顯示
   return <p className={styles.bilingualText}>{highlight(text)}</p>
+}
+
+function IdiomaticOutput({ text }) {
+  if (!text) return null
+  const parts = text.split(/={3,}\s*/).filter(Boolean)
+
+  const sections = []
+  for (let i = 0; i < parts.length; i += 2) {
+    const title = parts[i]?.trim()
+    const content = parts[i + 1]?.trim()
+    if (!content) continue
+    sections.push({ title, content })
+  }
+
+  const getIcon = (title) => {
+    if (title.includes('地道判定')) return '🔍'
+    if (title.includes('修改建议')) return '✏️'
+    if (title.includes('优化后') || title.includes('优化')) return '✨'
+    if (title.includes('中文解释') || title.includes('解释')) return '💡'
+    return '📝'
+  }
+
+  const getStyle = (title, content) => {
+    if (title.includes('地道判定')) {
+      const isNatural = content.includes('✅')
+      return {
+        background: isNatural ? 'rgba(74,222,128,0.1)' : 'rgba(239,68,68,0.1)',
+        border: isNatural ? '2px solid #4ade80' : '2px solid #ef4444',
+        borderRadius: '10px', padding: '16px', margin: '8px 0',
+        fontSize: '16px', fontWeight: '600',
+        color: isNatural ? '#4ade80' : '#ef4444'
+      }
+    }
+    return {}
+  }
+
+  return (
+    <div className={styles.idiomaticResult}>
+      {sections.map((sec, i) => (
+        <div key={i} className={styles.idiomaticSection}>
+          <div className={styles.idiomaticLabel}>
+            {getIcon(sec.title)} {sec.title}
+          </div>
+          <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.7', ...getStyle(sec.title, sec.content) }}>
+            {sec.content}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 }
 export default function Workspace() {
   const { data: session, status } = useSession()
@@ -90,7 +131,25 @@ export default function Workspace() {
   const [targetLang, setTargetLang] = useState('ru')
   const [toast, setToast] = useState('')
   const [copied, setCopied] = useState(false)
+  const [feedback, setFeedback] = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const handleFeedback = async (rating) => {
+    setFeedback(rating)
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode, input, output,
+          sourceLang, targetLang, rating
+        })
+      })
+    } catch (e) {
+      console.error('Feedback error:', e)
+    }
+    setTimeout(() => setFeedback(null), 3000)
+  }
 
   const showToast = (msg) => {
     setToast(msg)
@@ -142,7 +201,7 @@ export default function Workspace() {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode, text: input, tone, target })
+        body: JSON.stringify({ mode, text: input, tone, target, sourceLang, targetLang })
       })
       const data = await res.json()
       if (data.result) {
@@ -204,7 +263,7 @@ export default function Workspace() {
           {session ? (
             <>
               <div className={styles.userInfo}>{session.user?.name || session.user?.email}</div>
-              <button className={styles.menuItem} onClick={() => signOut()}>退出登錄</button>
+              <button className={styles.menuItem} onClick={() => signOut()}>{'退出登錄'}</button>
             </>
           ) : (
             <button className={styles.menuItem} onClick={() => router.push('/login')}>登錄 / 註冊</button>
@@ -224,7 +283,7 @@ export default function Workspace() {
           value={input} onChange={e => setInput(e.target.value)} />
         
         <div className={styles.options}>
-          {mode === 'translate' && (
+          {mode === 'translate' ? (
             <>
               <div className={styles.optionGroup}>
                 <label>从</label>
@@ -239,6 +298,13 @@ export default function Workspace() {
                 </select>
               </div>
             </>
+          ) : (
+            <div className={styles.optionGroup}>
+              <label>{mode === 'idiomatic' ? '判定语言' : '语言'}</label>
+              <select className={styles.langSelect} value={targetLang} onChange={e => setTargetLang(e.target.value)}>
+                {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.name}</option>)}
+              </select>
+            </div>
           )}
           {mode !== 'optimize' && (
             <div className={styles.optionGroup}>
@@ -276,18 +342,34 @@ export default function Workspace() {
           </div>
         )}
         
-        {output && (
-          <div className={styles.output}>
-            <h3>结果</h3>
-            <BilingualOutput text={output} />
-            <div className={styles.outputActions}>
-              <button onClick={() => handleCopy(output)}>
-                {copied ? '✅ 已复制!' : '📋 复制'}
-              </button>
-              <button onClick={handleGenerate}>🔄 重新生成</button>
+        <ErrorBoundary>
+          {output && (
+            <div className={styles.output}>
+              <h3>结果</h3>
+              {mode === 'idiomatic' ? (
+                <IdiomaticOutput text={output} />
+              ) : (
+                <BilingualOutput text={output} />
+              )}
+              <div className={styles.outputActions}>
+                <button onClick={() => handleCopy(output)}>
+                  {copied ? '✅ 已复制!' : '📋 复制'}
+                </button>
+                <button onClick={handleGenerate}>🔄 重新生成</button>
+                {output && (
+                  <div style={{ display: 'inline-flex', gap: '4px', marginLeft: '8px' }}>
+                    <button onClick={() => handleFeedback('good')}
+                      style={{ padding: '6px 10px', border: '1px solid var(--border)', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', background: 'var(--card-bg)' }}
+                      title="有用">👍</button>
+                    <button onClick={() => handleFeedback('bad')}
+                      style={{ padding: '6px 10px', border: '1px solid var(--border)', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', background: 'var(--card-bg)' }}
+                      title="没用">👎</button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </ErrorBoundary>
         
         {showHistory && (
           <div className={styles.historyPanel}>

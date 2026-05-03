@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "title": "用更地道的外语表达自己",
+    "subtitle": "一键生成邮件 / 翻译 / 学术表达 — 支持60+语言"
+  },
+  "nav": {
+    "features": "功能",
+    "pricing": "价格",
+    "start": "开始使用"
+  },
+  "features": {
+    "translate": { "title": "智能翻译", "desc": "带语气的翻译，日常/正式/学术/商务随意切换" },
+    "email": { "title": "邮件生成", "desc": "给教授、客户、学校，一键生成地道外语邮件" },
+    "optimize": { "title": "句子优化", "desc": "输入你的句子，AI帮你优化得更地道" },
+    "academic": { "title": "学术表达", "desc": "论文、报告的学术句式生成，地道准确" }
+  },
+  "workspace": {
+    "translate": "翻译", "email": "邮件生成", "optimize": "句子优化",
+    "academic": "学术表达", "idiomatic": "地道判定",
+    "from": "从", "to": "到", "language": "语言", "judgeLang": "判定语言",
+    "result": "结果", "copy": "复制", "regenerate": "重新生成",
+    "placeholder": {
+      "translate": "请输入内容...",
+      "email": "例如：申请延期提交论文",
+      "optimize": "输入你的句子...",
+      "academic": "例如：本研究具有重要意义",
+      "idiomatic": "输入需要判断的句子..."
+    }
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出错了",
+    "retry": "重试",
+    "generating": "生成中..."
+  }
+}

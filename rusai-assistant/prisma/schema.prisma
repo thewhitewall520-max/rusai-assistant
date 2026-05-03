@@ -3,8 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
 }
 
 model User {
@@ -29,12 +28,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -69,4 +68,43 @@ model History {
   createdAt DateTime @default(now())
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Usage {
+  id        String   @id @default(cuid())
+  ip        String
+  date      String
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([ip, date])
+  @@index([ip, date])
+}
+
+model Feedback {
+  id          String   @id @default(cuid())
+  mode        String
+  input       String
+  output      String
+  sourceLang  String   @default("zh")
+  targetLang  String   @default("ru")
+  rating      String
+  userId      String?
+  createdAt   DateTime @default(now())
+}
+
+model TranslationCache {
+  id          String   @id @default(cuid())
+  sourceHash  String
+  sourceLang  String
+  targetLang  String
+  sourceText  String
+  targetText  String
+  mode        String   @default("translate")
+  hits        Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([sourceHash, sourceLang, targetLang, mode])
 }

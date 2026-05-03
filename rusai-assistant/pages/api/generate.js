@@ -1,31 +1,9 @@
-// 語言映射表（ISO 639-1 → 語言名稱）
-const LANG_NAMES = {
-  zh: '中文', en: 'English', ru: 'Русский', ja: '日本語', ko: '한국어',
-  fr: 'Français', de: 'Deutsch', es: 'Español', pt: 'Português', it: 'Italiano',
-  ar: 'العربية', hi: 'हिन्दी', bn: 'বাংলা', pa: 'ਪੰਜਾਬੀ', ta: 'தமிழ்',
-  th: 'ไทย', vi: 'Tiếng Việt', ms: 'Bahasa Melayu', id: 'Bahasa Indonesia',
-  tl: 'Filipino', my: 'မြန်မာဘာသာ', km: 'ភាសាខ្មែរ', lo: 'ລາວ', mn: 'Монгол',
-  ne: 'नेपाली', si: 'සිංහල', ur: 'اردو', fa: 'فارسی', he: 'עברית',
-  tr: 'Türkçe', kk: 'Қазақ', uz: 'Oʻzbek', ky: 'Кыргызча', tg: 'Тоҷикӣ',
-  az: 'Azərbaycan', hy: 'Հայերեն', ka: 'ქართული', el: 'Ελληνικά',
-  pl: 'Polski', cs: 'Čeština', sk: 'Slovenčina', hu: 'Magyar',
-  ro: 'Română', bg: 'Български', sr: 'Српски', hr: 'Hrvatski',
-  sl: 'Slovenščina', et: 'Eesti', lv: 'Latviešu', lt: 'Lietuvių',
-  uk: 'Українська', be: 'Беларуская', nl: 'Nederlands', sv: 'Svenska',
-  no: 'Norsk', da: 'Dansk', fi: 'Suomi', is: 'Íslenska', ga: 'Gaeilge',
-  sw: 'Kiswahili', ha: 'Hausa', yo: 'Yorùbá', ig: 'Igbo', zu: 'isiZulu',
-  af: 'Afrikaans', am: 'አማርኛ', so: 'Soomaali',
-}
-
-const LANGUAGES = Object.entries(LANG_NAMES).map(([code, name]) => ({ code, name }))
+import { PrismaClient } from '@prisma/client'
+import { LANG_NAMES } from '../../lib/langMap'
+const prisma = new PrismaClient()
 
 // 每日用量限制
 const DAILY_LIMIT = 10
-const ipUsage = new Map()
-const getDailyKey = (ip) => {
-  const today = new Date().toISOString().split('T')[0]
-  return `${ip}:${today}`
-}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
@@ -34,10 +12,14 @@ export default async function handler(req, res) {
   if (!text) return res.status(400).json({ error: '请输入内容' })
 
   // 用量限制
+  const today = new Date().toISOString().split('T')[0]
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
              req.socket.remoteAddress || 'unknown'
-  const key = getDailyKey(ip)
-  const count = ipUsage.get(key) || 0
+
+  let usage = await prisma.usage.findUnique({
+    where: { ip_date: { ip, date: today } }
+  })
+  const count = usage?.count || 0
   if (count >= DAILY_LIMIT) {
     return res.status(429).json({ error: '每日免费次数已用完，请登录后继续使用' })
   }
@@ -78,55 +60,47 @@ export default async function handler(req, res) {
 === ${srcName}对照 ===
 [与${tgtName}逐句对应的${srcName}翻译]`,
       
-      email: `你是一个专业的俄语邮件写作专家。请根据用户的需求生成一封完整的俄语邮件。
+      email: `你是一个${tgtName}邮件写作专家。根据用户需求生成${tgtName}邮件。
 收件人：${target}
 语气：${tone}
-要求：
-1. 包含俄语邮件的标准格式（称呼、正文、结束语）
-2. 用【】标记所有需要用户自定义填写的占位部分
-3. 输出俄语原文和中文翻译的双语版本
-
+要求：包含标准邮件格式（称呼、正文、结束语），语气${tone}。用【】标记占位内容。
 输出格式：
-
-=== 俄语 ===
-[俄语邮件正文]
-
+=== ${tgtName} ===
+[${tgtName}邮件正文]
 === 中文对照 ===
 [逐句中文翻译]`,
       
-      optimize: `你是一个俄语表达优化专家。请优化用户输入的俄语句子。
-要求：
-1. 保持原意，优化语法和用词
-2. 区分原句和优化版
-3. 附上中文对照
-
+      optimize: `你是一个${tgtName}表达优化专家。优化用户输入的${tgtName}句子。
+要求：保持原意，优化语法和用词，输出优化后的版本，附上中文对照。
 输出格式：
-
-=== 原句 ===
-[用户输入的原始句子]
-
-=== 优化后 ===
+=== ${tgtName} ===
 [优化后的版本]
-
 === 中文对照 ===
 [中文翻译]`,
       
-      academic: `你是一个俄语学术写作专家。请将用户输入的意思，用俄语生成3种不同的学术表达方式。
-要求：
-1. 表达要正式、学术、地道
-2. 每种表达式附中文翻译
-
+      academic: `你是一个${tgtName}学术写作专家。用${tgtName}生成3种不同的学术表达方式。
+要求：表达正式、学术、地道。
 输出格式：
-
-=== 俄语 ===
-1. [第一种表达]
-2. [第二种表达]
-3. [第三种表达]
-
+=== ${tgtName} ===
+1. [第一种表达] 2. [第二种] 3. [第三种]
 === 中文对照 ===
-1. [第一种的中文翻译]
-2. [第二种的中文翻译]
-3. [第三种的中文翻译]`
+1. [中文] 2. [中文] 3. [中文]`,
+      
+      idiomatic: `你是${tgtName}地道表达判定专家。
+判断用户输入的${tgtName}句子是否地道自然。
+如果不地道，给出修改建议、重写版本和中文解释。
+输出格式：
+=== 地道判定 ===
+✅ 地道 / ❌ 不够地道
+
+=== 修改建议 ===
+[改进建议]
+
+=== 优化后 ===
+[重写的自然表达]
+
+=== 中文解释 ===
+[中文解释]`
     }
 
     const systemPrompt = systemPrompts[mode] || systemPrompts.translate
@@ -151,7 +125,14 @@ export default async function handler(req, res) {
       })
       const data = await dsRes.json()
       if (data.choices && data.choices[0]) {
-        if (!deducted) { ipUsage.set(key, count + 1); deducted = true }
+        if (!deducted) {
+          usage = await prisma.usage.upsert({
+            where: { ip_date: { ip, date: today } },
+            create: { ip, date: today, count: 1 },
+            update: { count: { increment: 1 } }
+          })
+          deducted = true
+        }
         res.status(200).json({ result: data.choices[0].message.content })
       } else {
         console.error('API error:', data)
@@ -180,7 +161,14 @@ export default async function handler(req, res) {
       if (!ollamaRes.ok) { console.warn('Ollama 返回非 200'); return deepseekFallback() }
       const ollamaData = await ollamaRes.json()
       if (ollamaData.choices && ollamaData.choices[0]) {
-        if (!deducted) { ipUsage.set(key, count + 1); deducted = true }
+        if (!deducted) {
+          usage = await prisma.usage.upsert({
+            where: { ip_date: { ip, date: today } },
+            create: { ip, date: today, count: 1 },
+            update: { count: { increment: 1 } }
+          })
+          deducted = true
+        }
         res.status(200).json({ result: ollamaData.choices[0].message.content })
       } else { return deepseekFallback() }
     } catch (ollamaErr) {
@@ -192,6 +180,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: '服务器错误' })
   }
 }
-
-// 導出語言列表供前端使用
-export { LANGUAGES }
