@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useState } from 'react'
 import styles from '../styles/Home.module.css'
+import TourGuide from '../components/TourGuide'
 
 export function getServerSideProps() {
   return { props: {} }
@@ -99,6 +100,8 @@ export default function Home() {
       </section>
 
       {/* Pricing section removed - will add when payment is integrated */}
+
+      <TourGuide />
 
       <footer className={styles.footer}>
         <p>RusAI © 2026 — 让外语表达更简单</p>
