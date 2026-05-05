@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "title": "Esprimiti in modo naturale in qualsiasi lingua",
+    "subtitle": "Traduzione · Generazione email · Miglioramento frasi · Scrittura accademica — Oltre 60 lingue supportate"
+  },
+  "nav": {
+    "features": "Funzionalità",
+    "pricing": "Prezzi",
+    "start": "Inizia"
+  },
+  "features": {
+    "translate": { "title": "Traduzione intelligente", "desc": "Traduzione contestuale con controllo del tono: informale, formale, accademico o professionale" },
+    "email": { "title": "Scrittura email", "desc": "Genera email professionali in qualsiasi lingua per professori, clienti e scuole" },
+    "optimize": { "title": "Miglioramento frasi", "desc": "Rendi la tua scrittura più naturale e fluida con suggerimenti AI" },
+    "academic": { "title": "Scrittura accademica", "desc": "Genera espressioni accademiche e frasi pronte per la pubblicazione in più lingue" }
+  },
+  "workspace": {
+    "translate": "Traduci", "email": "Email", "optimize": "Migliora",
+    "academic": "Accademico", "idiomatic": "Verifica",
+    "from": "Da", "to": "A", "language": "Lingua", "judgeLang": "Lingua target",
+    "result": "Risultato", "copy": "Copia", "regenerate": "Rigenera",
+    "placeholder": {
+      "translate": "Inserisci testo...",
+      "email": "Es: Richiedere proroga scadenza",
+      "optimize": "Inserisci la tua frase...",
+      "academic": "Es: Questo studio è significativo",
+      "idiomatic": "Inserisci una frase da verificare..."
+    }
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Qualcosa è andato storto",
+    "retry": "Riprova",
+    "generating": "Generazione..."
+  }
+}

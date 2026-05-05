@@ -1,6 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from "../../lib/prisma"
+import { getServerSession } from 'next-auth'
+import { authOptions } from './auth/[...nextauth]'
 import { LANG_NAMES } from '../../lib/langMap'
-const prisma = new PrismaClient()
 
 // 每日用量限制
 const DAILY_LIMIT = 10
@@ -11,7 +12,8 @@ export default async function handler(req, res) {
   const { mode, text, tone, target, sourceLang = 'zh', targetLang = 'ru' } = req.body
   if (!text) return res.status(400).json({ error: '请输入内容' })
 
-  // 用量限制
+  const session = await getServerSession(req, res, authOptions)
+  const isAuthed = !!session
   const today = new Date().toISOString().split('T')[0]
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
              req.socket.remoteAddress || 'unknown'
@@ -20,8 +22,8 @@ export default async function handler(req, res) {
     where: { ip_date: { ip, date: today } }
   })
   const count = usage?.count || 0
-  if (count >= DAILY_LIMIT) {
-    return res.status(429).json({ error: '每日免费次数已用完，请登录后继续使用' })
+  if (!isAuthed && count >= DAILY_LIMIT) {
+    return res.status(429).json({ error: '每日免费次数已用完，请登录后继续使用', remaining: 0 })
   }
 
   const srcName = LANG_NAMES[sourceLang] || sourceLang

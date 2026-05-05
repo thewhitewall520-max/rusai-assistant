@@ -2,24 +2,24 @@ import { useState, useEffect, useCallback } from 'react'
 
 const STEPS = [
   {
-    icon: '🌐',
-    title: '智能翻译',
-    desc: '输入中文或外语，选择语种和语气，一键翻译'
+    icon: '🚀',
+    title: '进入工作台',
+    desc: '点击下方“开始使用”进入工作台，所有功能都在这里'
   },
   {
-    icon: '✉️',
-    title: '邮件生成',
-    desc: '给教授、客户、学校，自动生成地道外语邮件'
+    icon: '🌐',
+    title: '选择语言',
+    desc: '选择源语言和目标语言，支持60+语言的翻译与写作'
+  },
+  {
+    icon: '✍️',
+    title: '选择模式',
+    desc: '翻译 / 邮件生成 / 句子优化 / 学术表达，按需切换'
   },
   {
     icon: '✨',
-    title: '句子优化',
-    desc: '输入你的句子，AI帮你优化得更地道'
-  },
-  {
-    icon: '📚',
-    title: '学术表达',
-    desc: '论文、报告的学术句式生成'
+    title: '一键生成',
+    desc: '输入内容，AI自动生成地道的外语表达，复制直接用'
   }
 ]
 
@@ -244,8 +244,7 @@ export default function TourGuide() {
           )}
 
           {isLastStep ? (
-            <button
-              onClick={close}
+            <a href="/workspace"
               style={{
                 flex: 1,
                 padding: '12px 20px',
@@ -256,14 +255,16 @@ export default function TourGuide() {
                 fontSize: '15px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'all 0.2s',
+                textDecoration: 'none',
+                display: 'inline-block',
+                textAlign: 'center',
                 boxShadow: '0 4px 14px rgba(79,70,229,0.3)',
               }}
-              onMouseOver={e => { e.currentTarget.style.background = '#4338ca'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(79,70,229,0.4)' }}
-              onMouseOut={e => { e.currentTarget.style.background = '#4f46e5'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(79,70,229,0.3)' }}
+              onMouseOver={e => { e.currentTarget.style.background = '#4338ca' }}
+              onMouseOut={e => { e.currentTarget.style.background = '#4f46e5' }}
             >
               开始使用 →
-            </button>
+            </a>
           ) : (
             <button
               onClick={next}

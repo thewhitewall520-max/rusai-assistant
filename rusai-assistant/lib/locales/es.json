@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "title": "Exprésate naturalmente en cualquier idioma",
+    "subtitle": "Traducción · Generación de correos · Mejora de frases · Escritura académica — Más de 60 idiomas compatibles"
+  },
+  "nav": {
+    "features": "Funciones",
+    "pricing": "Precios",
+    "start": "Comenzar"
+  },
+  "features": {
+    "translate": { "title": "Traducción inteligente", "desc": "Traducción contextual con control de tono: casual, formal, académico o de negocios" },
+    "email": { "title": "Redacción de correos", "desc": "Genere correos profesionales en cualquier idioma para profesores, clientes y escuelas" },
+    "optimize": { "title": "Mejora de frases", "desc": "Haga su escritura más natural y fluida con sugerencias impulsadas por IA" },
+    "academic": { "title": "Escritura académica", "desc": "Genere expresiones académicas y frases listas para publicar en múltiples idiomas" }
+  },
+  "workspace": {
+    "translate": "Traducir", "email": "Correo", "optimize": "Mejorar",
+    "academic": "Académico", "idiomatic": "Verificar",
+    "from": "De", "to": "A", "language": "Idioma", "judgeLang": "Idioma objetivo",
+    "result": "Resultado", "copy": "Copiar", "regenerate": "Regenerar",
+    "placeholder": {
+      "translate": "Ingrese texto...",
+      "email": "Ej: Solicitar extensión de plazo",
+      "optimize": "Ingrese su frase...",
+      "academic": "Ej: Este estudio es significativo",
+      "idiomatic": "Ingrese una frase para verificar..."
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "retry": "Reintentar",
+    "generating": "Generando..."
+  }
+}

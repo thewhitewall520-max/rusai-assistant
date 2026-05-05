@@ -126,3 +126,38 @@
   .chip { font-size: 11px; padding: 4px 10px; }
   .sidebar { width: 200px; min-width: 200px; }
 }
+
+
+/* 平板端 (<=768px) */
+@media (max-width: 768px) {
+  .container { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); padding: 8px 0; display: flex; flex-wrap: wrap; gap: 4px; }
+  .main { padding: 16px; margin-left: 0; }
+  .menu { display: flex; overflow-x: auto; gap: 4px; padding: 0 12px; }
+  .menuItem { white-space: nowrap; font-size: 13px; padding: 6px 12px; }
+  .historyPanel { position: fixed; bottom: 0; left: 0; right: 0; max-height: 50vh; border-radius: 16px 16px 0 0; }
+  .langSelect { width: 100%; margin-bottom: 8px; }
+  .input { min-height: 44px; font-size: 16px; }
+  .genBtn { width: 100%; min-height: 44px; }
+  .options { flex-wrap: wrap; }
+  .output { padding: 16px; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0; }
+  .sidebar { padding: 4px 0; }
+  .main { padding: 12px; }
+  .menu { padding: 0 8px; }
+  .menuItem { font-size: 12px; padding: 4px 10px; }
+  .modeTitle { font-size: 16px; }
+  .input { padding: 12px; }
+  .genBtn { font-size: 15px; padding: 12px; }
+  .output { padding: 12px; }
+  .outputActions { flex-wrap: wrap; gap: 8px; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar { width: 220px; }
+  .main { padding: 20px; }
+  .container { max-width: 100%; }
+}

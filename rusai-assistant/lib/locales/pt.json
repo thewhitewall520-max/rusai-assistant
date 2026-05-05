@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "title": "Expresse-se naturalmente em qualquer idioma",
+    "subtitle": "Tradução · Geração de e-mails · Aprimoramento de frases · Escrita acadêmica — Mais de 60 idiomas suportados"
+  },
+  "nav": {
+    "features": "Recursos",
+    "pricing": "Preços",
+    "start": "Começar"
+  },
+  "features": {
+    "translate": { "title": "Tradução inteligente", "desc": "Tradução contextual com controle de tom: casual, formal, acadêmico ou comercial" },
+    "email": { "title": "Redação de e-mails", "desc": "Gere e-mails profissionais em qualquer idioma para professores, clientes e escolas" },
+    "optimize": { "title": "Aprimoramento de frases", "desc": "Torne sua escrita mais natural e fluida com sugestões de IA" },
+    "academic": { "title": "Escrita acadêmica", "desc": "Gere expressões acadêmicas e frases prontas para publicação em vários idiomas" }
+  },
+  "workspace": {
+    "translate": "Traduzir", "email": "E-mail", "optimize": "Aprimorar",
+    "academic": "Acadêmico", "idiomatic": "Verificar",
+    "from": "De", "to": "Para", "language": "Idioma", "judgeLang": "Idioma alvo",
+    "result": "Resultado", "copy": "Copiar", "regenerate": "Regenerar",
+    "placeholder": {
+      "translate": "Digite o texto...",
+      "email": "Ex: Solicitar prorrogação de prazo",
+      "optimize": "Digite sua frase...",
+      "academic": "Ex: Este estudo é significativo",
+      "idiomatic": "Digite uma frase para verificar..."
+    }
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Algo deu errado",
+    "retry": "Tentar novamente",
+    "generating": "Gerando..."
+  }
+}

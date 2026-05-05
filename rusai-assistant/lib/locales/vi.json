@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "title": "Thể hiện bản thân một cách tự nhiên bằng bất kỳ ngôn ngữ nào",
+    "subtitle": "Dịch thuật · Tạo email · Cải thiện câu · Viết học thuật — Hỗ trợ 60+ ngôn ngữ"
+  },
+  "nav": {
+    "features": "Tính năng",
+    "pricing": "Bảng giá",
+    "start": "Bắt đầu"
+  },
+  "features": {
+    "translate": { "title": "Dịch thông minh", "desc": "Dịch theo ngữ cảnh với kiểm soát giọng điệu: thân mật, trang trọng, học thuật hoặc kinh doanh" },
+    "email": { "title": "Viết email", "desc": "Tạo email chuyên nghiệp bằng bất kỳ ngôn ngữ nào cho giáo sư, khách hàng và trường học" },
+    "optimize": { "title": "Cải thiện câu", "desc": "Làm cho bài viết của bạn tự nhiên và trôi chảy hơn với gợi ý từ AI" },
+    "academic": { "title": "Viết học thuật", "desc": "Tạo các biểu đạt học thuật và câu sẵn sàng xuất bản bằng nhiều ngôn ngữ" }
+  },
+  "workspace": {
+    "translate": "Dịch", "email": "Email", "optimize": "Cải thiện",
+    "academic": "Học thuật", "idiomatic": "Kiểm tra",
+    "from": "Từ", "to": "Sang", "language": "Ngôn ngữ", "judgeLang": "Ngôn ngữ đích",
+    "result": "Kết quả", "copy": "Sao chép", "regenerate": "Tạo lại",
+    "placeholder": {
+      "translate": "Nhập văn bản...",
+      "email": "VD: Yêu cầu gia hạn thời hạn nộp",
+      "optimize": "Nhập câu của bạn...",
+      "academic": "VD: Nghiên cứu này có ý nghĩa quan trọng",
+      "idiomatic": "Nhập câu cần kiểm tra..."
+    }
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "retry": "Thử lại",
+    "generating": "Đang tạo..."
+  }
+}

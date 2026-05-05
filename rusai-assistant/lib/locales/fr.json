@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "title": "Exprimez-vous naturellement dans n'importe quelle langue",
+    "subtitle": "Traduction · Génération d'emails · Amélioration de phrases · Rédaction académique — 60+ langues supportées"
+  },
+  "nav": {
+    "features": "Fonctionnalités",
+    "pricing": "Tarifs",
+    "start": "Commencer"
+  },
+  "features": {
+    "translate": { "title": "Traduction intelligente", "desc": "Traduction contextuelle avec contrôle du ton : décontracté, formel, académique ou professionnel" },
+    "email": { "title": "Rédaction d'emails", "desc": "Générez des emails professionnels dans n'importe quelle langue pour professeurs, clients et écoles" },
+    "optimize": { "title": "Amélioration de phrases", "desc": "Rendez votre écriture plus naturelle et fluide avec des suggestions IA" },
+    "academic": { "title": "Rédaction académique", "desc": "Générez des expressions académiques et des phrases prêtes pour publication dans plusieurs langues" }
+  },
+  "workspace": {
+    "translate": "Traduire", "email": "Email", "optimize": "Améliorer",
+    "academic": "Académique", "idiomatic": "Vérifier",
+    "from": "De", "to": "Vers", "language": "Langue", "judgeLang": "Langue cible",
+    "result": "Résultat", "copy": "Copier", "regenerate": "Régénérer",
+    "placeholder": {
+      "translate": "Entrez du texte...",
+      "email": "Ex : Demander une prolongation de délai",
+      "optimize": "Entrez votre phrase...",
+      "academic": "Ex : Cette étude est significative",
+      "idiomatic": "Entrez une phrase à vérifier..."
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "generating": "Génération..."
+  }
+}

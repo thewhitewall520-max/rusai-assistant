@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "title": "Drücken Sie sich in jeder Sprache natürlich aus",
+    "subtitle": "Übersetzung · E-Mail-Generierung · Satzverbesserung · Wissenschaftliches Schreiben — 60+ Sprachen unterstützt"
+  },
+  "nav": {
+    "features": "Funktionen",
+    "pricing": "Preise",
+    "start": "Loslegen"
+  },
+  "features": {
+    "translate": { "title": "Intelligente Übersetzung", "desc": "Kontextbewusste Übersetzung mit Tonkontrolle: lässig, formell, akademisch oder geschäftlich" },
+    "email": { "title": "E-Mail-Verfasser", "desc": "Erstellen Sie professionelle E-Mails in jeder Sprache für Professoren, Kunden und Schulen" },
+    "optimize": { "title": "Satzverbesserung", "desc": "Machen Sie Ihr Schreiben natürlicher und flüssiger mit KI-gestützten Vorschlägen" },
+    "academic": { "title": "Wissenschaftliches Schreiben", "desc": "Generieren Sie akademische Ausdrücke und veröffentlichungsreife Sätze in mehreren Sprachen" }
+  },
+  "workspace": {
+    "translate": "Übersetzen", "email": "E-Mail", "optimize": "Verbessern",
+    "academic": "Akademisch", "idiomatic": "Prüfen",
+    "from": "Von", "to": "Nach", "language": "Sprache", "judgeLang": "Zielsprache",
+    "result": "Ergebnis", "copy": "Kopieren", "regenerate": "Neu generieren",
+    "placeholder": {
+      "translate": "Text eingeben...",
+      "email": "z.B. Fristverlängerung beantragen",
+      "optimize": "Satz eingeben...",
+      "academic": "z.B. Diese Studie ist bedeutsam",
+      "idiomatic": "Einen Satz zur Prüfung eingeben..."
+    }
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Etwas ist schiefgelaufen",
+    "retry": "Wiederholen",
+    "generating": "Wird generiert..."
+  }
+}

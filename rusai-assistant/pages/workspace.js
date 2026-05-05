@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import ErrorBoundary from '../components/ErrorBoundary'
+import VoiceRecorder from '../components/VoiceRecorder'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -175,6 +176,7 @@ export default function Workspace() {
       const res = await fetch('/api/history')
       if (res.ok) {
         const data = await res.json()
+      if (res.status === 429) { showToast("免费次数已用完，登录后无限制 ✨"); return }
         setHistory(data)
       }
     } catch (e) {
@@ -204,6 +206,7 @@ export default function Workspace() {
         body: JSON.stringify({ mode, text: input, tone, target, sourceLang, targetLang })
       })
       const data = await res.json()
+      if (res.status === 429) { showToast("免费次数已用完，登录后无限制 ✨"); return }
       if (data.result) {
         setOutput(data.result)
         
@@ -233,7 +236,10 @@ export default function Workspace() {
 
   return (
     <div className={styles.container}>
-      <Head><title>RusAI 工作台</title></Head>
+      <Head>
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <title>RusAI 工作台</title>
+    </Head>
       
       {toast && <div className={styles.toast}>{toast}</div>}
       
@@ -281,6 +287,12 @@ export default function Workspace() {
         <textarea className={styles.input} rows={4}
           placeholder={mode === 'translate' ? '请输入中文或俄语...' : mode === 'email' ? '例如：申请延期提交论文' : mode === 'optimize' ? '输入你的俄语句子...' : '例如：本研究具有重要意义'}
           value={input} onChange={e => setInput(e.target.value)} />
+          {mode === "idiomatic" && (
+            <div style={{display:"flex",gap:"8px",alignItems:"center",marginTop:"8px"}}>
+              <VoiceRecorder onResult={function(t){setInput(t)}} lang={targetLang} />
+              <span style={{fontSize:"13px",color:"var(--text-secondary)"}}>点击麦克风录音，自动填入</span>
+            </div>
+          )}
         
         <div className={styles.options}>
           {mode === 'translate' ? (
@@ -347,7 +359,7 @@ export default function Workspace() {
             <div className={styles.output}>
               <h3>结果</h3>
               {mode === 'idiomatic' ? (
-                <IdiomaticOutput text={output} />
+                <IdiomaticOutput data={output} />
               ) : (
                 <BilingualOutput text={output} />
               )}
