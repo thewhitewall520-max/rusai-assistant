@@ -1,0 +1,883 @@
+{
+  "project": "xiuxian-game",
+  "path": "/Users/aq/.openclaw/workspace/xiuxian-game",
+  "functions": [
+    {
+      "name": "permanentCaveCost",
+      "file": "index.html",
+      "line": 186
+    },
+    {
+      "name": "getFacilityLevel",
+      "file": "index.html",
+      "line": 192
+    },
+    {
+      "name": "getPermanentStatBonus",
+      "file": "index.html",
+      "line": 196
+    },
+    {
+      "name": "savePermanent",
+      "file": "index.html",
+      "line": 206
+    },
+    {
+      "name": "loadPermanent",
+      "file": "index.html",
+      "line": 210
+    },
+    {
+      "name": "upgradeCaveFacility",
+      "file": "index.html",
+      "line": 226
+    },
+    {
+      "name": "getRealmName",
+      "file": "index.html",
+      "line": 259
+    },
+    {
+      "name": "getRealmRequirement",
+      "file": "index.html",
+      "line": 265
+    },
+    {
+      "name": "canBreakthrough",
+      "file": "index.html",
+      "line": 271
+    },
+    {
+      "name": "getBreakthroughRate",
+      "file": "index.html",
+      "line": 276
+    },
+    {
+      "name": "breakthroughEffect",
+      "file": "index.html",
+      "line": 284
+    },
+    {
+      "name": "screenFlash",
+      "file": "index.html",
+      "line": 303
+    },
+    {
+      "name": "screenShake",
+      "file": "index.html",
+      "line": 310
+    },
+    {
+      "name": "spawnLevelUpRing",
+      "file": "index.html",
+      "line": 318
+    },
+    {
+      "name": "showEquipNotify",
+      "file": "index.html",
+      "line": 327
+    },
+    {
+      "name": "addFloatingText",
+      "file": "index.html",
+      "line": 335
+    },
+    {
+      "name": "spawnParticle",
+      "file": "index.html",
+      "line": 347
+    },
+    {
+      "name": "drawAttackRange",
+      "file": "index.html",
+      "line": 359
+    },
+    {
+      "name": "drawSlashArc",
+      "file": "index.html",
+      "line": 441
+    },
+    {
+      "name": "drawAoeRipples",
+      "file": "index.html",
+      "line": 473
+    },
+    {
+      "name": "spawnKillExplosion",
+      "file": "index.html",
+      "line": 493
+    },
+    {
+      "name": "getPlayerAttackRange",
+      "file": "index.html",
+      "line": 506
+    },
+    {
+      "name": "getPlayerAttackSpeed",
+      "file": "index.html",
+      "line": 518
+    },
+    {
+      "name": "playerAttack",
+      "file": "index.html",
+      "line": 530
+    },
+    {
+      "name": "spawnDamageNumber",
+      "file": "index.html",
+      "line": 607
+    },
+    {
+      "name": "applyDamageToEnemy",
+      "file": "index.html",
+      "line": 611
+    },
+    {
+      "name": "killEnemy",
+      "file": "index.html",
+      "line": 631
+    },
+    {
+      "name": "autoEquipItem",
+      "file": "index.html",
+      "line": 677
+    },
+    {
+      "name": "levelUp",
+      "file": "index.html",
+      "line": 719
+    },
+    {
+      "name": "generateSPNodes",
+      "file": "index.html",
+      "line": 771
+    },
+    {
+      "name": "showSPPanel",
+      "file": "index.html",
+      "line": 778
+    },
+    {
+      "name": "updateSPDisplay",
+      "file": "index.html",
+      "line": 814
+    },
+    {
+      "name": "generateUpgradeChoices",
+      "file": "index.html",
+      "line": 820
+    },
+    {
+      "name": "addSkill",
+      "file": "index.html",
+      "line": 843
+    },
+    {
+      "name": "showUpgradePanel",
+      "file": "index.html",
+      "line": 854
+    },
+    {
+      "name": "spawnEnemy",
+      "file": "index.html",
+      "line": 876
+    },
+    {
+      "name": "generateEquip",
+      "file": "index.html",
+      "line": 935
+    },
+    {
+      "name": "generateRandomEquip",
+      "file": "index.html",
+      "line": 979
+    },
+    {
+      "name": "useSkill",
+      "file": "index.html",
+      "line": 999
+    },
+    {
+      "name": "dist",
+      "file": "index.html",
+      "line": 1079
+    },
+    {
+      "name": "update",
+      "file": "index.html",
+      "line": 1084
+    },
+    {
+      "name": "playerDeath",
+      "file": "index.html",
+      "line": 1289
+    },
+    {
+      "name": "applyPermanentBonuses",
+      "file": "index.html",
+      "line": 1357
+    },
+    {
+      "name": "fillWithGradient",
+      "file": "index.html",
+      "line": 1391
+    },
+    {
+      "name": "fillRoundRect",
+      "file": "index.html",
+      "line": 1399
+    },
+    {
+      "name": "applyScreenShake",
+      "file": "index.html",
+      "line": 1415
+    },
+    {
+      "name": "triggerScreenShake",
+      "file": "index.html",
+      "line": 1424
+    },
+    {
+      "name": "drawHexagon",
+      "file": "index.html",
+      "line": 1430
+    },
+    {
+      "name": "drawTriangle",
+      "file": "index.html",
+      "line": 1443
+    },
+    {
+      "name": "drawDiamond",
+      "file": "index.html",
+      "line": 1456
+    },
+    {
+      "name": "drawStar",
+      "file": "index.html",
+      "line": 1466
+    },
+    {
+      "name": "drawPentagon",
+      "file": "index.html",
+      "line": 1480
+    },
+    {
+      "name": "render",
+      "file": "index.html",
+      "line": 1493
+    },
+    {
+      "name": "lightenColor",
+      "file": "index.html",
+      "line": 2069
+    },
+    {
+      "name": "updateHUD",
+      "file": "index.html",
+      "line": 2085
+    },
+    {
+      "name": "updateSkillBar",
+      "file": "index.html",
+      "line": 2100
+    },
+    {
+      "name": "updateEquipBar",
+      "file": "index.html",
+      "line": 2122
+    },
+    {
+      "name": "updateInventoryPanel",
+      "file": "index.html",
+      "line": 2145
+    },
+    {
+      "name": "equipItem",
+      "file": "index.html",
+      "line": 2203
+    },
+    {
+      "name": "unequipItem",
+      "file": "index.html",
+      "line": 2230
+    },
+    {
+      "name": "recalcStats",
+      "file": "index.html",
+      "line": 2239
+    },
+    {
+      "name": "showTooltip",
+      "file": "index.html",
+      "line": 2268
+    },
+    {
+      "name": "hideTooltip",
+      "file": "index.html",
+      "line": 2278
+    },
+    {
+      "name": "positionTooltip",
+      "file": "index.html",
+      "line": 2280
+    },
+    {
+      "name": "showCavePanel",
+      "file": "index.html",
+      "line": 2290
+    },
+    {
+      "name": "renderCaveUpgradeList",
+      "file": "index.html",
+      "line": 2303
+    },
+    {
+      "name": "showBreakthroughPanel",
+      "file": "index.html",
+      "line": 2356
+    },
+    {
+      "name": "saveGame",
+      "file": "index.html",
+      "line": 2397
+    },
+    {
+      "name": "loadGame",
+      "file": "index.html",
+      "line": 2413
+    },
+    {
+      "name": "init",
+      "file": "index.html",
+      "line": 2443
+    },
+    {
+      "name": "gameLoop",
+      "file": "index.html",
+      "line": 2525
+    },
+    {
+      "name": "randomColor",
+      "file": "index.html",
+      "line": 2543
+    }
+  ],
+  "elements": [
+    {
+      "name": "gameCanvas",
+      "file": "index.html",
+      "line": 266
+    },
+    {
+      "name": "hud",
+      "file": "index.html",
+      "line": 269
+    },
+    {
+      "name": "tooltip",
+      "file": "index.html",
+      "line": 306
+    }
+  ],
+  "configs": [
+    {
+      "name": "CAVE_FACILITIES",
+      "file": "index.html",
+      "line": 110
+    },
+    {
+      "name": "LIBRARY_SKILL_POOL",
+      "file": "index.html",
+      "line": 149
+    },
+    {
+      "name": "ARMORY_WEAPON_POOL",
+      "file": "index.html",
+      "line": 157
+    },
+    {
+      "name": "SP_NODE_POOL",
+      "file": "index.html",
+      "line": 746
+    }
+  ],
+  "classes": [],
+  "raw": [
+    {
+      "type": "element",
+      "name": "gameCanvas",
+      "line": 266,
+      "file": "index.html"
+    },
+    {
+      "type": "element",
+      "name": "hud",
+      "line": 269,
+      "file": "index.html"
+    },
+    {
+      "type": "element",
+      "name": "tooltip",
+      "line": 306,
+      "file": "index.html"
+    },
+    {
+      "type": "config",
+      "name": "CAVE_FACILITIES",
+      "line": 110,
+      "file": "index.html"
+    },
+    {
+      "type": "config",
+      "name": "LIBRARY_SKILL_POOL",
+      "line": 149,
+      "file": "index.html"
+    },
+    {
+      "type": "config",
+      "name": "ARMORY_WEAPON_POOL",
+      "line": 157,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "permanentCaveCost",
+      "line": 186,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "getFacilityLevel",
+      "line": 192,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "getPermanentStatBonus",
+      "line": 196,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "savePermanent",
+      "line": 206,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "loadPermanent",
+      "line": 210,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "upgradeCaveFacility",
+      "line": 226,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "getRealmName",
+      "line": 259,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "getRealmRequirement",
+      "line": 265,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "canBreakthrough",
+      "line": 271,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "getBreakthroughRate",
+      "line": 276,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "breakthroughEffect",
+      "line": 284,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "screenFlash",
+      "line": 303,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "screenShake",
+      "line": 310,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "spawnLevelUpRing",
+      "line": 318,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "showEquipNotify",
+      "line": 327,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "addFloatingText",
+      "line": 335,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "spawnParticle",
+      "line": 347,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "drawAttackRange",
+      "line": 359,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "drawSlashArc",
+      "line": 441,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "drawAoeRipples",
+      "line": 473,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "spawnKillExplosion",
+      "line": 493,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "getPlayerAttackRange",
+      "line": 506,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "getPlayerAttackSpeed",
+      "line": 518,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "playerAttack",
+      "line": 530,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "spawnDamageNumber",
+      "line": 607,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "applyDamageToEnemy",
+      "line": 611,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "killEnemy",
+      "line": 631,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "autoEquipItem",
+      "line": 677,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "levelUp",
+      "line": 719,
+      "file": "index.html"
+    },
+    {
+      "type": "config",
+      "name": "SP_NODE_POOL",
+      "line": 746,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "generateSPNodes",
+      "line": 771,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "showSPPanel",
+      "line": 778,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "updateSPDisplay",
+      "line": 814,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "generateUpgradeChoices",
+      "line": 820,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "addSkill",
+      "line": 843,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "showUpgradePanel",
+      "line": 854,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "spawnEnemy",
+      "line": 876,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "generateEquip",
+      "line": 935,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "generateRandomEquip",
+      "line": 979,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "useSkill",
+      "line": 999,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "dist",
+      "line": 1079,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "update",
+      "line": 1084,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "playerDeath",
+      "line": 1289,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "applyPermanentBonuses",
+      "line": 1357,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "fillWithGradient",
+      "line": 1391,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "fillRoundRect",
+      "line": 1399,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "applyScreenShake",
+      "line": 1415,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "triggerScreenShake",
+      "line": 1424,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "drawHexagon",
+      "line": 1430,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "drawTriangle",
+      "line": 1443,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "drawDiamond",
+      "line": 1456,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "drawStar",
+      "line": 1466,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "drawPentagon",
+      "line": 1480,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "render",
+      "line": 1493,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "lightenColor",
+      "line": 2069,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "updateHUD",
+      "line": 2085,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "updateSkillBar",
+      "line": 2100,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "updateEquipBar",
+      "line": 2122,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "updateInventoryPanel",
+      "line": 2145,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "equipItem",
+      "line": 2203,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "unequipItem",
+      "line": 2230,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "recalcStats",
+      "line": 2239,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "showTooltip",
+      "line": 2268,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "hideTooltip",
+      "line": 2278,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "positionTooltip",
+      "line": 2280,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "showCavePanel",
+      "line": 2290,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "renderCaveUpgradeList",
+      "line": 2303,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "showBreakthroughPanel",
+      "line": 2356,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "saveGame",
+      "line": 2397,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "loadGame",
+      "line": 2413,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "init",
+      "line": 2443,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "gameLoop",
+      "line": 2525,
+      "file": "index.html"
+    },
+    {
+      "type": "function",
+      "name": "randomColor",
+      "line": 2543,
+      "file": "index.html"
+    }
+  ],
+  "updatedAt": "2026-05-06T20:25:59+08:00"
+}
