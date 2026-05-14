@@ -1,0 +1,14 @@
+{
+  "currentProject": "my-project",
+  "projects": {
+    "my-project": {
+      "name": "我的项目",
+      "phase": "需求",
+      "chainBroken": false,
+      "agents": {},
+      "awaitingDecision": [],
+      "createdAt": "2026-05-10T14:00:00+08:00",
+      "updatedAt": "2026-05-10T14:00:00+08:00"
+    }
+  }
+}
