@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawBox 首次引导</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
+  .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  .header { text-align: center; margin-bottom: 40px; }
+  .header h1 { font-size: 28px; color: #1a1a2e; margin-bottom: 10px; }
+  .header p { color: #666; font-size: 16px; }
+  .card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .card h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e8e8e8; }
+  .card h3 { font-size: 16px; color: #444; margin: 16px 0 8px; }
+  .card p, .card li { font-size: 14px; line-height: 1.8; color: #555; }
+  .card ul { padding-left: 20px; }
+  .card ul li { margin-bottom: 6px; }
+  .step { display: flex; align-items: flex-start; margin-bottom: 16px; }
+  .step-num { background: #4361ee; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; margin-right: 12px; flex-shrink: 0; }
+  .step-content { flex: 1; }
+  .step-content strong { display: block; margin-bottom: 4px; color: #333; }
+  .step-content p { font-size: 13px; color: #666; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; margin-right: 4px; }
+  .badge-tg { background: #e3f2fd; color: #1565c0; }
+  .badge-wx { background: #e8f5e9; color: #2e7d32; }
+  .badge-feishu { background: #f3e5f5; color: #7b1fa2; }
+  .badge-api { background: #fff3e0; color: #e65100; }
+  .btn { display: inline-block; padding: 10px 24px; background: #4361ee; color: #fff; border-radius: 8px; text-decoration: none; font-size: 14px; transition: background 0.2s; }
+  .btn:hover { background: #3651d4; }
+  .footer { text-align: center; color: #999; font-size: 12px; margin-top: 40px; }
+  .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .status-on { background: #4caf50; }
+  .status-off { background: #f44336; }
+</style>
+</head>
+<body>
+<div class="container" id="app">
+  <div class="header">
+    <img src="clawbox-logo.png" alt="ClawBox" style="width: 120px; height: 120px; border-radius: 24px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+    <h1>🎉 欢迎使用 ClawBox！</h1>
+    <p>你的 AI Agent 开发平台已安装完成 🚀</p>
+    <div style="margin-top: 12px;">
+      <span id="gatewayStatus" class="badge badge-api">🔄 检测 Gateway 状态...</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📋 已安装组件</h2>
+    <ul>
+      <li>✅ <strong>Node.js</strong> — 便携版运行时 (v22.x)</li>
+      <li>✅ <strong>OpenClaw Gateway</strong> — AI Agent 运行时引擎</li>
+      <li>✅ <strong>白板 Pro 插件</strong> — 智能协作白板</li>
+      <li>✅ <strong>AgentForge 插件</strong> — AI Agent 管理工具</li>
+      <li>✅ <strong>Dashboard</strong> — 本地管理界面 (端口 18789)</li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-left: 4px solid #4361ee;">
+    <h2>🎯 快速开始</h2>
+    
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打开 Dashboard</strong>
+        <p>点击桌面上的 "ClawBox Dashboard" 快捷方式，或浏览器打开 <a href="http://127.0.0.1:18789">http://127.0.0.1:18789</a></p>
+      </div>
+    </div>
+    
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>选择聊天渠道</strong>
+        <p>在 Dashboard 设置中选择你的聊天平台：Telegram、微信、飞书等</p>
+      </div>
+    </div>
+    
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>配置 API Key</strong>
+        <p>在 Dashboard 中添加你的 AI 模型 API Key (如 OpenAI, DeepSeek, 本地 Ollama 等)</p>
+      </div>
+    </div>
+    
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>开始聊天</strong>
+        <p>配置完成即可通过各渠道与你的 AI 助手对话！</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔌 聊天渠道配置指南</h2>
+
+    <h3><span class="badge badge-tg">📱 Telegram</span></h3>
+    <ol>
+      <li>在 Telegram 中搜索 <strong>@BotFather</strong></li>
+      <li>发送 <code>/newbot</code> 创建新 Bot，获取 Token</li>
+      <li>在 Dashboard → 设置 → Telegram 中填入 Token</li>
+      <li>点击保存，即可开始通过 Telegram 与 AI 对话</li>
+    </ol>
+    <p style="color:#999;font-size:12px;margin-top:4px;">💡 提示：BotFather 会给你一个类似 <code>123456:ABC-DEF1234</code> 的 Token</p>
+
+    <h3 style="margin-top:20px;"><span class="badge badge-wx">💬 微信</span></h3>
+    <ol>
+      <li>微信个人号接入需使用第三方桥接工具（如 wechaty）</li>
+      <li>在 Dashboard → 设置 → 微信中配置桥接地址</li>
+      <li>企业微信用户可使用官方 API 接入</li>
+    </ol>
+
+    <h3 style="margin-top:20px;"><span class="badge badge-feishu">📄 飞书</span></h3>
+    <ol>
+      <li>在飞书开放平台创建应用</li>
+      <li>获取 App ID 和 App Secret</li>
+      <li>在 Dashboard → 设置 → 飞书中填入凭证</li>
+      <li>配置 Event 订阅 URL 为你的 Gateway 地址</li>
+    </ol>
+
+    <h3 style="margin-top:20px;"><span class="badge badge-api">🔧 API 直接调用</span></h3>
+    <p>所有渠道都支持通过 REST API 直接调用：</p>
+    <pre style="background:#f5f5f5;padding:12px;border-radius:8px;font-size:12px;margin-top:8px;">curl -X POST http://127.0.0.1:18789/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message":"你好！"}'</pre>
+  </div>
+
+  <div class="card">
+    <h2>❓ 常见问题</h2>
+    <ul>
+      <li><strong>Dashboard 打不开？</strong> 确保 Gateway 已启动（查看系统托盘图标），或重启电脑后重试</li>
+      <li><strong>Node.js 冲突？</strong> ClawBox 使用便携版 Node.js，不会影响系统已安装的 Node.js</li>
+      <li><strong>如何卸载？</strong> 在开始菜单中运行 "卸载 ClawBox"，或从控制面板卸载</li>
+      <li><strong>如何修改 Agent 名字？</strong> 在 Dashboard 设置中修改，或直接编辑 <code>%APPDATA%\openclaw\openclaw.json</code></li>
+    </ul>
+  </div>
+
+  <div style="text-align:center;margin-top:30px;">
+    <a href="http://127.0.0.1:18789" class="btn" target="_blank">🚀 打开 Dashboard</a>
+  </div>
+
+  <div class="footer">
+    <p>ClawBox by 妖精尾巴公会 | 运行在本地 — 数据不会离开你的电脑 🔒</p>
+  </div>
+</div>
+
+<script>
+// 检查 Gateway 是否在运行
+fetch('http://127.0.0.1:18789')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(() => {
+    document.getElementById('gatewayStatus').className = 'badge badge-tg';
+    document.getElementById('gatewayStatus').innerHTML = '<span class="status-dot status-on"></span> Gateway 运行中 ✅';
+  })
+  .catch(() => {
+    document.getElementById('gatewayStatus').className = 'badge badge-api';
+    document.getElementById('gatewayStatus').innerHTML = '<span class="status-dot status-off"></span> Gateway 未启动 ❌ — 请在开始菜单启动 ClawBox Gateway';
+  });
+</script>
+</body>
+</html>
