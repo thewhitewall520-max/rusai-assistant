@@ -19,9 +19,27 @@ jobs:
         run: |
           # Install Inno Setup
           choco install innosetup -y
-          # Run build.bat (自动下载 Node.js 便携版 + 编译)
-          cd clawbox\installer
+          # Find ISCC and add to current PATH
+          $isccPaths = @(
+            "${env:ProgramFiles}\Inno Setup 6\ISCC.exe",
+            "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
+            "${env:LOCALAPPDATA}\Programs\Inno Setup 6\ISCC.exe"
+          )
+          $found = $false
+          foreach ($p in $isccPaths) {
+            if (Test-Path $p) {
+              $dir = Split-Path $p -Parent
+              Write-Host "✅ Inno Setup: $p"
+              $env:Path = "$dir;$env:Path"
+              $found = $true
+              break
+            }
+          }
+          if (-not $found) { Write-Host "❌ ISCC not found"; exit 1 }
+          # Run build.bat (自动下载 Node.js + 编译)
+          Push-Location clawbox\installer
           .\build.bat 1.0.0
+          Pop-Location
         working-directory: ${{ github.workspace }}
 
       - name: Run installer silently and verify
