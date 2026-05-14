@@ -1,0 +1,84 @@
+name: ClawBox Installer Test
+
+on:
+  workflow_dispatch:  # 手动触发，随时可测
+  push:
+    paths:
+      - 'clawbox/**'
+
+jobs:
+  test-installer:
+    runs-on: windows-latest  # GitHub 免费 Windows runner
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          # Install Inno Setup
+          choco install innosetup -y
+          # Run build.bat (自动下载 Node.js 便携版 + 编译)
+          cd clawbox\installer
+          .\build.bat 1.0.0
+        working-directory: ${{ github.workspace }}
+
+      - name: Run installer silently and verify
+        shell: pwsh
+        run: |
+          # Run installer silently
+          $installer = Get-ChildItem -Path clawbox\installer\output\*.exe
+          Start-Process -FilePath $installer.FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /LOG=install.log" -Wait
+
+          # Check files exist
+          $checks = @(
+            @{Path="$env:LOCALAPPDATA\ClawBox\nodejs\node.exe"; Name="Node.js"},
+            @{Path="$env:LOCALAPPDATA\ClawBox\scripts\first-run.js"; Name="首次启动脚本"},
+            @{Path="$env:LOCALAPPDATA\ClawBox\plugins\whiteboard\cli\fairy.js"; Name="白板 Pro 插件"},
+            @{Path="$env:LOCALAPPDATA\ClawBox\plugins\agentforge-v1.0.0.zip"; Name="AgentForge 插件"},
+            @{Path="$env:LOCALAPPDATA\ClawBox\first-run\guide.html"; Name="引导页"},
+            @{Path="$env:LOCALAPPDATA\ClawBox\config\agent-config.txt"; Name="配置注入"},
+            @{Path="$env:LOCALAPPDATA\ClawBox\clawbox.ico"; Name="图标"}
+          )
+
+          $failed = 0
+          foreach ($check in $checks) {
+            if (Test-Path $check.Path) {
+              Write-Host "✅ $($check.Name): $($check.Path)"
+            } else {
+              Write-Host "❌ $($check.Name): 未找到"
+              $failed++
+            }
+          }
+
+          # Check inbox shortcuts
+          $desktop = [Environment]::GetFolderPath("Desktop")
+          if (Test-Path "$desktop\ClawBox Dashboard.url") {
+            Write-Host "✅ 桌面快捷方式存在"
+          } else {
+            Write-Host "⚠️ 桌面快捷方式未创建 (silent mode)"
+          }
+
+          # Check registry
+          $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"
+          $regVal = Get-ItemProperty -Path $regPath -Name "ClawBoxGateway" -ErrorAction SilentlyContinue
+          if ($regVal) {
+            Write-Host "✅ 开机自启注册表项存在"
+          } else {
+            Write-Host "⚠️ 开机自启未注册 (silent mode)"
+          }
+
+          if ($failed -gt 0) {
+            Write-Host "❌ 安装验证失败: $failed 项未通过"
+            exit 1
+          } else {
+            Write-Host "🎉 全部验证通过!"
+          }
+        working-directory: ${{ github.workspace }}
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: clawbox-setup
+          path: clawbox/installer/output/*.exe
