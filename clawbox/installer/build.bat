@@ -26,17 +26,20 @@ if "%ISCC_EXE%"=="" (
     where iscc >nul 2>nul
     if %ERRORLEVEL% EQU 0 (
         set ISCC_EXE=iscc
-    ) else if exist "%PROGRAMFILES%\Inno Setup 6\ISCC.exe" (
-        set ISCC_EXE=%PROGRAMFILES%\Inno Setup 6\ISCC.exe
-    ) else if exist "%PROGRAMFILES(X86)%\Inno Setup 6\ISCC.exe" (
-        set ISCC_EXE=%PROGRAMFILES(X86)%\Inno Setup 6\ISCC.exe
     ) else (
-        echo ❌ 未找到 Inno Setup (iscc)
-        echo.
-        echo 请先安装 Inno Setup: https://jrsoftware.org/isdl.php
-        echo.
-        if "%GITHUB_ACTIONS%"=="" pause
-        exit /b 1
+        set PF86=%PROGRAMFILES(X86)%
+        if exist "%PROGRAMFILES%\Inno Setup 6\ISCC.exe" (
+            set ISCC_EXE=%PROGRAMFILES%\Inno Setup 6\ISCC.exe
+        ) else if exist "%PF86%\Inno Setup 6\ISCC.exe" (
+            set ISCC_EXE=%PF86%\Inno Setup 6\ISCC.exe
+        ) else (
+            echo ❌ 未找到 Inno Setup (iscc)
+            echo.
+            echo 请先安装 Inno Setup: https://jrsoftware.org/isdl.php
+            echo.
+            if "%GITHUB_ACTIONS%"=="" pause
+            exit /b 1
+        )
     )
 )
 echo ✅ Inno Setup 已检测 (%ISCC_EXE%)
