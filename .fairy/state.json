@@ -1,48 +1,19 @@
 {
-  "project": "fairy-system",
-  "phase": "V3升级：任务链自动化+值守Agent+经验库",
-  "currentAgent": "阿悄",
-  "nextAgent": "",
-  "chainBroken": false,
-  "lastAction": {
-    "agent": "阿悄",
-    "action": "V3全面升级",
-    "time": "2026-05-06T22:34:37+08:00",
-    "description": "①各Agent加入sessions_send接力 ②马卡罗夫升级值守Agent ③创建经验库lessons.md"
-  },
-  "agents": {
-    "natsu": {
-      "status": "idle",
-      "lastActive": "",
-      "task": ""
-    },
-    "gray": {
-      "status": "idle",
-      "lastActive": "",
-      "task": ""
-    },
-    "erza": {
-      "status": "idle",
-      "task": "验收审计"
-    },
-    "makarov": {
-      "status": "idle",
-      "lastActive": "",
-      "task": "巡检白板验证"
-    },
-    "wendy": {
-      "status": "active",
-      "lastActive": "20:26",
-      "task": "编写测试用例"
-    },
-    "lucia": {
-      "status": "idle",
-      "task": "调试/根因分析"
-    },
-    "mirajane": {
-      "status": "idle",
-      "task": "吉祥物"
+  "currentProject": "clawbox-installer-v3",
+  "projects": {
+    "clawbox-installer-v3": {
+      "name": "ClawBox 安装包 V3 — 中国源·Node升级",
+      "phase": "纳兹验收通过",
+      "chainBroken": false,
+      "agents": {
+        "natsu": {
+          "status": "done",
+          "task": "Node升级+中国源+重试+注释修正 ✅"
+        }
+      },
+      "awaitingDecision": ["需要老大决定：是否需要 Windows 上编译测试，还是直接推进到发布？"],
+      "createdAt": "2026-05-14T10:52:00+08:00",
+      "updatedAt": "2026-05-14T10:55:00+08:00"
     }
-  },
-  "updatedAt": "2026-05-06T19:32:00+08:00"
+  }
 }
