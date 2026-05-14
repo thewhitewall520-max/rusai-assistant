@@ -9,4 +9,3 @@ memory/*.md
 node_modules/
 .turbo/
 .next/
-clawbox/installer/nodejs/
