@@ -27,9 +27,9 @@ if "%ISCC_EXE%"=="" (
     if %ERRORLEVEL% EQU 0 (
         set ISCC_EXE=iscc
     ) else if exist "%PROGRAMFILES%\Inno Setup 6\ISCC.exe" (
-        set ISCC_EXE="%PROGRAMFILES%\Inno Setup 6\ISCC.exe"
+        set ISCC_EXE=%PROGRAMFILES%\Inno Setup 6\ISCC.exe
     ) else if exist "%PROGRAMFILES(X86)%\Inno Setup 6\ISCC.exe" (
-        set ISCC_EXE="%PROGRAMFILES(X86)%\Inno Setup 6\ISCC.exe"
+        set ISCC_EXE=%PROGRAMFILES(X86)%\Inno Setup 6\ISCC.exe
     ) else (
         echo ❌ 未找到 Inno Setup (iscc)
         echo.
@@ -118,7 +118,7 @@ if exist "%OUTPUT_DIR%" (
 REM 编译 Inno Setup 脚本
 echo 🔨 编译安装包...
 echo.
-%ISCC_EXE% /dMyAppVersion=%APP_VERSION% "%~dp0clawbox.iss"
+"%ISCC_EXE%" /dMyAppVersion=%APP_VERSION% "%~dp0clawbox.iss"
 
 if %ERRORLEVEL% NEQ 0 (
     echo.

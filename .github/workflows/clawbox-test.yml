@@ -28,9 +28,8 @@ jobs:
           $found = $false
           foreach ($p in $isccPaths) {
             if (Test-Path $p) {
-              $dir = Split-Path $p -Parent
               Write-Host "✅ Inno Setup: $p"
-              $env:Path = "$dir;$env:Path"
+              $env:ISCC_EXE = $p
               $found = $true
               break
             }
