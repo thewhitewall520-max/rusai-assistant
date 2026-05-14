@@ -1,6 +1,6 @@
 {
   "project": "xiuxian-game",
-  "path": "xiuxian-game",
+  "path": "/Users/aq/.openclaw/workspace/xiuxian-game",
   "functions": [
     {
       "name": "permanentCaveCost",
@@ -75,317 +75,292 @@
     {
       "name": "showEquipNotify",
       "file": "index.html",
-      "line": 328
+      "line": 327
     },
     {
       "name": "addFloatingText",
       "file": "index.html",
-      "line": 336
+      "line": 335
     },
     {
       "name": "spawnParticle",
       "file": "index.html",
-      "line": 348
+      "line": 347
     },
     {
       "name": "drawAttackRange",
       "file": "index.html",
-      "line": 360
+      "line": 359
     },
     {
       "name": "drawSlashArc",
       "file": "index.html",
-      "line": 442
+      "line": 441
     },
     {
       "name": "drawAoeRipples",
       "file": "index.html",
-      "line": 474
+      "line": 473
     },
     {
       "name": "spawnKillExplosion",
       "file": "index.html",
-      "line": 494
+      "line": 493
     },
     {
       "name": "getPlayerAttackRange",
       "file": "index.html",
-      "line": 507
+      "line": 506
     },
     {
       "name": "getPlayerAttackSpeed",
       "file": "index.html",
-      "line": 519
+      "line": 518
     },
     {
       "name": "playerAttack",
       "file": "index.html",
-      "line": 531
+      "line": 530
     },
     {
       "name": "spawnDamageNumber",
       "file": "index.html",
-      "line": 608
+      "line": 607
     },
     {
       "name": "applyDamageToEnemy",
       "file": "index.html",
-      "line": 612
+      "line": 611
     },
     {
       "name": "killEnemy",
       "file": "index.html",
-      "line": 632
+      "line": 631
     },
     {
       "name": "autoEquipItem",
       "file": "index.html",
-      "line": 678
+      "line": 677
     },
     {
       "name": "levelUp",
       "file": "index.html",
-      "line": 720
+      "line": 719
     },
     {
       "name": "generateSPNodes",
       "file": "index.html",
-      "line": 772
+      "line": 771
     },
     {
       "name": "showSPPanel",
       "file": "index.html",
-      "line": 779
+      "line": 778
     },
     {
       "name": "updateSPDisplay",
       "file": "index.html",
-      "line": 815
+      "line": 814
     },
     {
       "name": "generateUpgradeChoices",
       "file": "index.html",
-      "line": 821
+      "line": 820
     },
     {
       "name": "addSkill",
       "file": "index.html",
-      "line": 844
+      "line": 843
     },
     {
       "name": "showUpgradePanel",
       "file": "index.html",
-      "line": 855
+      "line": 854
     },
     {
       "name": "spawnEnemy",
       "file": "index.html",
-      "line": 877
+      "line": 876
     },
     {
       "name": "generateEquip",
       "file": "index.html",
-      "line": 936
+      "line": 935
     },
     {
       "name": "generateRandomEquip",
       "file": "index.html",
-      "line": 980
+      "line": 979
     },
     {
       "name": "useSkill",
       "file": "index.html",
-      "line": 1000
+      "line": 999
     },
     {
       "name": "dist",
       "file": "index.html",
-      "line": 1080
+      "line": 1079
     },
     {
       "name": "update",
       "file": "index.html",
-      "line": 1085
+      "line": 1084
     },
     {
       "name": "playerDeath",
       "file": "index.html",
-      "line": 1290
+      "line": 1289
     },
     {
       "name": "applyPermanentBonuses",
       "file": "index.html",
-      "line": 1358
+      "line": 1357
     },
     {
       "name": "fillWithGradient",
       "file": "index.html",
-      "line": 1392
+      "line": 1391
     },
     {
       "name": "fillRoundRect",
       "file": "index.html",
-      "line": 1400
+      "line": 1399
     },
     {
       "name": "applyScreenShake",
       "file": "index.html",
-      "line": 1416
+      "line": 1415
     },
     {
       "name": "triggerScreenShake",
       "file": "index.html",
-      "line": 1425
+      "line": 1424
     },
     {
       "name": "drawHexagon",
       "file": "index.html",
-      "line": 1431
+      "line": 1430
     },
     {
       "name": "drawTriangle",
       "file": "index.html",
-      "line": 1444
+      "line": 1443
     },
     {
       "name": "drawDiamond",
       "file": "index.html",
-      "line": 1457
+      "line": 1456
     },
     {
       "name": "drawStar",
       "file": "index.html",
-      "line": 1467
+      "line": 1466
     },
     {
       "name": "drawPentagon",
       "file": "index.html",
-      "line": 1481
+      "line": 1480
     },
     {
       "name": "render",
       "file": "index.html",
-      "line": 1494
+      "line": 1493
     },
     {
       "name": "lightenColor",
       "file": "index.html",
-      "line": 2070
+      "line": 2069
     },
     {
       "name": "updateHUD",
       "file": "index.html",
-      "line": 2086
+      "line": 2085
     },
     {
       "name": "updateSkillBar",
       "file": "index.html",
-      "line": 2101
+      "line": 2100
     },
     {
       "name": "updateEquipBar",
       "file": "index.html",
-      "line": 2123
+      "line": 2122
     },
     {
       "name": "updateInventoryPanel",
       "file": "index.html",
-      "line": 2146
+      "line": 2145
     },
     {
       "name": "equipItem",
       "file": "index.html",
-      "line": 2204
+      "line": 2203
     },
     {
       "name": "unequipItem",
       "file": "index.html",
-      "line": 2231
+      "line": 2230
     },
     {
       "name": "recalcStats",
       "file": "index.html",
-      "line": 2240
+      "line": 2239
     },
     {
       "name": "showTooltip",
       "file": "index.html",
-      "line": 2269
+      "line": 2268
     },
     {
       "name": "hideTooltip",
       "file": "index.html",
-      "line": 2279
+      "line": 2278
     },
     {
       "name": "positionTooltip",
       "file": "index.html",
-      "line": 2281
+      "line": 2280
     },
     {
       "name": "showCavePanel",
       "file": "index.html",
-      "line": 2291
+      "line": 2290
     },
     {
       "name": "renderCaveUpgradeList",
       "file": "index.html",
-      "line": 2304
+      "line": 2303
     },
     {
       "name": "showBreakthroughPanel",
       "file": "index.html",
-      "line": 2357
+      "line": 2356
     },
     {
       "name": "saveGame",
       "file": "index.html",
-      "line": 2398
+      "line": 2397
     },
     {
       "name": "loadGame",
       "file": "index.html",
-      "line": 2414
+      "line": 2413
     },
     {
       "name": "init",
       "file": "index.html",
-      "line": 2444
+      "line": 2443
     },
     {
       "name": "gameLoop",
       "file": "index.html",
-      "line": 2526
+      "line": 2525
     },
     {
       "name": "randomColor",
       "file": "index.html",
-      "line": 2544
-    },
-    {
-      "name": "log",
-      "file": "tests/test-upgrade.html",
-      "line": 4
-    },
-    {
-      "name": "clearLog",
-      "file": "tests/test-upgrade.html",
-      "line": 10
-    },
-    {
-      "name": "testLevelUpChain",
-      "file": "tests/test-upgrade.html",
-      "line": 22
-    },
-    {
-      "name": "testSpawnLevelUpRing",
-      "file": "tests/test-upgrade.html",
-      "line": 74
-    },
-    {
-      "name": "testScreenFlash",
-      "file": "tests/test-upgrade.html",
-      "line": 110
+      "line": 2543
     }
   ],
   "elements": [
@@ -403,11 +378,6 @@
       "name": "tooltip",
       "file": "index.html",
       "line": 306
-    },
-    {
-      "name": "log",
-      "file": "tests/test-upgrade.html",
-      "line": 27
     }
   ],
   "configs": [
@@ -429,7 +399,7 @@
     {
       "name": "SP_NODE_POOL",
       "file": "index.html",
-      "line": 747
+      "line": 746
     }
   ],
   "classes": [],
@@ -557,393 +527,357 @@
     {
       "type": "function",
       "name": "showEquipNotify",
-      "line": 328,
+      "line": 327,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "addFloatingText",
-      "line": 336,
+      "line": 335,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "spawnParticle",
-      "line": 348,
+      "line": 347,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "drawAttackRange",
-      "line": 360,
+      "line": 359,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "drawSlashArc",
-      "line": 442,
+      "line": 441,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "drawAoeRipples",
-      "line": 474,
+      "line": 473,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "spawnKillExplosion",
-      "line": 494,
+      "line": 493,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "getPlayerAttackRange",
-      "line": 507,
+      "line": 506,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "getPlayerAttackSpeed",
-      "line": 519,
+      "line": 518,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "playerAttack",
-      "line": 531,
+      "line": 530,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "spawnDamageNumber",
-      "line": 608,
+      "line": 607,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "applyDamageToEnemy",
-      "line": 612,
+      "line": 611,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "killEnemy",
-      "line": 632,
+      "line": 631,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "autoEquipItem",
-      "line": 678,
+      "line": 677,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "levelUp",
-      "line": 720,
+      "line": 719,
       "file": "index.html"
     },
     {
       "type": "config",
       "name": "SP_NODE_POOL",
-      "line": 747,
+      "line": 746,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "generateSPNodes",
-      "line": 772,
+      "line": 771,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "showSPPanel",
-      "line": 779,
+      "line": 778,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "updateSPDisplay",
-      "line": 815,
+      "line": 814,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "generateUpgradeChoices",
-      "line": 821,
+      "line": 820,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "addSkill",
-      "line": 844,
+      "line": 843,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "showUpgradePanel",
-      "line": 855,
+      "line": 854,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "spawnEnemy",
-      "line": 877,
+      "line": 876,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "generateEquip",
-      "line": 936,
+      "line": 935,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "generateRandomEquip",
-      "line": 980,
+      "line": 979,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "useSkill",
-      "line": 1000,
+      "line": 999,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "dist",
-      "line": 1080,
+      "line": 1079,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "update",
-      "line": 1085,
+      "line": 1084,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "playerDeath",
-      "line": 1290,
+      "line": 1289,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "applyPermanentBonuses",
-      "line": 1358,
+      "line": 1357,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "fillWithGradient",
-      "line": 1392,
+      "line": 1391,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "fillRoundRect",
-      "line": 1400,
+      "line": 1399,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "applyScreenShake",
-      "line": 1416,
+      "line": 1415,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "triggerScreenShake",
-      "line": 1425,
+      "line": 1424,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "drawHexagon",
-      "line": 1431,
+      "line": 1430,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "drawTriangle",
-      "line": 1444,
+      "line": 1443,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "drawDiamond",
-      "line": 1457,
+      "line": 1456,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "drawStar",
-      "line": 1467,
+      "line": 1466,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "drawPentagon",
-      "line": 1481,
+      "line": 1480,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "render",
-      "line": 1494,
+      "line": 1493,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "lightenColor",
-      "line": 2070,
+      "line": 2069,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "updateHUD",
-      "line": 2086,
+      "line": 2085,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "updateSkillBar",
-      "line": 2101,
+      "line": 2100,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "updateEquipBar",
-      "line": 2123,
+      "line": 2122,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "updateInventoryPanel",
-      "line": 2146,
+      "line": 2145,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "equipItem",
-      "line": 2204,
+      "line": 2203,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "unequipItem",
-      "line": 2231,
+      "line": 2230,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "recalcStats",
-      "line": 2240,
+      "line": 2239,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "showTooltip",
-      "line": 2269,
+      "line": 2268,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "hideTooltip",
-      "line": 2279,
+      "line": 2278,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "positionTooltip",
-      "line": 2281,
+      "line": 2280,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "showCavePanel",
-      "line": 2291,
+      "line": 2290,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "renderCaveUpgradeList",
-      "line": 2304,
+      "line": 2303,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "showBreakthroughPanel",
-      "line": 2357,
+      "line": 2356,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "saveGame",
-      "line": 2398,
+      "line": 2397,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "loadGame",
-      "line": 2414,
+      "line": 2413,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "init",
-      "line": 2444,
+      "line": 2443,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "gameLoop",
-      "line": 2526,
+      "line": 2525,
       "file": "index.html"
     },
     {
       "type": "function",
       "name": "randomColor",
-      "line": 2544,
+      "line": 2543,
       "file": "index.html"
-    },
-    {
-      "type": "element",
-      "name": "log",
-      "line": 27,
-      "file": "tests/test-upgrade.html"
-    },
-    {
-      "type": "function",
-      "name": "log",
-      "line": 4,
-      "file": "tests/test-upgrade.html"
-    },
-    {
-      "type": "function",
-      "name": "clearLog",
-      "line": 10,
-      "file": "tests/test-upgrade.html"
-    },
-    {
-      "type": "function",
-      "name": "testLevelUpChain",
-      "line": 22,
-      "file": "tests/test-upgrade.html"
-    },
-    {
-      "type": "function",
-      "name": "testSpawnLevelUpRing",
-      "line": 74,
-      "file": "tests/test-upgrade.html"
-    },
-    {
-      "type": "function",
-      "name": "testScreenFlash",
-      "line": 110,
-      "file": "tests/test-upgrade.html"
     }
   ],
-  "updatedAt": "2026-05-07T08:42:41+08:00"
+  "updatedAt": "2026-05-06T20:25:59+08:00"
 }

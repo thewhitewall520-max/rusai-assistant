@@ -123,9 +123,8 @@ echo 📌 输出目录: %OUTPUT_DIR%
 echo.
 echo 🚀 使用说明:
 echo   1. 将 clawbox-setup-*.exe 分发给客户
-echo   2. 单文件安装包，客户双击即可安装（无需管理员权限）
+echo   2. 客户双击即可安装（无需管理员权限）
 echo   3. 安装过程中可设置 AI Agent 名字和欢迎语
 echo   4. 安装完成后自动启动 Dashboard
-echo   5. 安装包已内置 Node.js 和全部插件，无需联网
 echo.
 pause
