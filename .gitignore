@@ -9,3 +9,6 @@ memory/*.md
 node_modules/
 .turbo/
 .next/
+.DS_Store
+clawbox/installer/output/
+clawbox/installer/nodejs/
