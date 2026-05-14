@@ -35,7 +35,7 @@ LicenseFile=.\resources\eula.txt
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+;Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 
 ; ─── Custom Pages ──────────────────────────────────────────────────
 
