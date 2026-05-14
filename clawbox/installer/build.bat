@@ -22,17 +22,23 @@ echo 版本: %APP_VERSION%
 echo.
 
 REM 检查 Inno Setup 是否安装
+set ISCC_EXE=
 where iscc >nul 2>nul
-if %ERRORLEVEL% NEQ 0 (
+if %ERRORLEVEL% EQU 0 (
+    set ISCC_EXE=iscc
+) else if exist "%PROGRAMFILES%\Inno Setup 6\ISCC.exe" (
+    set ISCC_EXE="%PROGRAMFILES%\Inno Setup 6\ISCC.exe"
+) else if exist "%PROGRAMFILES(X86)%\Inno Setup 6\ISCC.exe" (
+    set ISCC_EXE="%PROGRAMFILES(X86)%\Inno Setup 6\ISCC.exe"
+) else (
     echo ❌ 未找到 Inno Setup (iscc)
     echo.
     echo 请先安装 Inno Setup: https://jrsoftware.org/isdl.php
-    echo 安装完成后确保 iscc.exe 在 PATH 中。
     echo.
     if "%GITHUB_ACTIONS%"=="" pause
     exit /b 1
 )
-echo ✅ Inno Setup 已检测
+echo ✅ Inno Setup 已检测 (%ISCC_EXE%)
 echo.
 
 REM 确认资源文件
@@ -111,7 +117,7 @@ if exist "%OUTPUT_DIR%" (
 REM 编译 Inno Setup 脚本
 echo 🔨 编译安装包...
 echo.
-iscc /dMyAppVersion=%APP_VERSION% "%~dp0clawbox.iss"
+%ISCC_EXE% /dMyAppVersion=%APP_VERSION% "%~dp0clawbox.iss"
 
 if %ERRORLEVEL% NEQ 0 (
     echo.
