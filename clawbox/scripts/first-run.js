@@ -75,11 +75,29 @@ async function main() {
   const openclawConfigDir = path.join(process.env.USERPROFILE, '.openclaw');
   fs.mkdirSync(openclawConfigDir, { recursive: true });
   
+  // 尝试加载 generate-agent-config.js 生成的 agent 配置
+  const agentConfigPath = path.join(CLAWBOX_HOME, 'config', 'openclaw-config.json');
+  let generatedAgents = {};
+  if (fs.existsSync(agentConfigPath)) {
+    try {
+      const agentConfig = JSON.parse(fs.readFileSync(agentConfigPath, 'utf-8'));
+      if (agentConfig.agents) {
+        generatedAgents = agentConfig.agents;
+        log(`📋 从主题配置加载了 ${Object.keys(generatedAgents).length} 个 Agent`);
+      }
+    } catch (e) {
+      log(`⚠️ 无法解析 agent 配置: ${e.message}`);
+    }
+  }
+
+  // 也有单页版 AGENTS / SOULs 复制过来的可能，这里不做额外处理
+
   const ocConfig = {
     agent: {
       name: agentName,
       welcomeMessage: welcomeMsg,
     },
+    agents: generatedAgents,
     gateway: {
       port: 18789,
       host: '127.0.0.1',
@@ -99,6 +117,37 @@ async function main() {
     JSON.stringify(ocConfig, null, 2)
   );
   log('✅ OpenClaw 配置文件已写入');
+
+  // 复制生成的 AGENTS.md 和 SOUL.md 到 .openclaw 目录
+  const configDir = path.join(CLAWBOX_HOME, 'config');
+  const copyFiles = ['AGENTS.md', 'SOUL.md', '.theme.json'];
+  for (const file of copyFiles) {
+    const src = path.join(configDir, file);
+    if (fs.existsSync(src)) {
+      try {
+        fs.copyFileSync(src, path.join(openclawConfigDir, file));
+        log(`📋 已复制 ${file} 到 OpenClaw 配置目录`);
+      } catch (e) {
+        log(`⚠️ 复制 ${file} 失败: ${e.message}`);
+      }
+    }
+  }
+
+  // 复制 per-agent SOUL 文件
+  const agentSoulsDir = path.join(configDir, 'agents');
+  if (fs.existsSync(agentSoulsDir)) {
+    try {
+      const agentSoulFiles = fs.readdirSync(agentSoulsDir);
+      const destAgentsDir = path.join(openclawConfigDir, 'agents');
+      fs.mkdirSync(destAgentsDir, { recursive: true });
+      for (const file of agentSoulFiles) {
+        fs.copyFileSync(path.join(agentSoulsDir, file), path.join(destAgentsDir, file));
+      }
+      log(`📋 已复制 ${agentSoulFiles.length} 个 Agent SOUL 文件`);
+    } catch (e) {
+      log(`⚠️ 复制 Agent SOUL 文件失败: ${e.message}`);
+    }
+  }
 
   // 步骤 2: 启动 OpenClaw Gateway (后台运行)
   log('🚀 启动 OpenClaw Gateway...');

@@ -32,7 +32,7 @@ function log(msg) {
 log('=== ClawBox Gateway 启动 ===');
 
 // 后台启动 Gateway
-const child = spawn(NODE_EXE, [NPX_CMD, 'openclaw', 'gateway', 'start', '--port', '18789'], {
+const child = spawn(NPX_CMD, ['openclaw', 'gateway', 'start', '--port', '18789'], {
   cwd: CLAWBOX_HOME,
   env: {
     ...process.env,

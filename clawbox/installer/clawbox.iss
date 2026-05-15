@@ -41,34 +41,107 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Code]
 var
+  ThemePage: TWizardPage;
+  ThemeRadioGroup: TNewRadioGroup;
+  CustomNamesPage: TInputQueryWizardPage;
   AgentNamePage: TInputQueryWizardPage;
   WelcomeMsgPage: TInputQueryWizardPage;
+  SelectedTheme: String;
+
+const
+  THEMES: array [0..4] of String = ('fairytail', 'onepiece', 'naruto', 'demon-slayer', 'custom');
+  THEME_LABELS: array [0..4] of String = (
+    '🐉 妖精尾巴（默认）— 纳兹·多拉格尼尔 & 妖精尾巴公会',
+    '☠️ 海贼王 — 蒙奇·D·路飞 & 草帽海贼团',
+    '🍥 火影忍者 — 漩涡鸣人 & 木叶隐村',
+    '⚡ 鬼灭之刃 — 灶门炭治郎 & 鬼杀队',
+    '✏️ 自定义 — 我来自定义 Agent 的名字！'
+  );
+
+// 主题选择回调：更新 SelectedTheme 变量
+procedure OnThemeSelect(Sender: Object);
+begin
+  SelectedTheme := THEMES[ThemeRadioGroup.ItemIndex];
+end;
+
+// 检查当前页是否应该显示
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  Result := False;
+  // 如果没选择"自定义"，跳过自定义名字页
+  if (PageID = CustomNamesPage.ID) and (SelectedTheme <> 'custom') then
+    Result := True;
+end;
 
 procedure InitializeWizard;
+var
+  I: Integer;
 begin
   WizardForm.WelcomeLabel1.Caption := '欢迎使用 ClawBox 安装程序';
   WizardForm.WelcomeLabel2.Caption := 'ClawBox 是一款 AI Agent 开发平台，包含白板 Pro 和 AgentForge 插件。' + #13#10 +
     '本程序将安装 Node.js (便携版)、OpenClaw Gateway 及全部插件。';
 
-  // 自定义页 1: Agent 名字
-  AgentNamePage := CreateInputQueryPage(
+  // ── 自定义页 1: 主题选择 ──
+  ThemePage := CreateCustomPage(
     wpSelectDir,
-    'AI Agent 配置',
-    '给你的 AI 助手取个名字',
-    '请输入你的 AI 助手的名字（之后可以修改）：'
+    'AgentForge 主题选择',
+    '选择你的 AI 团队风格'
   );
-  AgentNamePage.Add('Agent 名字:', False);
-  AgentNamePage.Values[0] := 'AI助手';
 
-  // 自定义页 2: 欢迎语
+  ThemeRadioGroup := TNewRadioGroup.Create(ThemePage);
+  ThemeRadioGroup.Top := 8;
+  ThemeRadioGroup.Left := 8;
+  ThemeRadioGroup.Width := ThemePage.SurfaceWidth - 16;
+  ThemeRadioGroup.Height := ThemePage.SurfaceHeight - 16;
+  ThemeRadioGroup.Parent := ThemePage.Surface;
+
+  for I := 0 to 4 do
+  begin
+    ThemeRadioGroup.Items.Add(THEME_LABELS[I]);
+  end;
+  ThemeRadioGroup.ItemIndex := 0; // 默认选择妖精尾巴
+  SelectedTheme := 'fairytail';
+
+  // 监听主题选择变化
+  ThemeRadioGroup.OnClick := @OnThemeSelect;
+
+  // ── 自定义页 2: 自定义 Agent 名字（仅当选择"自定义"时显示） ──
+  CustomNamesPage := CreateInputQueryPage(
+    ThemePage.ID,
+    '自定义 Agent 名字',
+    '为你的 5 个 AI Agent 分别取名',
+    '请输入 5 个 Agent 的名字：'
+  );
+  CustomNamesPage.Add('Agent 1 (开发):', False);
+  CustomNamesPage.Add('Agent 2 (测试):', False);
+  CustomNamesPage.Add('Agent 3 (验收):', False);
+  CustomNamesPage.Add('Agent 4 (安全审查):', False);
+  CustomNamesPage.Add('Agent 5 (部署):', False);
+  CustomNamesPage.Values[0] := 'Agent 1';
+  CustomNamesPage.Values[1] := 'Agent 2';
+  CustomNamesPage.Values[2] := 'Agent 3';
+  CustomNamesPage.Values[3] := 'Agent 4';
+  CustomNamesPage.Values[4] := 'Agent 5';
+
+  // ── 自定义页 3: Agent 名字（老大/用户名） ──
+  AgentNamePage := CreateInputQueryPage(
+    CustomNamesPage.ID,
+    'AI 团队配置',
+    '给你的 AI 助手团队起个名',
+    '你是团队的"老大"，你的 AI 团队听命于你。请输入你的称呼：'
+  );
+  AgentNamePage.Add('你的名字:', False);
+  AgentNamePage.Values[0] := '老大';
+
+  // ── 自定义页 4: 欢迎语 ──
   WelcomeMsgPage := CreateInputQueryPage(
     AgentNamePage.ID,
     '欢迎语设置',
     '设置 AI 助手的第一印象',
-    '请输入你的 AI 助手第一次与你对话时的欢迎语：'
+    '请输入你的 AI 团队第一次与你对话时的欢迎语：'
   );
   WelcomeMsgPage.Add('欢迎语:', False);
-  WelcomeMsgPage.Values[0] := '你好！我是你的 AI 助手';
+  WelcomeMsgPage.Values[0] := '你好！我是你的 AI 助手团队';
 end;
 
 // 将用户输入保存到临时文件，供安装后脚本使用
@@ -76,13 +149,34 @@ procedure CurStepChanged(CurStep: TSetupStep);
 var
   ConfigFile: String;
   ConfigLines: TArrayOfString;
+  CustomNamesStr: String;
+  I: Integer;
 begin
   if CurStep = ssPostInstall then
   begin
     ConfigFile := ExpandConstant('{app}\config\agent-config.txt');
-    SetArrayLength(ConfigLines, 2);
+
+    // 如果是自定义主题，拼接 5 个名字
+    if SelectedTheme = 'custom' then
+    begin
+      CustomNamesStr := '';
+      for I := 0 to 4 do
+      begin
+        if I > 0 then
+          CustomNamesStr := CustomNamesStr + ',';
+        CustomNamesStr := CustomNamesStr + CustomNamesPage.Values[I];
+      end;
+    end;
+
+    SetArrayLength(ConfigLines, 4);
     ConfigLines[0] := 'AGENT_NAME=' + AgentNamePage.Values[0];
     ConfigLines[1] := 'WELCOME_MSG=' + WelcomeMsgPage.Values[0];
+    ConfigLines[2] := 'THEME=' + SelectedTheme;
+    if SelectedTheme = 'custom' then
+      ConfigLines[3] := 'CUSTOM_NAMES=' + CustomNamesStr
+    else
+      ConfigLines[3] := 'CUSTOM_NAMES=';
+
     SaveStringsToFile(ConfigFile, ConfigLines, False);
   end;
 end;
@@ -120,6 +214,9 @@ Source: "..\plugins\agentforge-v1.0.0.zip"; DestDir: "{app}\plugins"; Flags: ign
 ; ─── 安装脚本 ───
 Source: "..\scripts\*"; DestDir: "{app}\scripts"; Flags: ignoreversion recursesubdirs createallsubdirs
 
+; ─── 主题模板 ───
+Source: ".\resources\themes\*"; DestDir: "{app}\themes"; Flags: ignoreversion recursesubdirs createallsubdirs
+
 ; ─── 首次引导页 ───
 Source: "..\first-run\*"; DestDir: "{app}\first-run"; Flags: ignoreversion recursesubdirs createallsubdirs
 
@@ -139,6 +236,8 @@ Name: "{userdesktop}\ClawBox Dashboard"; Filename: "http://127.0.0.1:18789"; Ico
 
 [Run]
 ; 安装后: Node.js 环境下执行安装脚本
+; 0. 生成 Agent 配置（基于选中的主题）
+Filename: "{app}\nodejs\node.exe"; Parameters: """{app}\scripts\generate-agent-config.js"" --config ""{app}\config\agent-config.txt"" --output ""{app}\config"""; WorkingDir: "{app}"; StatusMsg: "正在生成 AI 团队配置..."; Flags: waituntilterminated
 ; 1. 安装 OpenClaw（显示控制台窗口，方便排查错误）
 Filename: "{app}\nodejs\node.exe"; Parameters: "{app}\scripts\install-openclaw.js"; WorkingDir: "{app}"; StatusMsg: "正在安装 OpenClaw Gateway（需要网络）..."; Flags: waituntilterminated
 ; 2. 安装插件 (解压 agentforge + 配置白板)

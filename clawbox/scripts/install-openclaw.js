@@ -69,7 +69,9 @@ async function main() {
     log(`❌ Node.js portable 未找到: ${NODE_EXE}`);
     console.log('\n❌ 安装文件损坏，请重新下载安装包');
     console.log('安装失败，5秒后自动退出...');
-    setTimeout(() => process.exit(1), 5000);
+    sleep(5000);
+    process.exit(1);
+    return;
   }
 
   // 检查 Node.js 版本
@@ -81,7 +83,9 @@ async function main() {
     console.log('   当前版本: ' + run(`${NODE_EXE} --version`));
     console.log('   请重新下载最新版安装包');
     console.log('安装失败，5秒后自动退出...');
-    setTimeout(() => process.exit(1), 5000);
+    sleep(5000);
+    process.exit(1);
+    return;
   }
 
   // 设置 npm 中国镜像源
@@ -111,7 +115,9 @@ async function main() {
     console.log('   2. 防火墙是否阻止了 npm');
     console.log('   日志文件: ' + LOG_FILE);
     console.log('安装失败，5秒后自动退出...');
-    setTimeout(() => process.exit(1), 5000);
+    sleep(5000);
+    process.exit(1);
+    return;
   }
 
   // 步骤 4: 验证
@@ -122,10 +128,11 @@ async function main() {
   log('=== 安装结束 ===');
 }
 
-main().catch(err => {
+main().catch(async (err) => {
   log(`❌ 未捕获错误: ${err.message}`);
   console.log('\n❌ 安装失败，请检查网络连接后重试');
   console.log('   日志文件: ' + LOG_FILE);
   console.log('安装失败，5秒后自动退出...');
-  setTimeout(() => process.exit(1), 5000);
+  await sleep(5000);
+  process.exit(1);
 });
