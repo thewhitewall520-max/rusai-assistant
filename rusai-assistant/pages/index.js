@@ -44,14 +44,94 @@ export default function Home() {
       <section className={styles.hero}>
         <div className={styles.heroBg} />
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>你的 AI 招生员工</h1>
+          <h1 className={styles.heroTitle}>24小时替你接待客户的 AI 招生员工</h1>
           <p className={styles.heroSub}>
-            7x24 自动回复咨询 · 自动识别高意向客户 · 自动生成中俄双语回复
+            不漏一条咨询，自动回复、识别高意向客户、生成中俄双语跟进
           </p>
-          <p className={styles.heroStat}>减少 <strong>80%</strong> 重复咨询</p>
+          <p className={styles.heroStat}>少请1个客服 · 不错过任何线索</p>
           <div className={styles.heroActions}>
             <a href="/demo" className={styles.heroPrimary}>看 AI 怎么接待客户 →</a>
             <a href="mailto:sales@rusai.cc" className={styles.heroSecondary}>预约15分钟，看 AI 替你接客户</a>
+          </div>
+        </div>
+
+        {/* Inbox Mockup */}
+        <div className={styles.heroInboxMockup}>
+          <div className={styles.heroInboxHeader}>
+            <span>💬 Inbox <span className={styles.heroInboxBadge}>2 未读</span></span>
+            <span>👤 ▸</span>
+          </div>
+          <div className={styles.heroInboxBody}>
+            {/* Left: conversation list */}
+            <div className={styles.heroInboxList}>
+              <div className={`${styles.heroInboxItem} ${styles.heroInboxItemActive}`}>
+                <span className={styles.heroInboxDot} />
+                <div>
+                  <div>陈晓 · 微信</div>
+                  <div style={{color:'#64748b',fontSize:'11px'}}>预科开课时间？</div>
+                </div>
+              </div>
+              <div className={styles.heroInboxItem}>
+                <span className={styles.heroInboxDot} />
+                <div>
+                  <div>李明浩 · 小红书</div>
+                  <div style={{color:'#64748b',fontSize:'11px'}}>签证邀请函多久？</div>
+                </div>
+              </div>
+              <div className={styles.heroInboxItem}>
+                <div>
+                  <div>Анна · Telegram</div>
+                  <div style={{color:'#64748b',fontSize:'11px'}}>Спасибо!</div>
+                </div>
+              </div>
+              <div className={styles.heroInboxItem}>
+                <div>
+                  <div>王芳 · 微信</div>
+                  <div style={{color:'#64748b',fontSize:'11px'}}>帮我写俄语邮件</div>
+                </div>
+              </div>
+            </div>
+            {/* Center: chat */}
+            <div className={styles.heroInboxChat}>
+              <div className={`${styles.heroChatBubble} ${styles.heroChatBubbleUser}`}>
+                你好，我想咨询俄罗斯留学
+              </div>
+              <div className={`${styles.heroChatBubble} ${styles.heroChatBubbleAgent}`}>
+                你好！欢迎咨询 🎯 请问你想了解哪方面？选校、费用、还是签证？
+              </div>
+              <div className={`${styles.heroChatBubble} ${styles.heroChatBubbleUser}`}>
+                我不会俄语，可以申请吗？
+              </div>
+              <div className={styles.heroChatTyping}>
+                <span className={styles.heroChatTypingDot} />
+                <span className={styles.heroChatTypingDot} />
+                <span className={styles.heroChatTypingDot} />
+                <span style={{marginLeft:'6px',fontSize:'12px',color:'#64748b'}}>AI 正在生成回复...</span>
+              </div>
+            </div>
+            {/* Right: customer profile */}
+            <div className={styles.heroInboxProfile}>
+              <div className={styles.heroProfileField}>
+                <div className={styles.heroProfileLabel}>客户</div>
+                <div>🧑 陈晓</div>
+              </div>
+              <div className={styles.heroProfileField}>
+                <div className={styles.heroProfileLabel}>来源</div>
+                <div>微信</div>
+              </div>
+              <div className={styles.heroProfileField}>
+                <div className={styles.heroProfileLabel}>标签</div>
+                <span className={styles.heroProfileTag}>高意向</span>
+                <span className={styles.heroProfileTag} style={{marginLeft:'4px'}}>留学咨询</span>
+              </div>
+              <div className={styles.heroProfileField}>
+                <div className={styles.heroProfileLabel}>语言</div>
+                <div>中文</div>
+              </div>
+              <div className={styles.heroProfileSuggest}>
+                🤖 AI 建议：发送试听课邀请
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -173,7 +253,7 @@ export default function Home() {
                 <li>基础知识库</li>
                 <li>AI 客服</li>
               </ul>
-              <a href="/demo" className={styles.pricingBtn}>免费试用</a>
+              <a href="/demo" className={styles.pricingBtn}>预约体验</a>
             </div>
             <div className={`${styles.pricingCard} ${styles.featured}`}>
               <div className={styles.pricingName}>Growth</div>
@@ -206,7 +286,7 @@ export default function Home() {
       <section id="proof" className={styles.sectionAlt}>
         <div className={styles.sectionInner}>
           <div className={styles.proofHeader}>
-            <div className={styles.proofTitle}>AI 本周工作报告</div>
+            <div className={styles.proofTitle}>Demo 场景示例（模拟业务数据）</div>
             <div className={styles.proofSubtitle}>某俄罗斯留学机构 · 真实数据</div>
             <div className={styles.proofDemoTag}>Demo 模拟数据</div>
           </div>

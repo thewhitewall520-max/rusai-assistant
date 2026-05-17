@@ -1651,19 +1651,67 @@ export default function Demo() {
     const scene = DEMO_SCENES[params.demo]
     if (!scene) return
 
-    setActiveTab('inbox')
     setWowDemo({
       ...scene,
-      phase: 'typing',
-      currentMessage: '',
+      phase: 'customer',
       ruDisplayed: '',
       cnDisplayed: '',
     })
+
+    // Multi-stage animation
+    // Step 1: 800ms → analyzing
+    const t1 = setTimeout(() => {
+      setWowDemo(prev => ({ ...prev, phase: 'analyzing' }))
+    }, 800)
+
+    // Step 2: 800+1200=2000ms → generating
+    const t2 = setTimeout(() => {
+      setWowDemo(prev => ({ ...prev, phase: 'generating' }))
+    }, 2000)
+
+    // Step 3: 2000+1500=3500ms → start showing reply
+    const t3 = setTimeout(() => {
+      setWowDemo(prev => ({ ...prev, phase: 'replying' }))
+    }, 3500)
+
+    // Step 4: typing effect from 3500ms
+    let ruInt, cnInt
+    const t4 = setTimeout(() => {
+      const ruText = scene.aiReply_ru
+      let idx = 0
+      ruInt = setInterval(() => {
+        idx++
+        setWowDemo(prev => ({ ...prev, ruDisplayed: ruText.slice(0, idx) }))
+        if (idx >= ruText.length) {
+          clearInterval(ruInt)
+          // Russian done → start Chinese
+          const cnText = scene.aiReply_cn
+          let cIdx = 0
+          cnInt = setInterval(() => {
+            cIdx++
+            setWowDemo(prev => ({ ...prev, cnDisplayed: cnText.slice(0, cIdx) }))
+            if (cIdx >= cnText.length) {
+              clearInterval(cnInt)
+              // 2s delay then done
+              setTimeout(() => {
+                setWowDemo(prev => ({ ...prev, phase: 'done' }))
+              }, 2000)
+            }
+          }, 30)
+        }
+      }, 50)
+    }, 3500)
+
+    return () => {
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4)
+      if (ruInt) clearInterval(ruInt)
+      if (cnInt) clearInterval(cnInt)
+    }
   }, [params])
 
   const tabs = [
     { id: 'dashboard', label: '📊 运营看板', component: DashboardTab },
-    { id: 'inbox', label: '💬 Inbox', component: () => <InboxTab wowDemo={wowDemo} setWowDemo={setWowDemo} onWooDemoEnd={() => {}} /> },
+    { id: 'inbox', label: '💬 Inbox', component: () => <InboxTab /> },
     { id: 'copilot', label: '🤖 Copilot', component: () => <CopilotTab onRunNow={copilotTrigger} /> },
     { id: 'knowledge', label: '📚 Knowledge', component: KnowledgeTab },
     { id: 'content', label: '📝 Content', component: ContentTab },
@@ -1710,6 +1758,117 @@ export default function Demo() {
           <ActiveComponent />
         )}
       </div>
+
+      {/* Wow Demo Overlay */}
+      {wowDemo && wowDemo.phase !== 'done' && (
+        <div className={styles.wowOverlay}>
+          <div className={styles.wowOverlayBg} onClick={() => setWowDemo(null)} />
+          <div className={styles.wowChatWindow}>
+            <div className={styles.wowChatHeader}>
+              <div>
+                <span className={styles.wowChatAvatar}>🤖</span>
+                <div>
+                  <div className={styles.wowChatName}>RusAI 招生助手</div>
+                  <div className={styles.wowChatStatus}>在线 · 实时回复</div>
+                </div>
+              </div>
+              <button onClick={() => setWowDemo(null)} className={styles.wowChatClose}>✕</button>
+            </div>
+            <div className={styles.wowChatBody}>
+              {/* Step 1: Customer typing */}
+              {wowDemo.phase === 'customer' && (
+                <div className={styles.wowChatStep}>
+                  <div className={styles.wowChatStepIcon}>🧑‍💻</div>
+                  <div className={styles.wowChatStepContent}>
+                    <div className={styles.wowChatStepLabel}>客户正在输入...</div>
+                    <div className={styles.wowChatBubble}>{wowDemo.question}</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 1b: Also show customer bubble when in later phases */}
+              {(wowDemo.phase === 'analyzing' || wowDemo.phase === 'generating' || wowDemo.phase === 'replying') && (
+                <div className={styles.wowChatStep}>
+                  <div className={styles.wowChatStepIcon}>🧑‍💻</div>
+                  <div className={styles.wowChatStepContent}>
+                    <div className={styles.wowChatStepLabel}>客户咨询</div>
+                    <div className={styles.wowChatBubble}>{wowDemo.question}</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2: AI analyzing */}
+              {wowDemo.phase === 'analyzing' && (
+                <div className={styles.wowChatStep}>
+                  <div className={styles.wowChatStepIcon}>🧠</div>
+                  <div className={styles.wowChatStepContent}>
+                    <div className={styles.wowChatStepLabel}>正在识别意图...</div>
+                    <div className={styles.wowChatTags}>
+                      {wowDemo.tags.map((tag, i) => (
+                        <span key={i} className={styles.wowChatTag}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: AI generating */}
+              {wowDemo.phase === 'generating' && (
+                <div className={styles.wowChatStep}>
+                  <div className={styles.wowChatStepIcon}>🤖</div>
+                  <div className={styles.wowChatStepContent}>
+                    <div className={styles.wowChatStepLabel}>AI 正在生成回复...</div>
+                    <div className={styles.wowChatTyping}>
+                      <span className={styles.wowChatTypingDot} />
+                      <span className={styles.wowChatTypingDot} />
+                      <span className={styles.wowChatTypingDot} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4: AI reply */}
+              {wowDemo.phase === 'replying' && (
+                <>
+                  <div className={styles.wowChatStep}>
+                    <div className={styles.wowChatStepIcon}>🇷🇺</div>
+                    <div className={styles.wowChatStepContent}>
+                      <div className={styles.wowChatStepLabel}>俄语回复</div>
+                      <div className={styles.wowChatBubble}>
+                        {wowDemo.ruDisplayed || ''}
+                        {(wowDemo.ruDisplayed || '').length < (wowDemo.aiReply_ru || '').length && (
+                          <span className={styles.wowChatCursor}>|</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.wowChatStep}>
+                    <div className={styles.wowChatStepIcon}>🇨🇳</div>
+                    <div className={styles.wowChatStepContent}>
+                      <div className={styles.wowChatStepLabel}>中文对照</div>
+                      <div className={styles.wowChatBubble}>
+                        {wowDemo.cnDisplayed || ''}
+                        {(wowDemo.cnDisplayed || '').length < (wowDemo.aiReply_cn || '').length && (
+                          <span className={styles.wowChatCursor}>|</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Footer: next action */}
+            {wowDemo.phase === 'replying' && (
+              <div className={styles.wowChatFooter}>
+                <div className={styles.wowChatNextAction}>
+                  🎯 推荐下一步：{wowDemo.nextAction}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
