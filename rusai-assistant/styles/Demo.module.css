@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   RusAI Demo — MVP 4 模块 UI
+   RusAI Demo — V2 升级版 UI
    ═══════════════════════════════════════ */
 
 .demoContainer {
@@ -57,7 +57,7 @@
 }
 
 /* ════════════════════════════════════════
-   INBOX
+   INBOX v2 — Wow Moment
    ════════════════════════════════════════ */
 .inboxLayout {
   display: flex;
@@ -75,6 +75,16 @@
   font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.inboxBadge {
+  background: var(--primary);
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 .inboxChat {
   flex: 1;
@@ -126,45 +136,206 @@
   padding: 0 4px;
 }
 
-/* AI suggestion card */
-.aiSuggestion {
-  margin: 12px 20px;
-  padding: 14px;
-  background: #fefce8;
-  border: 1px solid #fde68a;
-  border-radius: 10px;
+/* ── AI Assistant Card v2 (Inbox) ── */
+.aiAssistantCard {
+  margin: 8px 0;
+  padding: 0;
+  background: #ffffff;
+  border: 1.5px solid #c7d2fe;
+  border-left: 4px solid #6366f1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+  animation: cardSlideIn 0.3s ease-out;
 }
-.aiSuggestionLabel {
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.aiCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px 0;
+}
+.aiCardBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
   font-size: 11px;
-  font-weight: 600;
-  color: #92400e;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  margin-bottom: 6px;
 }
-.aiSuggestionText {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #713f12;
-  margin-bottom: 8px;
+.aiCardGeneratedAt {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-left: auto;
 }
-.aiSuggestionActions {
+.aiCardMeta {
+  padding: 12px 16px 8px;
   display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.aiCardMetaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.aiCardMetaLabel {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.aiCardMetaValue {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.confidenceBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.confidenceFill {
+  width: 60px;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.confidenceFillInner {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  transition: width 0.5s ease;
+}
+.confidenceFillInnerMid {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+.confidenceFillInnerLow {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+.aiCardReply {
+  padding: 10px 16px 14px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text);
+  white-space: pre-wrap;
+  border-top: 1px solid #e0e7ff;
+  border-bottom: 1px solid #e0e7ff;
+  background: #fafbff;
+}
+.aiCardFollowUp {
+  padding: 10px 16px 14px;
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
-.aiSuggestionActions button {
-  padding: 6px 14px;
-  border: 1px solid #d97706;
-  border-radius: 6px;
-  background: #fff;
-  cursor: pointer;
+.aiCardFollowUpLabel {
+  width: 100%;
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+.followUpChip {
+  padding: 5px 12px;
   font-size: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  cursor: pointer;
+  color: var(--text);
   font-family: inherit;
-  color: #92400e;
   transition: all 0.15s;
 }
-.aiSuggestionActions button:hover {
-  background: #fde68a;
+.followUpChip:hover {
+  background: #e0e7ff;
+  border-color: #818cf8;
+  color: #4f46e5;
+}
+.aiCardActions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 14px;
+  border-top: 1px solid #e0e7ff;
+}
+.aiCardBtnPrimary {
+  padding: 7px 16px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+.aiCardBtnPrimary:hover { opacity: 0.9; }
+.aiCardBtnSecondary {
+  padding: 7px 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.aiCardBtnSecondary:hover { background: var(--hover); }
+.aiCardBtnEdit {
+  padding: 7px 16px;
+  background: #fefce8;
+  border: 1px solid #fde68a;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #92400e;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.aiCardBtnEdit:hover { background: #fef3c7; }
+
+/* Generating state */
+.aiGenerating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  margin: 4px 0;
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  border-radius: 10px;
+  border: 1px dashed #818cf8;
+}
+.aiGeneratingDot {
+  width: 8px;
+  height: 8px;
+  background: #6366f1;
+  border-radius: 50%;
+  animation: dotPulse 1s infinite;
+}
+.aiGeneratingDot:nth-child(2) { animation-delay: 0.2s; }
+.aiGeneratingDot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.aiGeneratingText {
+  font-size: 13px;
+  color: #4f46e5;
+  font-weight: 500;
 }
 
 /* Chat input */
@@ -210,16 +381,35 @@
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background 0.15s;
+  position: relative;
 }
 .convItem:hover { background: var(--hover); }
 .convItemActive {
   background: var(--primary-light) !important;
   border-left: 3px solid var(--primary);
 }
+.convItemUnread {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+}
 .convName {
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.convPlatform {
+  font-size: 12px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--hover);
 }
 .convPreview {
   font-size: 13px;
@@ -227,6 +417,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-right: 20px;
 }
 .convTime {
   font-size: 11px;
@@ -392,11 +583,11 @@
 }
 
 /* ════════════════════════════════════════
-   COPILOT
+   COPILOT v2 — Quick Actions + AI Card
    ════════════════════════════════════════ */
 .copilotLayout {
   padding: 32px;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   height: 100%;
   display: flex;
@@ -404,18 +595,84 @@
 }
 .copilotLayout h2 {
   font-size: 22px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .copilotDesc {
   font-size: 14px;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 0;
+}
+
+/* Quick Actions Row */
+.quickActionsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.quickActionsLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.quickActionsGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.quickActionsGroupLabel {
+  font-size: 11px;
+  color: var(--text-secondary);
+  width: 100%;
+  margin-bottom: -4px;
+}
+.quickActionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.quickActionBtn:hover {
+  border-color: #818cf8;
+  background: #eef2ff;
+  color: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+}
+.quickActionBtn:active {
+  transform: translateY(0);
+}
+.quickActionBtnActive {
+  border-color: #6366f1 !important;
+  background: #6366f1 !important;
+  color: #fff !important;
+}
+.quickActionIcon {
+  font-size: 16px;
+}
+
+/* Copilot Input */
+.copilotInputWrapper {
+  position: relative;
+  margin-bottom: 12px;
 }
 .copilotInput {
   width: 100%;
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
   font-size: 15px;
   font-family: inherit;
   resize: vertical;
@@ -423,12 +680,20 @@
   background: var(--card-bg);
   color: var(--text);
   box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.copilotInput:focus { outline: none; border-color: var(--primary); }
+.copilotInput:focus {
+  outline: none;
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+}
+.copilotInput::placeholder {
+  color: #94a3b8;
+}
 .copilotGenBtn {
-  margin-top: 12px;
-  padding: 10px 24px;
-  background: var(--primary);
+  margin-top: 8px;
+  padding: 11px 28px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -437,12 +702,80 @@
   font-family: inherit;
   font-weight: 500;
   align-self: flex-start;
+  transition: opacity 0.15s, transform 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-.copilotGenBtn:hover { opacity: 0.9; }
-.copilotGenBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.copilotGenBtn:hover { opacity: 0.92; transform: translateY(-1px); }
+.copilotGenBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* Copilot AI Assistant Card */
+.copilotAiCard {
+  margin-top: 16px;
+  background: #fff;
+  border: 1.5px solid #c7d2fe;
+  border-left: 4px solid #6366f1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(99, 102, 241, 0.06);
+  animation: cardSlideIn 0.35s ease-out;
+  flex: 1;
+  overflow-y: auto;
+}
+.copilotResultSection {
+  padding: 14px 18px;
+}
+.copilotLangLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+.copilotResultContent {
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* Copilot loading */
+.copilotLoading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 24px;
+  margin-top: 12px;
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  border-radius: 12px;
+  border: 1px dashed #818cf8;
+}
+.copilotLoadingDots {
+  display: flex;
+  gap: 4px;
+}
+.copilotLoadingDot {
+  width: 8px;
+  height: 8px;
+  background: #6366f1;
+  border-radius: 50%;
+  animation: dotPulse 1.2s infinite;
+}
+.copilotLoadingDot:nth-child(2) { animation-delay: 0.2s; }
+.copilotLoadingDot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.copilotLoadingText {
+  font-size: 14px;
+  color: #4f46e5;
+  font-weight: 500;
+}
 
 .copilotOutput {
-  margin-top: 20px;
+  margin-top: 0;
   flex: 1;
   overflow-y: auto;
 }
@@ -468,7 +801,7 @@
 }
 
 /* ════════════════════════════════════════
-   CONTENT
+   CONTENT v2
    ════════════════════════════════════════ */
 .contentLayout {
   padding: 32px;
@@ -571,4 +904,7 @@
   .topNav { padding: 0 12px; overflow-x: auto; }
   .tabs { gap: 2px; }
   .tab { font-size: 13px; padding: 8px 12px; }
+  .quickActionsGroup { gap: 6px; }
+  .quickActionBtn { font-size: 12px; padding: 7px 12px; }
+  .aiCardActions { flex-wrap: wrap; }
 }

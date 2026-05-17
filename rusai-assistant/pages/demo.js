@@ -13,6 +13,7 @@ const CONVERSATIONS = [
     platform: '微信',
     lastMsg: '老师，请问预科俄语课程什么时候开课？',
     time: '10:32',
+    unread: true,
     messages: [
       { id: 'm1', text: '你好，请问是俄语课程咨询吗？', sender: 'agent', time: '10:00' },
       { id: 'm2', text: '是的老师！我想了解一下预科俄语课程', sender: 'user', time: '10:01' },
@@ -21,7 +22,6 @@ const CONVERSATIONS = [
       { id: 'm5', text: '那暑期预科班非常适合您！7月初开课，每周一三五晚上，共8周。另外赠送免费试听课。', sender: 'agent', time: '10:12' },
       { id: 'm6', text: '请问预科俄语课程什么时候开课？', sender: 'user', time: '10:32' },
     ],
-    suggestedReply: '同学你好！🎓 暑期预科班7月5日开课，每周一三五 19:00-20:30（北京时间），线上直播授课。现在报名还赠送俄语学习大礼包哦！请问需要帮您登记试听吗？😊',
   },
   {
     id: 'c2',
@@ -29,6 +29,7 @@ const CONVERSATIONS = [
     platform: 'Telegram',
     lastMsg: 'Спасибо за помощь с документами!',
     time: '昨天',
+    unread: false,
     messages: [
       { id: 'm2-1', text: 'Здравствуйте! Нужна помощь с переводом документов', sender: 'user', time: '昨天 14:00' },
       { id: 'm2-2', text: 'Здравствуйте, Анна! Конечно, какие документы нужно перевести?', sender: 'agent', time: '昨天 14:05' },
@@ -36,7 +37,6 @@ const CONVERSATIONS = [
       { id: 'm2-4', text: 'Переведём за 2-3 рабочих дня. Стоимость 1500₽ за страницу.', sender: 'agent', time: '昨天 14:15' },
       { id: 'm2-5', text: 'Спасибо за помощь с документами!', sender: 'user', time: '昨天 16:00' },
     ],
-    suggestedReply: 'Пожалуйста, Анна! 😊 Рады были помочь. Если понадобится перевод для других документов или нотариальное заверение — обращайтесь!',
   },
   {
     id: 'c3',
@@ -44,12 +44,12 @@ const CONVERSATIONS = [
     platform: '小红书',
     lastMsg: '签证邀请函多久能下来？',
     time: '昨天',
+    unread: true,
     messages: [
       { id: 'm3-1', text: '你好！我看到你们有留学俄罗斯服务，想咨询一下', sender: 'user', time: '昨天 20:00' },
       { id: 'm3-2', text: '你好李明浩！是的，我们提供全方位的俄罗斯留学服务 🎯', sender: 'agent', time: '昨天 20:02' },
       { id: 'm3-3', text: '签证邀请函多久能下来？', sender: 'user', time: '昨天 20:05' },
     ],
-    suggestedReply: '普通邀请函通常需要14-21个工作日。不过我们有加急通道，最快7个工作日可以拿到！另外提醒您，莫斯科签证中心的预约名额最近比较紧张，建议尽早准备哦 ⏰',
   },
   {
     id: 'c4',
@@ -57,6 +57,7 @@ const CONVERSATIONS = [
     platform: '微信',
     lastMsg: '能帮我写一封俄语邮件给导师吗？',
     time: '周一',
+    unread: false,
     messages: [
       { id: 'm4-1', text: '老师好，我是王芳，现在在莫斯科读研', sender: 'user', time: '周一 09:30' },
       { id: 'm4-2', text: '王芳你好！在莫斯科还习惯吗？😊', sender: 'agent', time: '周一 09:32' },
@@ -64,7 +65,6 @@ const CONVERSATIONS = [
       { id: 'm4-4', text: '可以帮你呀！需要什么场景的俄语邮件？', sender: 'agent', time: '周一 09:36' },
       { id: 'm4-5', text: '能帮我写一封俄语邮件给导师吗？想申请延期交论文', sender: 'user', time: '周一 09:38' },
     ],
-    suggestedReply: '当然可以！已经帮您生成了一封俄语邮件草稿，内容如下：\n\nУважаемый профессор Иванов,\n\nЯ обращаюсь к Вам с просьбой продлить срок сдачи курсовой работы...\n\n需要我帮您调整语气或者补充内容吗？',
   },
   {
     id: 'c5',
@@ -72,12 +72,12 @@ const CONVERSATIONS = [
     platform: 'Telegram',
     lastMsg: 'Есть ли у вас курсы китайского для русских?',
     time: '周一',
+    unread: false,
     messages: [
       { id: 'm5-1', text: 'Добрый день! Интересуют курсы китайского языка', sender: 'user', time: '周一 11:00' },
       { id: 'm5-2', text: 'Добрый день, Ольга! Да, у нас есть курсы китайского для русскоязычных студентов 🇨🇳', sender: 'agent', time: '周一 11:05' },
       { id: 'm5-3', text: 'Есть ли у вас курсы китайского для русских?', sender: 'user', time: '周一 11:10' },
     ],
-    suggestedReply: 'Да! У нас есть:\n1️⃣ Базовый курс HSK 1-2 (для начинающих)\n2️⃣ Разговорный клуб (для продолжающих)\n3️⃣ Деловой китайский\n\nВсе занятия проводятся онлайн с носителями языка. Хотите записаться на пробный урок? 🎯',
   },
 ]
 
@@ -92,16 +92,8 @@ const INITIAL_FAQS = [
 ]
 
 /* ──────────────────────────────────────────
-   Mock Generate Functions
+   Mock Content Generator
    ────────────────────────────────────────── */
-
-function mockCopilot(input) {
-  const cn = `📝 中文回答：\n您好！关于「${input}」，我们的建议如下：\n\n1️⃣ 俄罗斯留学申请需要提前6-12个月准备\n2️⃣ 建议先完成俄语预科课程（8个月/300+课时）\n3️⃣ 材料清单：护照、学历公证、健康证明、资金证明\n4️⃣ 签证办理周期约4-6周\n\n如需更详细的个性化方案，请联系我们的顾问老师！😊`
-
-  const ru = `📝 Ответ на русском:\n\nЗдравствуйте! По вашему вопросу «${input}»:\n\n1️⃣ Для поступления в российский вуз подготовка занимает 6-12 месяцев\n2️⃣ Рекомендуем пройти подготовительные курсы русского языка (8 мес/300+ часов)\n3️⃣ Необходимые документы: загранпаспорт, нотариально заверенный диплом, медсправка, подтверждение финансовой состоятельности\n4️⃣ Оформление визы — 4-6 недель\n\nДля индивидуальной консультации обращайтесь к нашим специалистам! 😊`
-
-  return { cn, ru }
-}
 
 function mockContent(platform, topic, tone) {
   if (platform === 'xiaohongshu') {
@@ -123,62 +115,40 @@ function mockContent(platform, topic, tone) {
 提前学俄语！强烈推荐预科课程
 不会俄语也没关系，很多学校有英文授课
 
-#俄罗斯留学 #留学申请 #预科 #莫斯科 #性价比留学
-
-🔥 收藏 + 关注，获取更多留学干货！`
-    }
-    if (topic === '俄语学习') {
-      return `📚 零基础学俄语30天 | 每天15分钟
-
-第1天：俄语字母表（33个字母其实很简单）
-第7天：日常问候语（привет, как дела? 🌟）
-第14天：自我介绍（меня зовут...）
-第21天：购物场景（сколько стоит? 💰）
-第30天：简单对话（恭喜你！🎉）
-
-⚠️ 避坑指南
-× 不要死记硬背语法
-× 不要只看课本
-√ 多听俄语歌曲、看俄剧
-√ 找语伴练习口语
-
-👇评论区扣1，获取免费俄语学习资料包！
-
-#俄语学习 #自学俄语 #外语 #学习方法`
+#俄罗斯留学 #留学申请 #预科 #莫斯科 #性价比留学`
     }
     return `📝 关于「${topic}」的几点建议\n\n1️⃣ 提前规划，不要临时抱佛脚\n2️⃣ 选择适合自己的方式\n3️⃣ 坚持才是最重要的 💪\n\n#留学 #俄语 #干货`
   }
-
-  if (platform === 'telegram') {
-    return `📢 【RusAI 留学资讯】\n\n🔥 俄罗斯留学热门问答\n\n❓ 问题：${topic}\n\n💡 解答：\n俄罗斯留学申请正在火热进行中！我们提供一站式留学服务 — 从选校、申请材料、签证办理到入学后的生活指导。\n\n📱 咨询方式：\n• 微信：RusAI_Service\n• Telegram：@RusAI_Support\n• 官网：rusai.cc\n\n✨ 现在咨询可免费领取「俄语入门学习包」一份！`
-  }
-
-  // Russian content
-  return `📄 Русский контент\n\nТема: ${topic}\n\nRusAI Business Copilot — ваш надёжный помощник в бизнесе с Россией!\n\nМы предлагаем:\n✓ Перевод документов любой сложности\n✓ Подготовка к сдаче экзаменов\n✓ Помощь в поступлении в вузы РФ\n✓ Бизнес-консультации\n\nСвяжитесь с нами сегодня! 🚀`
+  return `📄 Русский контент\n\nТема: ${topic}\n\nRusAI Business Copilot — ваш надёжный помощник в бизнесе с Россией!\n\nСвяжитесь с нами сегодня! 🚀`
 }
 
 /* ──────────────────────────────────────────
-   Components
+   Inbox Tab v2 — Live AI Reply
    ────────────────────────────────────────── */
 
 function InboxTab() {
   const [activeConv, setActiveConv] = useState(CONVERSATIONS[0])
   const [inputText, setInputText] = useState('')
   const [msgs, setMsgs] = useState(activeConv.messages)
-  const [showSuggestion, setShowSuggestion] = useState(true)
   const [sentMsgs, setSentMsgs] = useState([])
+  const [aiCard, setAiCard] = useState(null)     // { suggestion, confidence, intent, recommendedAction, followUpSuggestions, quickReply, generatedBy }
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [editingReply, setEditingReply] = useState(null)  // when user clicks "edit"
   const bottomRef = useRef(null)
 
   useEffect(() => {
     setMsgs(activeConv.messages)
-    setShowSuggestion(true)
     setSentMsgs([])
+    setAiCard(null)
+    setIsGenerating(false)
+    setEditingReply(null)
   }, [activeConv.id])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [msgs, sentMsgs])
+  }, [msgs, sentMsgs, aiCard, isGenerating, editingReply])
 
+  // When agent sends a message → auto-generate AI suggestion
   const handleSend = () => {
     if (!inputText.trim()) return
     const newMsg = {
@@ -187,35 +157,98 @@ function InboxTab() {
       sender: 'agent',
       time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
     }
-    setSentMsgs(prev => [...prev, newMsg])
+    setSentMsgs((prev) => [...prev, newMsg])
     setInputText('')
-    setShowSuggestion(false)
+    setAiCard(null)
+    setIsGenerating(true)
+    setEditingReply(null)
+
+    // Simulate AI generation
+    setTimeout(() => {
+      setIsGenerating(false)
+      setAiCard({
+        suggestion: activeConv.platform === 'Telegram'
+          ? `Здравствуйте! Благодарю за ваш вопрос. 😊
+
+Хотите, чтобы я подробно рассказал о 【программе/услуге】 в личном сообщении? Или записать вас на бесплатную консультацию на 【этой неделе】?`
+          : `您好！感谢您的咨询 😊
+
+关于您提到的内容，我整理了一些关键信息供参考：
+
+📚 我们的预科课程覆盖听、说、读、写全方位训练
+📅 最近一期开课时间：【7月5日】
+💰 费用：【XX元/期】，包含教材和在线辅导
+
+需要帮您预约试听课吗？第一节课免费哦！🎁`,
+        confidence: 0.89,
+        intent: '留学课程咨询 | Course Inquiry',
+        recommendedAction: '发送试听课邀请',
+        followUpSuggestions: ['📚 发送课程资料', '📞 预约电话沟通', '📋 发送申请材料清单'],
+        quickReply: '',
+        generatedBy: 'deepseek',
+      })
+    }, 800 + Math.random() * 600)
   }
 
-  const useSuggestion = () => {
+  const useAiReply = () => {
+    if (!aiCard) return
     const newMsg = {
-      id: `sent-${Date.now()}`,
-      text: activeConv.suggestedReply,
+      id: `ai-sent-${Date.now()}`,
+      text: aiCard.suggestion,
       sender: 'agent',
       time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
     }
-    setSentMsgs(prev => [...prev, newMsg])
-    setShowSuggestion(false)
+    setSentMsgs((prev) => [...prev, newMsg])
+    setAiCard(null)
+    setEditingReply(null)
+  }
+
+  const startEdit = () => {
+    if (!aiCard) return
+    setEditingReply(aiCard.suggestion)
+    setAiCard(null)
+  }
+
+  const sendEdited = () => {
+    if (!editingReply || !editingReply.trim()) return
+    const newMsg = {
+      id: `edit-sent-${Date.now()}`,
+      text: editingReply,
+      sender: 'agent',
+      time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+    }
+    setSentMsgs((prev) => [...prev, newMsg])
+    setEditingReply(null)
   }
 
   const allMsgs = [...msgs, ...sentMsgs]
 
+  const confidenceClass = (c) => {
+    if (c >= 0.85) return styles.confidenceFillInner
+    if (c >= 0.7) return `${styles.confidenceFillInner} ${styles.confidenceFillInnerMid}`
+    return `${styles.confidenceFillInner} ${styles.confidenceFillInnerLow}`
+  }
+
   return (
     <div className={styles.inboxLayout}>
       <div className={styles.inboxList}>
-        <div className={styles.inboxListHeader}>💬 对话 ({CONVERSATIONS.length})</div>
-        {CONVERSATIONS.map(c => (
+        <div className={styles.inboxListHeader}>
+          💬 Inbox
+          <span className={styles.inboxBadge}>
+            {CONVERSATIONS.filter((c) => c.unread).length} 未读
+          </span>
+        </div>
+        {CONVERSATIONS.map((c) => (
           <div
             key={c.id}
             className={`${styles.convItem} ${activeConv.id === c.id ? styles.convItemActive : ''}`}
             onClick={() => setActiveConv(c)}
           >
-            <div className={styles.convName}>{c.platform === 'Telegram' ? '📱' : c.platform === '微信' ? '💚' : '📕'} {c.name}</div>
+            {c.unread && <span className={styles.convItemUnread} />}
+            <div className={styles.convName}>
+              {c.name}
+              <span className={styles.convPlatform}>{c.platform}</span>
+            </div>
             <div className={styles.convPreview}>{c.lastMsg}</div>
             <div className={styles.convTime}>{c.time}</div>
           </div>
@@ -229,7 +262,7 @@ function InboxTab() {
         </div>
 
         <div className={styles.chatMsgs}>
-          {allMsgs.map(m => (
+          {allMsgs.map((m) => (
             <div key={m.id} className={`${styles.msgRow} ${m.sender === 'agent' ? styles.msgRowSelf : ''}`}>
               <div className={`${styles.msgBubble} ${m.sender === 'agent' ? styles.msgBubbleSelf : ''}`}>
                 {m.text}
@@ -238,13 +271,117 @@ function InboxTab() {
             </div>
           ))}
 
-          {showSuggestion && (
+          {/* AI Generating state */}
+          {isGenerating && (
+            <div className={styles.aiGenerating}>
+              <div style={{ display: 'flex', gap: 4 }}>
+                <span className={styles.aiGeneratingDot} />
+                <span className={styles.aiGeneratingDot} />
+                <span className={styles.aiGeneratingDot} />
+              </div>
+              <span className={styles.aiGeneratingText}>AI 正在分析对话 & 生成建议回复...</span>
+            </div>
+          )}
+
+          {/* AI Assistant Card v2 */}
+          {aiCard && !editingReply && (
+            <div className={styles.aiAssistantCard}>
+              <div className={styles.aiCardHeader}>
+                <span className={styles.aiCardBadge}>
+                  🤖 AI 建议回复
+                </span>
+                <span className={styles.aiCardGeneratedAt}>
+                  刚刚 · {aiCard.generatedBy === 'deepseek' ? 'DeepSeek' : 'Mock'}
+                </span>
+              </div>
+
+              <div className={styles.aiCardMeta}>
+                <div className={styles.aiCardMetaItem}>
+                  <span className={styles.aiCardMetaLabel}>Confidence</span>
+                  <div className={styles.confidenceBar}>
+                    <div className={styles.confidenceFill}>
+                      <div
+                        className={confidenceClass(aiCard.confidence)}
+                        style={{ width: `${Math.round(aiCard.confidence * 100)}%` }}
+                      />
+                    </div>
+                    <span>{Math.round(aiCard.confidence * 100)}%</span>
+                  </div>
+                </div>
+                <div className={styles.aiCardMetaItem}>
+                  <span className={styles.aiCardMetaLabel}>意图</span>
+                  <span className={styles.aiCardMetaValue}>{aiCard.intent}</span>
+                </div>
+                <div className={styles.aiCardMetaItem}>
+                  <span className={styles.aiCardMetaLabel}>推荐动作</span>
+                  <span className={styles.aiCardMetaValue}>{aiCard.recommendedAction}</span>
+                </div>
+              </div>
+
+              <div className={styles.aiCardReply}>
+                {aiCard.suggestion}
+              </div>
+
+              <div className={styles.aiCardFollowUp}>
+                <span className={styles.aiCardFollowUpLabel}>Suggested Follow-up</span>
+                {aiCard.followUpSuggestions.map((fu, i) => (
+                  <button key={i} className={styles.followUpChip}>{fu}</button>
+                ))}
+              </div>
+
+              <div className={styles.aiCardActions}>
+                <button className={styles.aiCardBtnPrimary} onClick={useAiReply}>
+                  ✅ 使用此回复
+                </button>
+                <button className={styles.aiCardBtnEdit} onClick={startEdit}>
+                  ✏️ 编辑
+                </button>
+                <button className={styles.aiCardBtnSecondary} onClick={() => setAiCard(null)}>
+                  关闭
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Editing mode */}
+          {editingReply !== null && (
             <div className={styles.aiSuggestion}>
-              <div className={styles.aiSuggestionLabel}>🤖 AI 建议回复</div>
-              <div className={styles.aiSuggestionText}>{activeConv.suggestedReply}</div>
-              <div className={styles.aiSuggestionActions}>
-                <button onClick={useSuggestion}>✅ 使用此回复</button>
-                <button onClick={() => setShowSuggestion(false)}>✏️ 自己编辑</button>
+              <div className={styles.aiSuggestionLabel}>🤖 编辑 AI 建议回复</div>
+              <textarea
+                style={{
+                  width: '100%',
+                  minHeight: 80,
+                  padding: 10,
+                  border: '1px solid #d97706',
+                  borderRadius: 8,
+                  fontSize: 14,
+                  fontFamily: 'inherit',
+                  lineHeight: 1.6,
+                  resize: 'vertical',
+                }}
+                value={editingReply}
+                onChange={(e) => setEditingReply(e.target.value)}
+              />
+              <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                <button className={styles.aiCardBtnPrimary} onClick={sendEdited}>
+                  发送
+                </button>
+                <button
+                  className={styles.aiCardBtnSecondary}
+                  onClick={() => {
+                    setEditingReply(null)
+                    setAiCard({
+                      suggestion: editingReply,
+                      confidence: 0.89,
+                      intent: '编辑中 | Editing',
+                      recommendedAction: '发送回复',
+                      followUpSuggestions: [],
+                      generatedBy: 'edited',
+                    })
+                  }}
+                >
+                  取消编辑
+                </button>
               </div>
             </div>
           )}
@@ -258,8 +395,13 @@ function InboxTab() {
             rows={1}
             placeholder="输入回复..."
             value={inputText}
-            onChange={e => setInputText(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend() }}}
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                handleSend()
+              }
+            }}
           />
           <button className={styles.sendBtn} onClick={handleSend} disabled={!inputText.trim()}>
             发送 ➤
@@ -269,6 +411,10 @@ function InboxTab() {
     </div>
   )
 }
+
+/* ──────────────────────────────────────────
+   Knowledge Tab
+   ────────────────────────────────────────── */
 
 function KnowledgeTab() {
   const [faqs, setFaqs] = useState(INITIAL_FAQS)
@@ -284,45 +430,39 @@ function KnowledgeTab() {
     setFormA('')
     setShowModal(true)
   }
-
   const openEdit = (faq) => {
     setEditId(faq.id)
     setFormQ(faq.question)
     setFormA(faq.answer)
     setShowModal(true)
   }
-
   const handleSave = () => {
     if (!formQ.trim() || !formA.trim()) return
     if (editId) {
-      setFaqs(faqs.map(f => f.id === editId ? { ...f, question: formQ, answer: formA } : f))
+      setFaqs(faqs.map((f) => (f.id === editId ? { ...f, question: formQ, answer: formA } : f)))
     } else {
       setFaqs([...faqs, { id: `f${Date.now()}`, question: formQ, answer: formA }])
     }
     setShowModal(false)
   }
-
   const handleDelete = (id) => {
-    setFaqs(faqs.filter(f => f.id !== id))
+    setFaqs(faqs.filter((f) => f.id !== id))
   }
 
   return (
     <div className={styles.knowledgeLayout}>
       <div className={styles.knowledgeHeader}>
-        <h2>📚 知识库 — FAQ（{faqs.length} 条）</h2>
-        <button className={styles.addBtn} onClick={openAdd}>+ 新增 FAQ</button>
+        <h2>📚 FAQ 知识库（{faqs.length} 条）</h2>
+        <button className={styles.addBtn} onClick={openAdd}>+ 新增</button>
       </div>
-
       <div className={styles.knowledgeList}>
-        {faqs.map(faq => (
+        {faqs.map((faq) => (
           <div key={faq.id} className={styles.faqItem}>
             <div className={styles.faqContent}>
               <div className={styles.faqQ} onClick={() => setExpanded(expanded === faq.id ? null : faq.id)}>
                 ❓ {faq.question}
               </div>
-              {expanded === faq.id && (
-                <div className={styles.faqA}>{faq.answer}</div>
-              )}
+              {expanded === faq.id && <div className={styles.faqA}>{faq.answer}</div>}
             </div>
             <div className={styles.faqActions}>
               <button className={styles.editBtn} onClick={() => openEdit(faq)}>编辑</button>
@@ -331,15 +471,14 @@ function KnowledgeTab() {
           </div>
         ))}
       </div>
-
       {showModal && (
         <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
-          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <h3>{editId ? '编辑 FAQ' : '新增 FAQ'}</h3>
             <label>问题</label>
-            <input value={formQ} onChange={e => setFormQ(e.target.value)} placeholder="输入问题..." />
+            <input value={formQ} onChange={(e) => setFormQ(e.target.value)} placeholder="输入问题..." />
             <label>回答</label>
-            <textarea value={formA} onChange={e => setFormA(e.target.value)} placeholder="输入回答..." />
+            <textarea value={formA} onChange={(e) => setFormA(e.target.value)} placeholder="输入回答..." />
             <div className={styles.modalActions}>
               <button className={styles.modalCancel} onClick={() => setShowModal(false)}>取消</button>
               <button className={styles.modalConfirm} onClick={handleSave}>保存</button>
@@ -351,55 +490,268 @@ function KnowledgeTab() {
   )
 }
 
+/* ──────────────────────────────────────────
+   Copilot Tab v2 — Quick Actions + AI Card
+   ────────────────────────────────────────── */
+
 function CopilotTab() {
   const [input, setInput] = useState('')
-  const [output, setOutput] = useState(null)
+  const [output, setOutput] = useState(null)   // { result, intent, confidence, quickActions }
   const [loading, setLoading] = useState(false)
+  const [activeScene, setActiveScene] = useState(null)  // which quick action is selected
 
+  // Quick Action scenes
+  const studyAbroadActions = [
+    { id: 'enrollment_reply', icon: '🎓', label: '生成招生回复', desc: '自动生成俄语+中文回复' },
+    { id: 'material_checklist', icon: '📋', label: '生成材料清单', desc: '输出申请材料清单' },
+    { id: 'bilingual_consult', icon: '💬', label: '回复俄语咨询', desc: '中俄双语回复' },
+  ]
+  const crossBorderActions = [
+    { id: 'quotation', icon: '💰', label: '生成报价', desc: '俄语模板报价' },
+    { id: 'after_sales', icon: '🔄', label: '售后回复', desc: '标准售后话术' },
+    { id: 'logistics', icon: '📦', label: '物流解释', desc: '物流状态俄语回复' },
+  ]
+
+  // Call Copilot API
+  const callCopilot = async (params) => {
+    setLoading(true)
+    setActiveScene(params.scene || null)
+    setOutput(null)
+
+    try {
+      const res = await fetch('/api/demo/copilot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params),
+      })
+      const data = await res.json()
+      if (data.error) {
+        setOutput({ result: `❌ ${data.error}`, intent: 'error', confidence: 0, quickActions: [] })
+      } else {
+        setOutput(data)
+      }
+    } catch {
+      setOutput({
+        result: '❌ 网络错误，请检查网络连接后重试',
+        intent: 'error',
+        confidence: 0,
+        quickActions: [],
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Free-text input
   const handleGenerate = () => {
     if (!input.trim()) return
-    setLoading(true)
-    // Simulate API call — Gray will replace this with real Copilot logic
-    setTimeout(() => {
-      const result = mockCopilot(input)
-      setOutput(result)
-      setLoading(false)
-    }, 800)
+    callCopilot({ input: input.trim() })
   }
+
+  // Quick action button click
+  const handleQuickAction = (sceneId) => {
+    callCopilot({ scene: sceneId })
+  }
+
+  // Parse bilingual result into ru/cn sections
+  const parseResult = (text) => {
+    if (!text) return { ru: '', cn: '' }
+    const ruMatch = text.match(/=== RU ===\s*\n([\s\S]*?)(?==== 中文对照 ===|$)/)
+    const cnMatch = text.match(/=== 中文对照 ===\s*\n([\s\S]*)/)
+    return {
+      ru: ruMatch ? ruMatch[1].trim() : '',
+      cn: cnMatch ? cnMatch[1].trim() : text,
+    }
+  }
+
+  const parsed = output ? parseResult(output.result) : { ru: '', cn: '' }
 
   return (
     <div className={styles.copilotLayout}>
-      <h2>🤖 RusAI Copilot</h2>
-      <p className={styles.copilotDesc}>智能助手 — 中俄双语自动回复，支持留学/俄语培训场景</p>
+      <h2>🤖 RusAI Business Copilot</h2>
+      <p className={styles.copilotDesc}>
+        智能双语助手 — 点一下就有结果，不让客户思考
+      </p>
 
-      <textarea
-        className={styles.copilotInput}
-        rows={4}
-        placeholder="输入你的问题，例如：在俄罗斯留学需要准备哪些材料？"
-        value={input}
-        onChange={e => setInput(e.target.value)}
-      />
-      <button className={styles.copilotGenBtn} onClick={handleGenerate} disabled={loading || !input.trim()}>
+      {/* Quick Actions */}
+      <div className={styles.quickActionsRow}>
+        <span className={styles.quickActionsLabel}>Quick Actions</span>
+
+        <span className={styles.quickActionsGroupLabel}>🎓 留学场景</span>
+        <div className={styles.quickActionsGroup}>
+          {studyAbroadActions.map((a) => (
+            <button
+              key={a.id}
+              className={`${styles.quickActionBtn} ${activeScene === a.id && !loading ? styles.quickActionBtnActive : ''}`}
+              onClick={() => handleQuickAction(a.id)}
+              disabled={loading}
+              title={a.desc}
+            >
+              <span className={styles.quickActionIcon}>{a.icon}</span>
+              {a.label}
+            </button>
+          ))}
+        </div>
+
+        <span className={styles.quickActionsGroupLabel}>🌏 跨境场景</span>
+        <div className={styles.quickActionsGroup}>
+          {crossBorderActions.map((a) => (
+            <button
+              key={a.id}
+              className={`${styles.quickActionBtn} ${activeScene === a.id && !loading ? styles.quickActionBtnActive : ''}`}
+              onClick={() => handleQuickAction(a.id)}
+              disabled={loading}
+              title={a.desc}
+            >
+              <span className={styles.quickActionIcon}>{a.icon}</span>
+              {a.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Free-text Input */}
+      <div className={styles.copilotInputWrapper}>
+        <textarea
+          className={styles.copilotInput}
+          rows={3}
+          placeholder="输入你的业务问题，AI 即刻回复...&#10;支持中俄双语输入，自动识别意图"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              handleGenerate()
+            }
+          }}
+        />
+      </div>
+
+      <button
+        className={styles.copilotGenBtn}
+        onClick={handleGenerate}
+        disabled={loading || !input.trim()}
+      >
         {loading ? '⏳ 生成中...' : '🚀 生成回答'}
       </button>
 
-      <div className={styles.copilotOutput}>
-        {output && (
-          <>
-            <div className={styles.outputCard}>
-              <div className={styles.outputLangLabel}>🇨🇳 中文</div>
-              <div className={styles.outputText}>{output.cn}</div>
+      {/* Loading */}
+      {loading && (
+        <div className={styles.copilotLoading}>
+          <div className={styles.copilotLoadingDots}>
+            <span className={styles.copilotLoadingDot} />
+            <span className={styles.copilotLoadingDot} />
+            <span className={styles.copilotLoadingDot} />
+          </div>
+          <span className={styles.copilotLoadingText}>
+            AI 正在生成专业回复...
+          </span>
+        </div>
+      )}
+
+      {/* Result — Copilot AI Card */}
+      {output && !loading && (
+        <div className={styles.copilotAiCard}>
+          {/* Header */}
+          <div className={styles.aiCardHeader} style={{ padding: '14px 18px 0' }}>
+            <span className={styles.aiCardBadge}>🤖 AI Copilot</span>
+            {output.intent && output.intent !== 'error' && (
+              <span className={styles.aiCardGeneratedAt}>
+                意图识别 · 自动生成
+              </span>
+            )}
+          </div>
+
+          {/* Meta */}
+          {output.intent && output.intent !== 'error' && (
+            <div className={styles.aiCardMeta} style={{ padding: '12px 18px 8px' }}>
+              <div className={styles.aiCardMetaItem}>
+                <span className={styles.aiCardMetaLabel}>Confidence</span>
+                <div className={styles.confidenceBar}>
+                  <div className={styles.confidenceFill}>
+                    <div
+                      className={output.confidence >= 0.85 ? styles.confidenceFillInner : output.confidence >= 0.7 ? `${styles.confidenceFillInner} ${styles.confidenceFillInnerMid}` : `${styles.confidenceFillInner} ${styles.confidenceFillInnerLow}`}
+                      style={{ width: `${Math.round((output.confidence || 0.7) * 100)}%` }}
+                    />
+                  </div>
+                  <span>{Math.round((output.confidence || 0.7) * 100)}%</span>
+                </div>
+              </div>
+              <div className={styles.aiCardMetaItem}>
+                <span className={styles.aiCardMetaLabel}>意图</span>
+                <span className={styles.aiCardMetaValue}>{output.intent}</span>
+              </div>
             </div>
-            <div className={styles.outputCard}>
-              <div className={styles.outputLangLabel}>🇷🇺 Русский</div>
-              <div className={styles.outputText}>{output.ru}</div>
+          )}
+
+          {/* Bilingual Content */}
+          {parsed.ru && (
+            <div className={styles.copilotResultSection} style={{ borderTop: '1px solid #e0e7ff' }}>
+              <div className={styles.copilotLangLabel}>🇷🇺 Русский</div>
+              <div className={styles.copilotResultContent}>{parsed.ru}</div>
             </div>
-          </>
-        )}
-      </div>
+          )}
+          {parsed.cn && (
+            <div className={styles.copilotResultSection} style={{ borderTop: parsed.ru ? '1px solid #e0e7ff' : 'none' }}>
+              <div className={styles.copilotLangLabel}>🇨🇳 中文</div>
+              <div className={styles.copilotResultContent}>{parsed.cn}</div>
+            </div>
+          )}
+
+          {!parsed.ru && !parsed.cn && output.result && (
+            <div className={styles.copilotResultSection}>
+              <div className={styles.copilotResultContent}>{output.result}</div>
+            </div>
+          )}
+
+          {/* Follow-up Quick Actions */}
+          {output.quickActions && output.quickActions.length > 0 && (
+            <div className={styles.aiCardFollowUp} style={{ padding: '10px 18px 14px' }}>
+              <span className={styles.aiCardFollowUpLabel}>Suggested Actions</span>
+              {output.quickActions.map((qa, i) => (
+                <button
+                  key={i}
+                  className={styles.followUpChip}
+                  onClick={() => {
+                    const sceneMap = {
+                      '🎓 生成招生回复': 'enrollment_reply',
+                      '📋 生成材料清单': 'material_checklist',
+                      '💬 回复俄语咨询': 'bilingual_consult',
+                      '💰 生成报价': 'quotation',
+                      '🔄 售后回复': 'after_sales',
+                      '📦 物流解释': 'logistics',
+                    }
+                    const scene = sceneMap[qa]
+                    if (scene) callCopilot({ scene })
+                  }}
+                >
+                  {qa}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div className={styles.aiCardActions} style={{ padding: '12px 18px 14px' }}>
+            <button
+              className={styles.aiCardBtnPrimary}
+              onClick={() => navigator.clipboard.writeText(output.result)}
+            >
+              📋 复制全文
+            </button>
+            <button className={styles.aiCardBtnSecondary} onClick={() => setOutput(null)}>
+              清除
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
+
+/* ──────────────────────────────────────────
+   Content Tab
+   ────────────────────────────────────────── */
 
 function ContentTab() {
   const [platform, setPlatform] = useState('xiaohongshu')
@@ -413,8 +765,7 @@ function ContentTab() {
   const handleGenerate = () => {
     setLoading(true)
     setTimeout(() => {
-      const content = mockContent(platform, topic, tone)
-      setResult(content)
+      setResult(mockContent(platform, topic, tone))
       setLoading(false)
     }, 600)
   }
@@ -429,20 +780,18 @@ function ContentTab() {
     <div className={styles.contentLayout}>
       <h2>📝 内容生成</h2>
       <p className={styles.contentDesc}>一键生成小红书/Telegram/俄语营销文案</p>
-
       <div className={styles.contentForm}>
         <div className={styles.formGroup}>
           <label>平台</label>
-          <select value={platform} onChange={e => setPlatform(e.target.value)}>
+          <select value={platform} onChange={(e) => setPlatform(e.target.value)}>
             <option value="xiaohongshu">📕 小红书</option>
             <option value="telegram">📱 Telegram</option>
             <option value="russian">🇷🇺 俄语内容</option>
           </select>
         </div>
-
         <div className={styles.formGroup}>
           <label>主题</label>
-          <select value={topic} onChange={e => setTopic(e.target.value)}>
+          <select value={topic} onChange={(e) => setTopic(e.target.value)}>
             <option value="留学">🎓 留学咨询</option>
             <option value="俄语学习">📚 俄语学习</option>
             <option value="签证">🛂 签证办理</option>
@@ -451,29 +800,25 @@ function ContentTab() {
             <option value="就业">💼 就业前景</option>
           </select>
         </div>
-
         <div className={styles.formGroup}>
           <label>语气</label>
-          <select value={tone} onChange={e => setTone(e.target.value)}>
+          <select value={tone} onChange={(e) => setTone(e.target.value)}>
             <option value="日常">😊 日常轻松</option>
             <option value="正式">📋 正式专业</option>
             <option value="促销">🔥 促销推广</option>
           </select>
         </div>
-
         <div className={styles.formGroup}>
           <label>补充说明（可选）</label>
           <textarea
             placeholder="例如：强调暑期优惠、加一些 emoji、突出某个特点..."
             value={extra}
-            onChange={e => setExtra(e.target.value)}
+            onChange={(e) => setExtra(e.target.value)}
           />
         </div>
-
         <button className={styles.contentGenBtn} onClick={handleGenerate} disabled={loading}>
           {loading ? '⏳ 生成中...' : '✨ 生成内容'}
         </button>
-
         {result && (
           <div className={styles.contentResult}>
             <h4>📄 生成结果</h4>
@@ -497,25 +842,25 @@ export default function Demo() {
 
   const tabs = [
     { id: 'inbox', label: '💬 Inbox', component: InboxTab },
-    { id: 'knowledge', label: '📚 Knowledge', component: KnowledgeTab },
     { id: 'copilot', label: '🤖 Copilot', component: CopilotTab },
+    { id: 'knowledge', label: '📚 Knowledge', component: KnowledgeTab },
     { id: 'content', label: '📝 Content', component: ContentTab },
   ]
 
-  const ActiveComponent = tabs.find(t => t.id === activeTab).component
+  const ActiveComponent = tabs.find((t) => t.id === activeTab).component
 
   return (
     <div className={styles.demoContainer}>
       <Head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <title>RusAI Demo — Business Copilot</title>
+        <title>RusAI Business Copilot — Demo v2</title>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
 
       <nav className={styles.topNav}>
-        <span className={styles.logo}>RusAI Demo</span>
+        <span className={styles.logo}>RusAI Business Copilot</span>
         <div className={styles.tabs}>
-          {tabs.map(tab => (
+          {tabs.map((tab) => (
             <button
               key={tab.id}
               className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : ''}`}
