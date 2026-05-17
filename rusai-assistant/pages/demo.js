@@ -6,6 +6,57 @@ import styles from '../styles/Demo.module.css'
    Mock Data
    ────────────────────────────────────────── */
 
+const DEMO_SCENES = {
+  cant_speak_russian: {
+    customerName: '李明浩',
+    platform: '小红书',
+    question: '我不会俄语可以申请俄罗斯留学吗？',
+    aiThinking: 'AI 正在分析客户语言背景...',
+    aiReply_ru: 'Да, конечно! Многие российские университеты предлагают программы на английском языке. Также у нас есть бесплатные подготовительные курсы русского языка. 🎯',
+    aiReply_cn: '当然可以！俄罗斯许多大学开设英语授课项目（尤其研究生阶段）。我们还提供免费的预科俄语课程，帮助您快速适应。',
+    intent: '留学咨询 · 语言要求',
+    confidence: 0.94,
+    tags: ['高意向', '英语授课', '预科'],
+    nextAction: '发送英语授课项目清单 + 预科课程安排'
+  },
+  tuition: {
+    customerName: '陈晓',
+    platform: '微信',
+    question: '莫斯科大学学费多少钱一年？',
+    aiThinking: 'AI 正在查询最新学费数据...',
+    aiReply_ru: 'Стоимость обучения в МГУ составляет от 300 000 до 600 000 рублей в год (примерно 23 000 - 46 000 юаней) в зависимости от факультета. 🎓',
+    aiReply_cn: '莫斯科国立大学学费约 23万-46万卢布/年（约 2.3万-4.6万人民币），视专业而定。宿舍费另计约 3000元/年。',
+    intent: '留学咨询 · 费用查询',
+    confidence: 0.96,
+    tags: ['高意向', '费用敏感', '莫大'],
+    nextAction: '发送详细费用清单 + 奖学金信息'
+  },
+  visa: {
+    customerName: '李明浩',
+    platform: '小红书',
+    question: '签证邀请函多久能下来？',
+    aiThinking: 'AI 正在查询签证办理流程...',
+    aiReply_ru: 'Приглашение на визу обычно готово за 2-3 недели. После получения приглашения оформление учебной визы занимает 5-10 рабочих дней. Рекомендуем начинать за 2 месяца до поездки. 📋',
+    aiReply_cn: '签证邀请函约2-3周。收到邀请函后，办理留学签证需5-10个工作日。建议提前2个月开始准备。',
+    intent: '留学咨询 · 签证办理',
+    confidence: 0.91,
+    tags: ['新线索', '签证', '高意向'],
+    nextAction: '发送签证办理完整流程 + 材料清单'
+  },
+  midnight: {
+    customerName: '王芳',
+    platform: '微信',
+    question: '凌晨2点咨询，有人回吗？',
+    aiThinking: 'AI 检测到当前非工作时间，自动激活夜间值守模式...',
+    aiReply_ru: 'Конечно! RusAI работает 24/7. Я здесь, чтобы ответить на ваш вопрос в любое время дня и ночи. Чем могу помочь? 🌙',
+    aiReply_cn: '当然有人回！RusAI 7x24 小时在线，凌晨咨询也能秒回。有什么可以帮您的？🏙️',
+    intent: '客服咨询 · 响应时间',
+    confidence: 0.99,
+    tags: ['夜间咨询', '即时响应', '7x24'],
+    nextAction: '自动发送服务介绍 + 预约白天深度沟通'
+  }
+}
+
 const CONVERSATIONS = [
   {
     id: 'c1',
@@ -189,7 +240,7 @@ function mockContent(platform, topic, tone) {
    Inbox Tab v2 — Live AI Reply + Customer Panel
    ────────────────────────────────────────── */
 
-function InboxTab() {
+function InboxTab({ wowDemo = null, setWowDemo = () => {}, onWooDemoEnd = () => {} }) {
   const [activeConv, setActiveConv] = useState(CONVERSATIONS[0])
   const [inputText, setInputText] = useState('')
   const [msgs, setMsgs] = useState(activeConv.messages)
@@ -201,6 +252,44 @@ function InboxTab() {
   const bottomRef = useRef(null)
 
   const customerInfo = CUSTOMER_INFO[activeConv.id] || {}
+
+  /* ── Wow demo typing effect ── */
+  useEffect(() => {
+    if (!wowDemo || wowDemo.phase === 'done') return
+
+    if (wowDemo.phase === 'typing') {
+      const t1 = setTimeout(() => {
+        setWowDemo(prev => ({ ...prev, phase: 'showing' }))
+      }, 1500)
+      return () => clearTimeout(t1)
+    }
+
+    if (wowDemo.phase === 'showing') {
+      const ruText = wowDemo.aiReply_ru
+      let ruIdx = 0
+      const ruInterval = setInterval(() => {
+        ruIdx++
+        setWowDemo(prev => ({ ...prev, ruDisplayed: ruText.slice(0, ruIdx) }))
+        if (ruIdx >= ruText.length) {
+          clearInterval(ruInterval)
+          const cnText = wowDemo.aiReply_cn
+          let cnIdx = 0
+          const cnInterval = setInterval(() => {
+            cnIdx++
+            setWowDemo(prev => ({ ...prev, cnDisplayed: cnText.slice(0, cnIdx) }))
+            if (cnIdx >= cnText.length) {
+              clearInterval(cnInterval)
+              setTimeout(() => {
+                setWowDemo(prev => ({ ...prev, phase: 'done' }))
+                onWooDemoEnd()
+              }, 3000)
+            }
+          }, 30)
+        }
+      }, 50)
+      return () => clearInterval(ruInterval)
+    }
+  }, [wowDemo?.phase])
 
   useEffect(() => {
     setMsgs(activeConv.messages)
@@ -453,6 +542,46 @@ function InboxTab() {
                   取消编辑
                 </button>
               </div>
+            </div>
+          )}
+
+          {/* Wow demo card */}
+          {wowDemo && wowDemo.phase !== 'done' && (
+            <div className={styles.wowCard}>
+              {wowDemo.phase === 'typing' && (
+                <div className={styles.wowTyping}>
+                  <span>🤖 {wowDemo.aiThinking || 'AI 正在思考...'}</span>
+                  <div className={styles.wowTypingDots}>
+                    <div className={styles.wowTypingDot} />
+                    <div className={styles.wowTypingDot} />
+                    <div className={styles.wowTypingDot} />
+                  </div>
+                </div>
+              )}
+              {wowDemo.phase === 'showing' && (
+                <>
+                  <div className={styles.wowContent}>
+                    <div className={styles.wowLangBlock}>
+                      <div className={styles.wowLangLabel}>🇷🇺 Русский</div>
+                      <div className={styles.wowLangText}>{wowDemo.ruDisplayed || ''}</div>
+                    </div>
+                    <div className={styles.wowLangBlock}>
+                      <div className={styles.wowLangLabel}>🇨🇳 中文</div>
+                      <div className={styles.wowLangText}>{wowDemo.cnDisplayed || ''}</div>
+                    </div>
+                  </div>
+                  <div className={styles.wowMeta}>
+                    <span className={`${styles.wowTag} ${styles.wowTagIntent}`}>{wowDemo.intent}</span>
+                    {wowDemo.tags && wowDemo.tags.map((tag, i) => (
+                      <span key={i} className={styles.wowTag}>{tag}</span>
+                    ))}
+                  </div>
+                  <div className={styles.wowNextAction}>
+                    <span className={styles.wowNextActionIcon}>🎯</span>
+                    {wowDemo.nextAction}
+                  </div>
+                </>
+              )}
             </div>
           )}
 
@@ -1498,12 +1627,43 @@ function DashboardTab() {
 
 export default function Demo() {
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [params, setParams] = useState(null)
+  const [wowDemo, setWowDemo] = useState(null)
   // Track if AI demo has been triggered
   const [copilotTrigger, setCopilotTrigger] = useState(null)
 
+  // Read URL params for guided demo
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search)
+      const demo = p.get('demo')
+      if (demo) {
+        setParams({ demo })
+        window.history.replaceState(null, '', '/demo')
+      }
+    }
+  }, [])
+
+  // Auto-trigger wow demo when guided demo param is present
+  useEffect(() => {
+    if (!params?.demo) return
+
+    const scene = DEMO_SCENES[params.demo]
+    if (!scene) return
+
+    setActiveTab('inbox')
+    setWowDemo({
+      ...scene,
+      phase: 'typing',
+      currentMessage: '',
+      ruDisplayed: '',
+      cnDisplayed: '',
+    })
+  }, [params])
+
   const tabs = [
     { id: 'dashboard', label: '📊 运营看板', component: DashboardTab },
-    { id: 'inbox', label: '💬 Inbox', component: InboxTab },
+    { id: 'inbox', label: '💬 Inbox', component: () => <InboxTab wowDemo={wowDemo} setWowDemo={setWowDemo} onWooDemoEnd={() => {}} /> },
     { id: 'copilot', label: '🤖 Copilot', component: () => <CopilotTab onRunNow={copilotTrigger} /> },
     { id: 'knowledge', label: '📚 Knowledge', component: KnowledgeTab },
     { id: 'content', label: '📝 Content', component: ContentTab },

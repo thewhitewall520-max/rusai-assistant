@@ -31,10 +31,10 @@ export default function Home() {
           <div className={styles.navActions}>
             <div className={styles.navLinks}>
               <a href="#pain">痛点</a>
-              <a href="#demo-input">AI 演示</a>
+              <a href="#demo-input">Guided Demo</a>
               <a href="#features">功能</a>
-              <a href="#scenarios">场景</a>
-              <a href="/demo" className={styles.navCta}>免费体验 →</a>
+              <a href="#pricing">套餐定价</a>
+              <a href="/demo" className={styles.navCta}>看 AI 回客户 →</a>
             </div>
           </div>
         </div>
@@ -50,8 +50,8 @@ export default function Home() {
           </p>
           <p className={styles.heroStat}>减少 <strong>80%</strong> 重复咨询</p>
           <div className={styles.heroActions}>
-            <a href="/demo" className={styles.heroPrimary}>免费体验 →</a>
-            <a href="mailto:sales@rusai.cc" className={styles.heroSecondary}>预约演示</a>
+            <a href="/demo" className={styles.heroPrimary}>看 AI 怎么接待客户 →</a>
+            <a href="mailto:sales@rusai.cc" className={styles.heroSecondary}>预约15分钟，看 AI 替你接客户</a>
           </div>
         </div>
       </section>
@@ -80,19 +80,37 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Demo Input */}
+      {/* Guided Demo */}
       <section id="demo-input" className={styles.sectionAlt}>
         <div className={styles.sectionInner}>
-          <h2 className={styles.sectionTitle}>试用 AI 招生客服</h2>
-          <p className={styles.sectionDesc}>输入你想问的问题，看看 AI 怎么回复</p>
-          <a href="/demo" className={styles.demoInputLink}>
-            <div className={styles.demoInputFake}>
-              <span>💬</span>
-              <span className={styles.demoInputText}>去俄罗斯留学要准备什么？</span>
-              <span className={styles.demoInputArrow}>→</span>
-            </div>
-            <p className={styles.demoInputHint}>点击进入 AI 演示 →</p>
-          </a>
+          <h2 className={styles.sectionTitle}>看看 AI 怎么替你接客户</h2>
+          <p className={styles.sectionDesc}>点击任意场景，看 AI 如何秒回真实客户咨询</p>
+          <div className={styles.guidedDemoGrid}>
+            <a href="/demo?demo=cant_speak_russian" className={styles.guidedDemoCard}>
+              <span className={styles.guidedDemoAvatar}>🧑‍🎓</span>
+              <p className={styles.guidedDemoQ}>我不会俄语可以申请俄罗斯留学吗？</p>
+              <p className={styles.guidedDemoHint}>AI 会分析用户语言能力，推荐英语授课项目 + 免费预科课程</p>
+              <span className={styles.guidedDemoCta}>→ 查看 AI 回复</span>
+            </a>
+            <a href="/demo?demo=tuition" className={styles.guidedDemoCard}>
+              <span className={styles.guidedDemoAvatar}>🧑‍🎓</span>
+              <p className={styles.guidedDemoQ}>莫斯科大学学费多少钱一年？</p>
+              <p className={styles.guidedDemoHint}>AI 会查询最新学费数据，中俄双语回复</p>
+              <span className={styles.guidedDemoCta}>→ 查看 AI 回复</span>
+            </a>
+            <a href="/demo?demo=visa" className={styles.guidedDemoCard}>
+              <span className={styles.guidedDemoAvatar}>🧑‍🎓</span>
+              <p className={styles.guidedDemoQ}>签证邀请函多久能下来？</p>
+              <p className={styles.guidedDemoHint}>AI 会给出办理流程 + 时间线 + 材料清单</p>
+              <span className={styles.guidedDemoCta}>→ 查看 AI 回复</span>
+            </a>
+            <a href="/demo?demo=midnight" className={styles.guidedDemoCard}>
+              <span className={styles.guidedDemoAvatar}>🧑‍🎓</span>
+              <p className={styles.guidedDemoQ}>凌晨2点咨询，有人回吗？</p>
+              <p className={styles.guidedDemoHint}>AI 7x24 值守，秒回客户，不留一条线索过夜</p>
+              <span className={styles.guidedDemoCta}>→ 查看 AI 回复</span>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -123,22 +141,91 @@ export default function Home() {
       {/* Scenarios */}
       <section id="scenarios" className={styles.sectionAlt}>
         <div className={styles.sectionInner}>
-          <h2 className={styles.sectionTitle}>适用场景</h2>
+          <h2 className={styles.sectionTitle}>专门为俄罗斯留学机构打造</h2>
+          <p className={styles.sectionDesc}>从招生咨询到签证办理，覆盖留学全链路</p>
           <div className={styles.scenarioGrid}>
             <div className={styles.scenarioCard}>
               <span className={styles.scenarioIcon}>🎓</span>
               <h3>留学中介</h3>
-              <p>自动回复选校、签证、费用咨询，提升转化率</p>
+              <p>招生咨询 / 选校 / 签证 / offer —— AI 全程自动接待</p>
             </div>
             <div className={styles.scenarioCard}>
               <span className={styles.scenarioIcon}>📖</span>
               <h3>俄语培训</h3>
-              <p>课程咨询、试听预约、学习规划，24h 不打烊</p>
+              <p>课程咨询 / 试听预约 / 学习规划 —— 24h 不打烊</p>
             </div>
-            <div className={styles.scenarioCard}>
-              <span className={styles.scenarioIcon}>🛒</span>
-              <h3>跨境电商</h3>
-              <p>中俄双语客服，自动处理订单、物流查询</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className={styles.section}>
+        <div className={styles.sectionInner}>
+          <h2 className={styles.sectionTitle}>透明定价</h2>
+          <p className={styles.sectionDesc}>按需选择，随时升级</p>
+          <div className={styles.pricingGrid}>
+            <div className={styles.pricingCard}>
+              <div className={styles.pricingName}>Starter</div>
+              <div className={styles.pricingPrice}>¥999/月</div>
+              <div className={styles.pricingDesc}>适合小团队</div>
+              <ul className={styles.pricingFeatures}>
+                <li>FAQ 自动回复</li>
+                <li>基础知识库</li>
+                <li>AI 客服</li>
+              </ul>
+              <a href="/demo" className={styles.pricingBtn}>免费试用</a>
+            </div>
+            <div className={`${styles.pricingCard} ${styles.featured}`}>
+              <div className={styles.pricingName}>Growth</div>
+              <div className={styles.pricingPrice}>预约咨询</div>
+              <div className={styles.pricingDesc}>最受欢迎</div>
+              <ul className={styles.pricingFeatures}>
+                <li>多渠道接入</li>
+                <li>AI 客户分析</li>
+                <li>双语回复</li>
+                <li>内容助手</li>
+              </ul>
+              <a href="mailto:sales@rusai.cc" className={styles.pricingBtn}>预约咨询</a>
+            </div>
+            <div className={styles.pricingCard}>
+              <div className={styles.pricingName}>Custom</div>
+              <div className={styles.pricingPrice}>联系销售</div>
+              <div className={styles.pricingDesc}>适合定制部署</div>
+              <ul className={styles.pricingFeatures}>
+                <li>私有化部署</li>
+                <li>专属模型训练</li>
+                <li>定制功能开发</li>
+              </ul>
+              <a href="mailto:sales@rusai.cc" className={styles.pricingBtnOutline}>联系销售</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof */}
+      <section id="proof" className={styles.sectionAlt}>
+        <div className={styles.sectionInner}>
+          <div className={styles.proofHeader}>
+            <div className={styles.proofTitle}>AI 本周工作报告</div>
+            <div className={styles.proofSubtitle}>某俄罗斯留学机构 · 真实数据</div>
+            <div className={styles.proofDemoTag}>Demo 模拟数据</div>
+          </div>
+          <div className={styles.proofGrid}>
+            <div className={styles.proofCard}>
+              <div className={styles.proofNumber}>83</div>
+              <div className={styles.proofLabel}>本周已回复咨询</div>
+            </div>
+            <div className={styles.proofCard}>
+              <div className={styles.proofNumber}>14</div>
+              <div className={styles.proofLabel}>识别高意向客户</div>
+            </div>
+            <div className={styles.proofCard}>
+              <div className={styles.proofNumber}>52</div>
+              <div className={styles.proofLabel}>自动生成中俄回复</div>
+            </div>
+            <div className={styles.proofCard}>
+              <div className={styles.proofNumber}>11h</div>
+              <div className={styles.proofLabel}>人工节省时间</div>
             </div>
           </div>
         </div>
@@ -147,10 +234,10 @@ export default function Home() {
       {/* CTA */}
       <section className={styles.ctaSection}>
         <div className={styles.sectionInner}>
-          <h2 className={styles.ctaTitle}>今天就给你的业务配一个 AI 员工</h2>
+          <h2 className={styles.ctaTitle}>少请一个客服 · 不放过一条线索 · 24 小时接单</h2>
           <div className={styles.ctaActions}>
-            <a href="/demo" className={styles.ctaPrimary}>免费体验 →</a>
-            <a href="mailto:sales@rusai.cc" className={styles.ctaSecondary}>预约演示</a>
+            <a href="/demo" className={styles.ctaPrimary}>看看 AI 的效果 →</a>
+            <a href="mailto:sales@rusai.cc" className={styles.ctaSecondary}>预约专属演示（按你的业务）→</a>
           </div>
         </div>
       </section>
