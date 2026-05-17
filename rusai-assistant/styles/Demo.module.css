@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   RusAI Demo — V2 升级版 UI
+   RusAI Demo — UI
    ═══════════════════════════════════════ */
 
 .demoContainer {
@@ -57,15 +57,15 @@
 }
 
 /* ════════════════════════════════════════
-   INBOX v2 — Wow Moment
+   INBOX
    ════════════════════════════════════════ */
 .inboxLayout {
   display: flex;
   height: 100%;
 }
 .inboxList {
-  width: 320px;
-  min-width: 320px;
+  width: 280px;
+  min-width: 280px;
   border-right: 1px solid var(--border);
   overflow-y: auto;
   background: var(--bg-secondary);
@@ -93,14 +93,26 @@
   min-width: 0;
 }
 .chatHeader {
-  padding: 16px 20px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--border);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
+.customerPanelToggle {
+  margin-left: auto;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.customerPanelToggle:hover { background: var(--hover); }
 .chatMsgs {
   flex: 1;
   overflow-y: auto;
@@ -136,7 +148,7 @@
   padding: 0 4px;
 }
 
-/* ── AI Assistant Card v2 (Inbox) ── */
+/* ── AI Assistant Card ── */
 .aiAssistantCard {
   margin: 8px 0;
   padding: 0;
@@ -426,23 +438,125 @@
 }
 
 /* ════════════════════════════════════════
-   KNOWLEDGE
+   CUSTOMER PANEL
+   ════════════════════════════════════════ */
+.customerPanel {
+  width: 260px;
+  min-width: 260px;
+  border-left: 1px solid var(--border);
+  background: var(--bg-secondary);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.customerPanelHeader {
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.customerPanelBody {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.customerField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.customerFieldLabel {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-weight: 600;
+}
+.customerFieldValue {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.customerFieldValueHighlight {
+  font-size: 13px;
+  color: #4f46e5;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.customerTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.customerTag {
+  padding: 2px 8px;
+  font-size: 11px;
+  background: #e0e7ff;
+  color: #4f46e5;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.customerAiSummary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding: 8px 10px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+}
+
+/* ════════════════════════════════════════
+   KNOWLEDGE — Three-Column Tab
    ════════════════════════════════════════ */
 .knowledgeLayout {
-  padding: 32px;
-  max-width: 900px;
+  padding: 24px;
+  max-width: 960px;
   margin: 0 auto;
   height: 100%;
   overflow-y: auto;
+}
+.knowledgeTabBar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+.knowledgeTabBtn {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-radius: 8px 8px 0 0;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.15s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.knowledgeTabBtn:hover { background: var(--hover); color: var(--text); }
+.knowledgeTabBtnActive {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: transparent;
+}
+.knowledgePanel {
+  display: flex;
+  flex-direction: column;
 }
 .knowledgeHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 .knowledgeHeader h2 {
-  font-size: 22px;
+  font-size: 18px;
+  font-weight: 600;
 }
 .addBtn {
   padding: 8px 20px;
@@ -451,7 +565,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-family: inherit;
   font-weight: 500;
 }
@@ -465,7 +579,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 16px;
+  padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--card-bg);
@@ -493,7 +607,7 @@
   gap: 6px;
   flex-shrink: 0;
 }
-.editBtn, .deleteBtn {
+.editBtn, .deleteBtn, .uploadBtn {
   padding: 4px 10px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -509,6 +623,26 @@
   border-color: #fca5a5;
 }
 .deleteBtn:hover { background: #fef2f2; }
+.docIcon {
+  font-size: 16px;
+}
+.docMeta {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.docMetaItem {
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--hover);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.bizDate {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
 
 /* Modal */
 .modalOverlay {
@@ -583,7 +717,7 @@
 }
 
 /* ════════════════════════════════════════
-   COPILOT v2 — Quick Actions + AI Card
+   COPILOT
    ════════════════════════════════════════ */
 .copilotLayout {
   padding: 32px;
@@ -801,10 +935,10 @@
 }
 
 /* ════════════════════════════════════════
-   CONTENT v2
+   CONTENT — 4 Vertical Assistants
    ════════════════════════════════════════ */
 .contentLayout {
-  padding: 32px;
+  padding: 24px;
   max-width: 700px;
   margin: 0 auto;
   height: 100%;
@@ -817,7 +951,40 @@
 .contentDesc {
   font-size: 14px;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 16px;
+}
+.contentTabBar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+  overflow-x: auto;
+}
+.contentTabBtn {
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-radius: 8px 8px 0 0;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.15s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+}
+.contentTabBtn:hover { background: var(--hover); color: var(--text); }
+.contentTabBtnActive {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: transparent;
+}
+.contentPanel {
+  display: flex;
+  flex-direction: column;
 }
 .contentForm {
   display: flex;
@@ -845,7 +1012,7 @@
   box-sizing: border-box;
 }
 .formGroup select { cursor: pointer; }
-.formGroup textarea { resize: vertical; min-height: 100px; }
+.formGroup textarea { resize: vertical; min-height: 80px; }
 .formGroup select:focus,
 .formGroup input:focus,
 .formGroup textarea:focus {
@@ -866,7 +1033,7 @@
 .contentGenBtn:hover { opacity: 0.9; }
 .contentGenBtn:disabled { opacity: 0.5; cursor: not-allowed; }
 .contentResult {
-  margin-top: 20px;
+  margin-top: 16px;
   padding: 16px;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -894,13 +1061,168 @@
 }
 .copyBtn:hover { background: var(--hover); }
 
+/* ════════════════════════════════════════
+   DASHBOARD / OUTCOME
+   ════════════════════════════════════════ */
+.dashboardLayout {
+  padding: 32px;
+  max-width: 960px;
+  margin: 0 auto;
+  height: 100%;
+  overflow-y: auto;
+}
+.dashboardLayout h2 {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+.dashboardDesc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+.dashboardCards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.dashboardCard {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.dashboardCard:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+.dashboardCardIcon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.dashboardCardValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.dashboardCardLabel {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+.dashboardCardChange {
+  font-size: 12px;
+  margin-top: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.dashboardCardChangeUp {
+  color: #059669;
+  background: #ecfdf5;
+}
+.dashboardCardChangeDown {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.dashboardInsights {
+  margin-bottom: 28px;
+}
+.dashboardInsights h3,
+.dashboardRecentActivity h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.dashboardInsightsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.dashboardInsightCard {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.dashboardInsightTitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.dashboardInsightValue {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.dashboardInsightDetail {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.dashboardRecentActivity {
+  margin-bottom: 24px;
+}
+.dashboardActivityList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dashboardActivityItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.dashboardActivityDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.dashboardActivityContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dashboardActivityText {
+  font-size: 13px;
+  color: var(--text);
+}
+.dashboardActivityTime {
+  font-size: 11px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
 /* ── Mobile ── */
 @media (max-width: 768px) {
   .inboxList { width: 100%; min-width: 0; }
   .inboxLayout { flex-direction: column; }
+  .customerPanel { width: 100%; min-width: 0; border-left: none; border-top: 1px solid var(--border); max-height: 40vh; }
   .knowledgeLayout, .copilotLayout, .contentLayout {
     padding: 20px 16px;
   }
+  .dashboardLayout { padding: 20px 16px; }
+  .dashboardCards { grid-template-columns: repeat(2, 1fr); }
+  .dashboardInsightsGrid { grid-template-columns: 1fr; }
   .topNav { padding: 0 12px; overflow-x: auto; }
   .tabs { gap: 2px; }
   .tab { font-size: 13px; padding: 8px 12px; }

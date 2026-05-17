@@ -81,6 +81,55 @@ const CONVERSATIONS = [
   },
 ]
 
+/* Mock customer data */
+const CUSTOMER_INFO = {
+  c1: {
+    source: '微信',
+    tags: ['高意向', '留学咨询', '预科'],
+    language: '中文',
+    intentLevel: '★★★☆☆',
+    recentBehavior: '咨询预科开课时间，主动问价',
+    recommendedAction: '发送试听课邀请 + 课程资料包',
+    aiSummary: '用户大学在读，计划9月赴莫大，明确有预科需求。推荐暑期班，建议跟进试听课转化。',
+  },
+  c2: {
+    source: 'Telegram',
+    tags: ['文件翻译', '已成交'],
+    language: '俄语',
+    intentLevel: '★★★★★',
+    recentBehavior: '已完成翻译服务购买',
+    recommendedAction: '发送服务完成通知 + 满意度调查',
+    aiSummary: '用户已购买翻译服务并表示感谢，可进行复购推荐或邀请评价。',
+  },
+  c3: {
+    source: '小红书',
+    tags: ['新线索', '签证'],
+    language: '中文',
+    intentLevel: '★★☆☆☆',
+    recentBehavior: '询问签证邀请函时间',
+    recommendedAction: '推送签证办理流程 + 材料清单',
+    aiSummary: '用户初步接触，意向有待确认。建议发送详细签证指南建立信任。',
+  },
+  c4: {
+    source: '微信',
+    tags: ['在读学生', '俄语写作'],
+    language: '中文',
+    intentLevel: '★★★☆☆',
+    recentBehavior: '请求帮助写俄语邮件',
+    recommendedAction: '提供邮件模板 + 写作服务介绍',
+    aiSummary: '已在俄留学生，有俄语写作辅助需求。可推荐长期写作辅导服务。',
+  },
+  c5: {
+    source: 'Telegram',
+    tags: ['俄语用户', '汉语课程'],
+    language: '俄语',
+    intentLevel: '★★★☆☆',
+    recentBehavior: '咨询汉语课程',
+    recommendedAction: '发送课程目录 + 试听链接',
+    aiSummary: '俄语母语者，对中国文化感兴趣。推荐汉语课程试听。',
+  },
+}
+
 const INITIAL_FAQS = [
   { id: 'f1', question: '俄罗斯留学需要什么条件？', answer: '需要高中或以上学历，通过俄语水平测试（至少达到A2水平），提供健康证明和资金证明。具体院校和要求不同，欢迎详询！' },
   { id: 'f2', question: '俄语预科课程多长时间？', answer: '标准预科课程为8个月（9月-次年5月），暑期强化班为2个月（7月-8月），每周6-8课时。完成预科后可达A2-B1水平。' },
@@ -89,6 +138,20 @@ const INITIAL_FAQS = [
   { id: 'f5', question: '不会俄语可以去俄罗斯留学吗？', answer: '可以！俄罗斯许多大学开设英语授课项目（尤其是研究生阶段），不需要俄语基础。但建议在留学前先学习基础俄语，日常生活更方便。本校提供免费的预科俄语课程。' },
   { id: 'f6', question: '毕业后能在俄罗斯工作吗？', answer: '毕业后可申请毕业后居留许可（有效期1年），找到工作后可转为工作签证。中俄贸易、能源、教育、IT领域就业前景良好。' },
   { id: 'f7', question: '중국 학생이 러시아 유학을 갈 수 있나요?', answer: '네, 가능합니다! 중국 학생은 러시아 대학에 지원할 수 있습니다. 한국어로 상담을 원하시면 저희에게 연락 주세요.' },
+]
+
+const INITIAL_DOCS = [
+  { id: 'd1', title: '俄罗斯留学签证办理指南.pdf', type: 'PDF', size: '2.4 MB', date: '2025-12-01' },
+  { id: 'd2', title: '莫斯科国立大学招生简章2026.docx', type: 'DOCX', size: '1.8 MB', date: '2026-01-15' },
+  { id: 'd3', title: '中俄贸易合同模板（俄汉双语）.doc', type: 'DOC', size: '856 KB', date: '2026-02-20' },
+  { id: 'd4', title: '俄罗斯签证申请表（样本）.pdf', type: 'PDF', size: '520 KB', date: '2026-03-10' },
+]
+
+const INITIAL_BIZ_KNOWLEDGE = [
+  { id: 'b1', title: '俄罗斯高等教育体系概览', summary: '介绍俄联邦高等教育的学位等级、认证体系及院校分类。', updated: '2026-03-01' },
+  { id: 'b2', title: '中俄贸易关键法规汇编', summary: '2025-2026年中俄贸易相关的关税政策、进出口限制及许可证要求。', updated: '2026-02-15' },
+  { id: 'b3', title: '俄罗斯留学生常见问题FAQ（内部）', summary: '招生过程中高频问题的标准回复话术及处理流程。', updated: '2026-01-20' },
+  { id: 'b4', title: 'TG社群运营SOP', summary: 'Telegram 俄语留学社群的日常运营流程、内容日历及互动策略。', updated: '2026-03-05' },
 ]
 
 /* ──────────────────────────────────────────
@@ -123,7 +186,7 @@ function mockContent(platform, topic, tone) {
 }
 
 /* ──────────────────────────────────────────
-   Inbox Tab v2 — Live AI Reply
+   Inbox Tab v2 — Live AI Reply + Customer Panel
    ────────────────────────────────────────── */
 
 function InboxTab() {
@@ -131,10 +194,13 @@ function InboxTab() {
   const [inputText, setInputText] = useState('')
   const [msgs, setMsgs] = useState(activeConv.messages)
   const [sentMsgs, setSentMsgs] = useState([])
-  const [aiCard, setAiCard] = useState(null)     // { suggestion, confidence, intent, recommendedAction, followUpSuggestions, quickReply, generatedBy }
+  const [aiCard, setAiCard] = useState(null)
   const [isGenerating, setIsGenerating] = useState(false)
-  const [editingReply, setEditingReply] = useState(null)  // when user clicks "edit"
+  const [editingReply, setEditingReply] = useState(null)
+  const [showCustomerPanel, setShowCustomerPanel] = useState(true)
   const bottomRef = useRef(null)
+
+  const customerInfo = CUSTOMER_INFO[activeConv.id] || {}
 
   useEffect(() => {
     setMsgs(activeConv.messages)
@@ -148,7 +214,6 @@ function InboxTab() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [msgs, sentMsgs, aiCard, isGenerating, editingReply])
 
-  // When agent sends a message → auto-generate AI suggestion
   const handleSend = () => {
     if (!inputText.trim()) return
     const newMsg = {
@@ -163,7 +228,6 @@ function InboxTab() {
     setIsGenerating(true)
     setEditingReply(null)
 
-    // Simulate AI generation
     setTimeout(() => {
       setIsGenerating(false)
       setAiCard({
@@ -231,6 +295,7 @@ function InboxTab() {
 
   return (
     <div className={styles.inboxLayout}>
+      {/* Left: conversation list */}
       <div className={styles.inboxList}>
         <div className={styles.inboxListHeader}>
           💬 Inbox
@@ -255,10 +320,18 @@ function InboxTab() {
         ))}
       </div>
 
+      {/* Center: chat area */}
       <div className={styles.inboxChat}>
         <div className={styles.chatHeader}>
           <span>{activeConv.platform === 'Telegram' ? '📱' : activeConv.platform === '微信' ? '💚' : '📕'}</span>
           {activeConv.name} · {activeConv.platform}
+          <button
+            className={styles.customerPanelToggle}
+            onClick={() => setShowCustomerPanel(!showCustomerPanel)}
+            title={showCustomerPanel ? '隐藏客户信息' : '显示客户信息'}
+          >
+            {showCustomerPanel ? '👤 ▸' : '👤 ◂'}
+          </button>
         </div>
 
         <div className={styles.chatMsgs}>
@@ -271,7 +344,6 @@ function InboxTab() {
             </div>
           ))}
 
-          {/* AI Generating state */}
           {isGenerating && (
             <div className={styles.aiGenerating}>
               <div style={{ display: 'flex', gap: 4 }}>
@@ -283,7 +355,6 @@ function InboxTab() {
             </div>
           )}
 
-          {/* AI Assistant Card v2 */}
           {aiCard && !editingReply && (
             <div className={styles.aiAssistantCard}>
               <div className={styles.aiCardHeader}>
@@ -343,7 +414,6 @@ function InboxTab() {
             </div>
           )}
 
-          {/* Editing mode */}
           {editingReply !== null && (
             <div className={styles.aiSuggestion}>
               <div className={styles.aiSuggestionLabel}>🤖 编辑 AI 建议回复</div>
@@ -408,15 +478,94 @@ function InboxTab() {
           </button>
         </div>
       </div>
+
+      {/* Right: Customer info panel */}
+      {showCustomerPanel && (
+        <div className={styles.customerPanel}>
+          <div className={styles.customerPanelHeader}>
+            客户信息
+          </div>
+          <div className={styles.customerPanelBody}>
+            <div className={styles.customerField}>
+              <span className={styles.customerFieldLabel}>来源</span>
+              <span className={styles.customerFieldValue}>{customerInfo.source || '—'}</span>
+            </div>
+            <div className={styles.customerField}>
+              <span className={styles.customerFieldLabel}>标签</span>
+              <div className={styles.customerTags}>
+                {(customerInfo.tags || []).map((tag, i) => (
+                  <span key={i} className={styles.customerTag}>{tag}</span>
+                ))}
+              </div>
+            </div>
+            <div className={styles.customerField}>
+              <span className={styles.customerFieldLabel}>语言</span>
+              <span className={styles.customerFieldValue}>{customerInfo.language || '—'}</span>
+            </div>
+            <div className={styles.customerField}>
+              <span className={styles.customerFieldLabel}>意向等级</span>
+              <span className={styles.customerFieldValue}>{customerInfo.intentLevel || '—'}</span>
+            </div>
+            <div className={styles.customerField}>
+              <span className={styles.customerFieldLabel}>最近行为</span>
+              <span className={styles.customerFieldValue}>{customerInfo.recentBehavior || '—'}</span>
+            </div>
+            <div className={styles.customerField}>
+              <span className={styles.customerFieldLabel}>推荐动作</span>
+              <span className={styles.customerFieldValueHighlight}>{customerInfo.recommendedAction || '—'}</span>
+            </div>
+            <div className={styles.customerField}>
+              <span className={styles.customerFieldLabel}>AI 判断摘要</span>
+              <div className={styles.customerAiSummary}>
+                {customerInfo.aiSummary || '暂无分析数据'}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 /* ──────────────────────────────────────────
-   Knowledge Tab
+   Knowledge Tab — Three-Column Layout
    ────────────────────────────────────────── */
 
 function KnowledgeTab() {
+  const [knowledgeTab, setKnowledgeTab] = useState('faq')
+
+  return (
+    <div className={styles.knowledgeLayout}>
+      <div className={styles.knowledgeTabBar}>
+        <button
+          className={`${styles.knowledgeTabBtn} ${knowledgeTab === 'faq' ? styles.knowledgeTabBtnActive : ''}`}
+          onClick={() => setKnowledgeTab('faq')}
+        >
+          ❓ FAQ 知识库
+        </button>
+        <button
+          className={`${styles.knowledgeTabBtn} ${knowledgeTab === 'docs' ? styles.knowledgeTabBtnActive : ''}`}
+          onClick={() => setKnowledgeTab('docs')}
+        >
+          📄 文档
+        </button>
+        <button
+          className={`${styles.knowledgeTabBtn} ${knowledgeTab === 'biz' ? styles.knowledgeTabBtnActive : ''}`}
+          onClick={() => setKnowledgeTab('biz')}
+        >
+          🏢 业务知识
+        </button>
+      </div>
+      <div className={styles.knowledgePanel}>
+        {knowledgeTab === 'faq' && <FaqPanel />}
+        {knowledgeTab === 'docs' && <DocsPanel />}
+        {knowledgeTab === 'biz' && <BizKnowledgePanel />}
+      </div>
+    </div>
+  )
+}
+
+function FaqPanel() {
   const [faqs, setFaqs] = useState(INITIAL_FAQS)
   const [expanded, setExpanded] = useState(null)
   const [showModal, setShowModal] = useState(false)
@@ -450,9 +599,9 @@ function KnowledgeTab() {
   }
 
   return (
-    <div className={styles.knowledgeLayout}>
+    <div>
       <div className={styles.knowledgeHeader}>
-        <h2>📚 FAQ 知识库（{faqs.length} 条）</h2>
+        <h2>❓ FAQ 知识库（{faqs.length} 条）</h2>
         <button className={styles.addBtn} onClick={openAdd}>+ 新增</button>
       </div>
       <div className={styles.knowledgeList}>
@@ -490,17 +639,99 @@ function KnowledgeTab() {
   )
 }
 
+function DocsPanel() {
+  const [docs, setDocs] = useState(INITIAL_DOCS)
+
+  const handleUpload = () => {
+    const newDoc = {
+      id: `d${Date.now()}`,
+      title: `新文档_${new Date().toLocaleDateString('zh-CN')}.pdf`,
+      type: 'PDF',
+      size: `${(Math.random() * 5 + 0.5).toFixed(1)} MB`,
+      date: new Date().toISOString().slice(0, 10),
+    }
+    setDocs([newDoc, ...docs])
+  }
+
+  return (
+    <div>
+      <div className={styles.knowledgeHeader}>
+        <h2>📄 文档（{docs.length} 份）</h2>
+        <button className={styles.addBtn} onClick={handleUpload}>📤 上传文档</button>
+      </div>
+      <div className={styles.knowledgeList}>
+        {docs.map((doc) => (
+          <div key={doc.id} className={styles.faqItem}>
+            <div className={styles.faqContent}>
+              <div className={styles.faqQ} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span className={styles.docIcon}>📄</span>
+                {doc.title}
+              </div>
+              <div className={styles.docMeta}>
+                <span className={styles.docMetaItem}>{doc.type}</span>
+                <span className={styles.docMetaItem}>{doc.size}</span>
+                <span className={styles.docMetaItem}>{doc.date}</span>
+              </div>
+            </div>
+            <div className={styles.faqActions}>
+              <button className={styles.editBtn}>预览</button>
+              <button className={styles.deleteBtn}>删除</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function BizKnowledgePanel() {
+  const [items, setItems] = useState(INITIAL_BIZ_KNOWLEDGE)
+
+  return (
+    <div>
+      <div className={styles.knowledgeHeader}>
+        <h2>🏢 业务知识（{items.length} 条）</h2>
+        <button className={styles.addBtn} onClick={() => {
+          const newItem = {
+            id: `b${Date.now()}`,
+            title: '新业务知识',
+            summary: '待补充内容...',
+            updated: new Date().toISOString().slice(0, 10),
+          }
+          setItems([newItem, ...items])
+        }}>+ 新增</button>
+      </div>
+      <div className={styles.knowledgeList}>
+        {items.map((item) => (
+          <div key={item.id} className={styles.faqItem}>
+            <div className={styles.faqContent}>
+              <div className={styles.faqQ}>
+                📌 {item.title}
+              </div>
+              <div className={styles.faqA}>{item.summary}</div>
+              <div className={styles.bizDate}>更新于 {item.updated}</div>
+            </div>
+            <div className={styles.faqActions}>
+              <button className={styles.editBtn}>编辑</button>
+              <button className={styles.deleteBtn}>删除</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /* ──────────────────────────────────────────
    Copilot Tab v2 — Quick Actions + AI Card
    ────────────────────────────────────────── */
 
 function CopilotTab() {
   const [input, setInput] = useState('')
-  const [output, setOutput] = useState(null)   // { result, intent, confidence, quickActions }
+  const [output, setOutput] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [activeScene, setActiveScene] = useState(null)  // which quick action is selected
+  const [activeScene, setActiveScene] = useState(null)
 
-  // Quick Action scenes
   const studyAbroadActions = [
     { id: 'enrollment_reply', icon: '🎓', label: '生成招生回复', desc: '自动生成俄语+中文回复' },
     { id: 'material_checklist', icon: '📋', label: '生成材料清单', desc: '输出申请材料清单' },
@@ -512,7 +743,6 @@ function CopilotTab() {
     { id: 'logistics', icon: '📦', label: '物流解释', desc: '物流状态俄语回复' },
   ]
 
-  // Call Copilot API
   const callCopilot = async (params) => {
     setLoading(true)
     setActiveScene(params.scene || null)
@@ -542,18 +772,15 @@ function CopilotTab() {
     }
   }
 
-  // Free-text input
   const handleGenerate = () => {
     if (!input.trim()) return
     callCopilot({ input: input.trim() })
   }
 
-  // Quick action button click
   const handleQuickAction = (sceneId) => {
     callCopilot({ scene: sceneId })
   }
 
-  // Parse bilingual result into ru/cn sections
   const parseResult = (text) => {
     if (!text) return { ru: '', cn: '' }
     const ruMatch = text.match(/=== RU ===\s*\n([\s\S]*?)(?==== 中文对照 ===|$)/)
@@ -573,7 +800,6 @@ function CopilotTab() {
         智能双语助手 — 点一下就有结果，不让客户思考
       </p>
 
-      {/* Quick Actions */}
       <div className={styles.quickActionsRow}>
         <span className={styles.quickActionsLabel}>Quick Actions</span>
 
@@ -610,7 +836,6 @@ function CopilotTab() {
         </div>
       </div>
 
-      {/* Free-text Input */}
       <div className={styles.copilotInputWrapper}>
         <textarea
           className={styles.copilotInput}
@@ -635,7 +860,6 @@ function CopilotTab() {
         {loading ? '⏳ 生成中...' : '🚀 生成回答'}
       </button>
 
-      {/* Loading */}
       {loading && (
         <div className={styles.copilotLoading}>
           <div className={styles.copilotLoadingDots}>
@@ -649,10 +873,8 @@ function CopilotTab() {
         </div>
       )}
 
-      {/* Result — Copilot AI Card */}
       {output && !loading && (
         <div className={styles.copilotAiCard}>
-          {/* Header */}
           <div className={styles.aiCardHeader} style={{ padding: '14px 18px 0' }}>
             <span className={styles.aiCardBadge}>🤖 AI Copilot</span>
             {output.intent && output.intent !== 'error' && (
@@ -662,7 +884,6 @@ function CopilotTab() {
             )}
           </div>
 
-          {/* Meta */}
           {output.intent && output.intent !== 'error' && (
             <div className={styles.aiCardMeta} style={{ padding: '12px 18px 8px' }}>
               <div className={styles.aiCardMetaItem}>
@@ -684,7 +905,6 @@ function CopilotTab() {
             </div>
           )}
 
-          {/* Bilingual Content */}
           {parsed.ru && (
             <div className={styles.copilotResultSection} style={{ borderTop: '1px solid #e0e7ff' }}>
               <div className={styles.copilotLangLabel}>🇷🇺 Русский</div>
@@ -704,7 +924,6 @@ function CopilotTab() {
             </div>
           )}
 
-          {/* Follow-up Quick Actions */}
           {output.quickActions && output.quickActions.length > 0 && (
             <div className={styles.aiCardFollowUp} style={{ padding: '10px 18px 14px' }}>
               <span className={styles.aiCardFollowUpLabel}>Suggested Actions</span>
@@ -731,7 +950,6 @@ function CopilotTab() {
             </div>
           )}
 
-          {/* Action buttons */}
           <div className={styles.aiCardActions} style={{ padding: '12px 18px 14px' }}>
             <button
               className={styles.aiCardBtnPrimary}
@@ -750,11 +968,55 @@ function CopilotTab() {
 }
 
 /* ──────────────────────────────────────────
-   Content Tab
+   Content Tab — 4 Vertical Assistants
    ────────────────────────────────────────── */
 
 function ContentTab() {
-  const [platform, setPlatform] = useState('xiaohongshu')
+  const [contentTab, setContentTab] = useState('enrollment')
+
+  return (
+    <div className={styles.contentLayout}>
+      <h2>📝 内容生成</h2>
+      <p className={styles.contentDesc}>4 个垂直助手，覆盖不同业务场景</p>
+
+      <div className={styles.contentTabBar}>
+        <button
+          className={`${styles.contentTabBtn} ${contentTab === 'enrollment' ? styles.contentTabBtnActive : ''}`}
+          onClick={() => setContentTab('enrollment')}
+        >
+          🎓 招生内容
+        </button>
+        <button
+          className={`${styles.contentTabBtn} ${contentTab === 'tg' ? styles.contentTabBtnActive : ''}`}
+          onClick={() => setContentTab('tg')}
+        >
+          📱 TG 社群
+        </button>
+        <button
+          className={`${styles.contentTabBtn} ${contentTab === 'russian' ? styles.contentTabBtnActive : ''}`}
+          onClick={() => setContentTab('russian')}
+        >
+          🇷🇺 俄语营销
+        </button>
+        <button
+          className={`${styles.contentTabBtn} ${contentTab === 'faqContent' ? styles.contentTabBtnActive : ''}`}
+          onClick={() => setContentTab('faqContent')}
+        >
+          ❓ FAQ 内容
+        </button>
+      </div>
+
+      <div className={styles.contentPanel}>
+        {contentTab === 'enrollment' && <EnrollmentContent />}
+        {contentTab === 'tg' && <TgContent />}
+        {contentTab === 'russian' && <RussianContent />}
+        {contentTab === 'faqContent' && <FaqContent />}
+      </div>
+    </div>
+  )
+}
+
+function EnrollmentContent() {
   const [topic, setTopic] = useState('留学')
   const [tone, setTone] = useState('日常')
   const [extra, setExtra] = useState('')
@@ -765,7 +1027,7 @@ function ContentTab() {
   const handleGenerate = () => {
     setLoading(true)
     setTimeout(() => {
-      setResult(mockContent(platform, topic, tone))
+      setResult(mockContent('xiaohongshu', topic, tone))
       setLoading(false)
     }, 600)
   }
@@ -777,18 +1039,8 @@ function ContentTab() {
   }
 
   return (
-    <div className={styles.contentLayout}>
-      <h2>📝 内容生成</h2>
-      <p className={styles.contentDesc}>一键生成小红书/Telegram/俄语营销文案</p>
+    <div>
       <div className={styles.contentForm}>
-        <div className={styles.formGroup}>
-          <label>平台</label>
-          <select value={platform} onChange={(e) => setPlatform(e.target.value)}>
-            <option value="xiaohongshu">📕 小红书</option>
-            <option value="telegram">📱 Telegram</option>
-            <option value="russian">🇷🇺 俄语内容</option>
-          </select>
-        </div>
         <div className={styles.formGroup}>
           <label>主题</label>
           <select value={topic} onChange={(e) => setTopic(e.target.value)}>
@@ -817,7 +1069,274 @@ function ContentTab() {
           />
         </div>
         <button className={styles.contentGenBtn} onClick={handleGenerate} disabled={loading}>
-          {loading ? '⏳ 生成中...' : '✨ 生成内容'}
+          {loading ? '⏳ 生成中...' : '✨ 生成招生内容'}
+        </button>
+        {result && (
+          <div className={styles.contentResult}>
+            <h4>📄 生成结果</h4>
+            <div className={styles.contentResultText}>{result}</div>
+            <button className={styles.copyBtn} onClick={handleCopy}>
+              {copied ? '✅ 已复制' : '📋 复制到剪贴板'}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function TgContent() {
+  const [channel, setChannel] = useState('留学群')
+  const [postType, setPostType] = useState('日常分享')
+  const [extra, setExtra] = useState('')
+  const [result, setResult] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const handleGenerate = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setResult(`📢 【社群通知 — ${channel}】
+
+${postType === '日常分享' ? `🇷🇺 俄罗斯留学小贴士
+
+莫斯科大学申请季马上开始啦！提前准备材料很重要：
+📋 需要《护照+学历证+成绩单》的公证翻译
+📋 动机信要突出你的学术背景和留学目标
+📋 推荐信最好找副教授以上的专业导师
+
+有任何疑问可以 @ 我们哦！` : postType === '活动通知' ? `📣 活动预告
+
+🎯 俄罗斯留学线上说明会
+📅 本周六 20:00 (北京时间)
+📍 Telegram 语音频道
+
+🔥 主讲内容：
+• 2026年热门院校盘点
+• 申请材料准备攻略
+• 签证办理避坑指南
+
+名额有限，赶紧报名！` : `💡 知识分享
+
+🇨🇳🇷🇺 中俄双语每日一词
+
+Сегодняшнее слово: стипендия（奖学金）
+
+例句：
+Я получил стипендию на обучение в России.
+我获得了俄罗斯留学奖学金。`}`)
+      setLoading(false)
+    }, 600)
+  }
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(result)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
+  return (
+    <div>
+      <div className={styles.contentForm}>
+        <div className={styles.formGroup}>
+          <label>社群频道</label>
+          <select value={channel} onChange={(e) => setChannel(e.target.value)}>
+            <option value="留学群">🎓 留学咨询群</option>
+            <option value="俄语群">📚 俄语学习群</option>
+            <option value="校友群">🏛️ 校友交流群</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label>内容类型</label>
+          <select value={postType} onChange={(e) => setPostType(e.target.value)}>
+            <option value="日常分享">💡 日常分享</option>
+            <option value="活动通知">📣 活动通知</option>
+            <option value="知识卡片">📇 知识卡片</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label>补充说明（可选）</label>
+          <textarea
+            placeholder="需要强调什么信息？"
+            value={extra}
+            onChange={(e) => setExtra(e.target.value)}
+          />
+        </div>
+        <button className={styles.contentGenBtn} onClick={handleGenerate} disabled={loading}>
+          {loading ? '⏳ 生成中...' : '✨ 生成 TG 内容'}
+        </button>
+        {result && (
+          <div className={styles.contentResult}>
+            <h4>📄 生成结果</h4>
+            <div className={styles.contentResultText}>{result}</div>
+            <button className={styles.copyBtn} onClick={handleCopy}>
+              {copied ? '✅ 已复制' : '📋 复制到剪贴板'}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function RussianContent() {
+  const [topic, setTopic] = useState('留学推广')
+  const [tone, setTone] = useState('正式')
+  const [extra, setExtra] = useState('')
+  const [result, setResult] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const topics = {
+    '留学推广': 'Учиться в России',
+    '语言服务': 'Переводческие услуги',
+    '商务合作': 'Деловое сотрудничество',
+    '社群推广': 'Продвижение сообщества',
+  }
+
+  const handleGenerate = () => {
+    setLoading(true)
+    setTimeout(() => {
+      const ruTopic = topics[topic] || topic
+      setResult(`📄 Русский маркетинговый контент
+
+Тема: ${ruTopic}
+
+Уважаемые клиенты и партнёры!
+
+RusAI Business Copilot — ваш надёжный помощник в бизнесе с Россией! Мы предлагаем профессиональные услуги в сфере образования, перевода и делового сотрудничества между Китаем и Россией.
+
+🎯 Наши преимущества:
+✅ Опыт работы более 5 лет
+✅ Команда профессиональных переводчиков
+✅ Индивидуальный подход к каждому клиенту
+✅ Поддержка на всех этапах сотрудничества
+
+Свяжитесь с нами сегодня и получите бесплатную консультацию!
+
+🇨🇳🇷🇺 RusAI — мост между Китаем и Россией
+
+---
+Сгенерировано RusAI Business Copilot`)
+      setLoading(false)
+    }, 600)
+  }
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(result)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
+  return (
+    <div>
+      <div className={styles.contentForm}>
+        <div className={styles.formGroup}>
+          <label>主题</label>
+          <select value={topic} onChange={(e) => setTopic(e.target.value)}>
+            <option value="留学推广">🎓 留学推广</option>
+            <option value="语言服务">📝 语言服务</option>
+            <option value="商务合作">🤝 商务合作</option>
+            <option value="社群推广">📢 社群推广</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label>语气</label>
+          <select value={tone} onChange={(e) => setTone(e.target.value)}>
+            <option value="正式">📋 正式专业</option>
+            <option value="友好">😊 友好亲切</option>
+            <option value="促销">🔥 促销推广</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label>补充说明（可选）</label>
+          <textarea
+            placeholder="需要强调哪些信息？添加关键词..."
+            value={extra}
+            onChange={(e) => setExtra(e.target.value)}
+          />
+        </div>
+        <button className={styles.contentGenBtn} onClick={handleGenerate} disabled={loading}>
+          {loading ? '⏳ 生成中...' : '✨ 生成俄语营销内容'}
+        </button>
+        {result && (
+          <div className={styles.contentResult}>
+            <h4>📄 生成结果</h4>
+            <div className={styles.contentResultText}>{result}</div>
+            <button className={styles.copyBtn} onClick={handleCopy}>
+              {copied ? '✅ 已复制' : '📋 复制到剪贴板'}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function FaqContent() {
+  const [question, setQuestion] = useState('')
+  const [tone, setTone] = useState('日常')
+  const [extra, setExtra] = useState('')
+  const [result, setResult] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const handleGenerate = () => {
+    setLoading(true)
+    setTimeout(() => {
+      const q = question.trim() || '俄罗斯留学费用'
+      setResult(`❓ Q：${q}
+
+A：感谢您的提问！关于「${q}」，以下是详细解答：
+
+📌 关键信息
+• 俄罗斯留学费用因城市和院校而异
+• 莫斯科/圣彼得堡：学费约15-30万卢布/年（≈1.2-2.4万人民币）
+• 地方院校：学费约8-15万卢布/年
+• 生活费：月均2-4万卢布（含住宿、餐饮、交通）
+
+💡 温馨提示
+以上信息仅供参考，具体费用以院校官方公布为准。
+如需个性化留学规划，欢迎随时联系我们！`)
+      setLoading(false)
+    }, 600)
+  }
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(result)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
+  return (
+    <div>
+      <div className={styles.contentForm}>
+        <div className={styles.formGroup}>
+          <label>FAQ 问题</label>
+          <input
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="例如：俄罗斯留学需要什么条件？"
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>回答语气</label>
+          <select value={tone} onChange={(e) => setTone(e.target.value)}>
+            <option value="日常">😊 日常轻松</option>
+            <option value="正式">📋 正式专业</option>
+            <option value="详细">📖 详细全面</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label>补充说明（可选）</label>
+          <textarea
+            placeholder="例如：针对特定用户群体、强调某些卖点..."
+            value={extra}
+            onChange={(e) => setExtra(e.target.value)}
+          />
+        </div>
+        <button className={styles.contentGenBtn} onClick={handleGenerate} disabled={loading}>
+          {loading ? '⏳ 生成中...' : '✨ 生成 FAQ 回答'}
         </button>
         {result && (
           <div className={styles.contentResult}>
@@ -834,13 +1353,100 @@ function ContentTab() {
 }
 
 /* ──────────────────────────────────────────
+   Dashboard/Outcome Tab
+   ────────────────────────────────────────── */
+
+function DashboardTab() {
+  const stats = [
+    { label: '今日线索', value: '28', change: '+12%', icon: '📈' },
+    { label: 'AI 处理', value: '342', change: '+67%', icon: '🤖' },
+    { label: '人工接管', value: '18', change: '-23%', icon: '👤' },
+    { label: '节省时间', value: '47h', change: '本周累计', icon: '⏱️' },
+  ]
+
+  const insights = [
+    { title: '流量趋势', value: '本周咨询量 ↑ 34%', detail: '主要来自小红书和 TG 渠道', color: '#10b981' },
+    { title: 'AI 完成率', value: '95.2%', detail: '自动化处理成功率维持高位', color: '#6366f1' },
+    { title: '热门意图', value: '留学咨询 42%', detail: '预科课程和签证问询最多', color: '#f59e0b' },
+  ]
+
+  return (
+    <div className={styles.dashboardLayout}>
+      <h2>📊 运营看板</h2>
+      <p className={styles.dashboardDesc}>数据概览 & 业务洞察</p>
+
+      <div className={styles.dashboardCards}>
+        {stats.map((s, i) => (
+          <div key={i} className={styles.dashboardCard}>
+            <div className={styles.dashboardCardIcon}>{s.icon}</div>
+            <div className={styles.dashboardCardValue}>{s.value}</div>
+            <div className={styles.dashboardCardLabel}>{s.label}</div>
+            <div className={`${styles.dashboardCardChange} ${s.change.startsWith('+') ? styles.dashboardCardChangeUp : s.change.startsWith('-') ? styles.dashboardCardChangeDown : ''}`}>
+              {s.change}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.dashboardInsights}>
+        <h3>业务洞察</h3>
+        <div className={styles.dashboardInsightsGrid}>
+          {insights.map((ins, i) => (
+            <div key={i} className={styles.dashboardInsightCard}>
+              <div className={styles.dashboardInsightTitle}>{ins.title}</div>
+              <div className={styles.dashboardInsightValue} style={{ color: ins.color }}>{ins.value}</div>
+              <div className={styles.dashboardInsightDetail}>{ins.detail}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className={styles.dashboardRecentActivity}>
+        <h3>最近活动</h3>
+        <div className={styles.dashboardActivityList}>
+          <div className={styles.dashboardActivityItem}>
+            <span className={styles.dashboardActivityDot} style={{ background: '#10b981' }} />
+            <div className={styles.dashboardActivityContent}>
+              <span className={styles.dashboardActivityText}>新线索 李明浩 咨询签证邀请函</span>
+              <span className={styles.dashboardActivityTime}>10分钟前</span>
+            </div>
+          </div>
+          <div className={styles.dashboardActivityItem}>
+            <span className={styles.dashboardActivityDot} style={{ background: '#6366f1' }} />
+            <div className={styles.dashboardActivityContent}>
+              <span className={styles.dashboardActivityText}>AI 自动回复了 Анна 的翻译咨询</span>
+              <span className={styles.dashboardActivityTime}>25分钟前</span>
+            </div>
+          </div>
+          <div className={styles.dashboardActivityItem}>
+            <span className={styles.dashboardActivityDot} style={{ background: '#f59e0b' }} />
+            <div className={styles.dashboardActivityContent}>
+              <span className={styles.dashboardActivityText}>需要人工介入：王芳 要求特殊折扣</span>
+              <span className={styles.dashboardActivityTime}>1小时前</span>
+            </div>
+          </div>
+          <div className={styles.dashboardActivityItem}>
+            <span className={styles.dashboardActivityDot} style={{ background: '#10b981' }} />
+            <div className={styles.dashboardActivityContent}>
+              <span className={styles.dashboardActivityText}>陈晓 报名了暑期预科班</span>
+              <span className={styles.dashboardActivityTime}>2小时前</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ──────────────────────────────────────────
    Main Demo Page
    ────────────────────────────────────────── */
 
 export default function Demo() {
-  const [activeTab, setActiveTab] = useState('inbox')
+  const [activeTab, setActiveTab] = useState('dashboard')
 
   const tabs = [
+    { id: 'dashboard', label: '📊 运营看板', component: DashboardTab },
     { id: 'inbox', label: '💬 Inbox', component: InboxTab },
     { id: 'copilot', label: '🤖 Copilot', component: CopilotTab },
     { id: 'knowledge', label: '📚 Knowledge', component: KnowledgeTab },
@@ -853,7 +1459,7 @@ export default function Demo() {
     <div className={styles.demoContainer}>
       <Head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <title>RusAI Business Copilot — Demo v2</title>
+        <title>RusAI Business Copilot · 你的中俄业务 AI 员工</title>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
 
