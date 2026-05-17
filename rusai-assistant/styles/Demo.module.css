@@ -16,7 +16,9 @@
   height: 56px;
   padding: 0 24px;
   border-bottom: 1px solid var(--border);
-  background: var(--bg);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -26,6 +28,7 @@
   font-weight: 700;
   color: var(--primary);
   margin-right: 32px;
+  letter-spacing: -0.3px;
 }
 .tabs {
   display: flex;
@@ -42,8 +45,15 @@
   transition: all 0.15s;
   font-family: inherit;
   white-space: nowrap;
+  font-weight: 450;
 }
-.tab:hover { background: var(--hover); color: var(--text); }
+.tab:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+.tab:active {
+  transform: scale(0.97);
+}
 .tabActive {
   background: var(--primary-light);
   color: var(--primary);
@@ -54,6 +64,126 @@
 .pageContent {
   height: calc(100vh - 56px);
   overflow: hidden;
+}
+
+/* ════════════════════════════════════════
+   AI DEMO ENTRANCE CARD
+   ════════════════════════════════════════ */
+.demoLanding {
+  padding: 40px 32px 16px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.demoLandingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 32px;
+  background: linear-gradient(135deg, #eef2ff 0%, #faf5ff 100%);
+  border: 1.5px solid #c7d2fe;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.08);
+}
+.demoLandingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  margin-bottom: 20px;
+}
+.demoLandingTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.demoLandingDesc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  max-width: 480px;
+}
+.demoLandingDesc strong {
+  color: #4f46e5;
+  font-weight: 600;
+}
+.demoLandingBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+}
+.demoLandingBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+}
+.demoLandingBtn:active {
+  transform: translateY(0);
+}
+.demoLandingSteps {
+  display: flex;
+  gap: 32px;
+  margin-top: 32px;
+}
+.demoLandingStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.demoLandingStepNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #e0e7ff;
+  color: #4f46e5;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 50%;
+}
+.demoLandingHint {
+  margin-top: 24px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ── Dashboard Demo Badge ── */
+.dashboardDemoBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #6366f1;
+  background: #eef2ff;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 0.2px;
 }
 
 /* ════════════════════════════════════════
@@ -71,7 +201,7 @@
   background: var(--bg-secondary);
 }
 .inboxListHeader {
-  padding: 16px;
+  padding: 18px 16px;
   font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid var(--border);
@@ -83,8 +213,9 @@
   background: var(--primary);
   color: #fff;
   font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
 }
 .inboxChat {
   flex: 1;
@@ -100,19 +231,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  background: var(--bg);
 }
 .customerPanelToggle {
   margin-left: auto;
-  padding: 4px 8px;
+  padding: 5px 10px;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--card-bg);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-family: inherit;
   transition: all 0.15s;
+  color: var(--text-secondary);
 }
-.customerPanelToggle:hover { background: var(--hover); }
+.customerPanelToggle:hover {
+  background: var(--hover);
+  color: var(--text);
+  border-color: var(--primary);
+}
 .chatMsgs {
   flex: 1;
   overflow-y: auto;
@@ -130,14 +267,14 @@
 .msgRowSelf { align-items: flex-end; align-self: flex-end; }
 .msgBubble {
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.55;
   background: var(--bg-secondary);
   border: 1px solid var(--border);
 }
 .msgBubbleSelf {
-  background: var(--primary);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #fff;
   border-color: var(--primary);
 }
@@ -169,6 +306,7 @@
   align-items: center;
   gap: 10px;
   padding: 14px 16px 0;
+  background: var(--bg);
 }
 .aiCardBadge {
   display: inline-flex;
@@ -383,9 +521,11 @@
   font-family: inherit;
   font-weight: 500;
   white-space: nowrap;
+  transition: all 0.15s;
 }
-.sendBtn:hover { opacity: 0.9; }
-.sendBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.sendBtn:hover { opacity: 0.9; transform: translateY(-1px); }
+.sendBtn:active { transform: translateY(0); }
+.sendBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 /* Conversation list items */
 .convItem {
@@ -568,8 +708,10 @@
   font-size: 13px;
   font-family: inherit;
   font-weight: 500;
+  transition: all 0.15s;
 }
-.addBtn:hover { opacity: 0.9; }
+.addBtn:hover { opacity: 0.9; transform: translateY(-1px); }
+.addBtn:active { transform: translateY(0); opacity: 0.8; }
 .knowledgeList {
   display: flex;
   flex-direction: column;
@@ -608,7 +750,7 @@
   flex-shrink: 0;
 }
 .editBtn, .deleteBtn, .uploadBtn {
-  padding: 4px 10px;
+  padding: 5px 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
@@ -616,8 +758,10 @@
   font-family: inherit;
   background: var(--card-bg);
   transition: all 0.15s;
+  font-weight: 500;
 }
-.editBtn:hover { background: var(--hover); }
+.editBtn:hover { background: var(--hover); border-color: var(--primary); }
+.editBtn:active, .deleteBtn:active, .uploadBtn:active { transform: scale(0.97); }
 .deleteBtn {
   color: #ef4444;
   border-color: #fca5a5;
@@ -709,12 +853,17 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   color: var(--text);
+  transition: all 0.15s;
 }
+.modalCancel:hover { background: var(--hover); }
 .modalConfirm {
   background: var(--primary);
   border: none;
   color: #fff;
+  transition: all 0.15s;
 }
+.modalConfirm:hover { opacity: 0.9; }
+.modalConfirm:active, .modalCancel:active { transform: scale(0.97); }
 
 /* ════════════════════════════════════════
    COPILOT
@@ -1029,9 +1178,12 @@
   font-size: 15px;
   font-family: inherit;
   font-weight: 500;
+  transition: all 0.15s;
+  align-self: flex-start;
 }
-.contentGenBtn:hover { opacity: 0.9; }
-.contentGenBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.contentGenBtn:hover { opacity: 0.9; transform: translateY(-1px); }
+.contentGenBtn:active { transform: translateY(0); }
+.contentGenBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .contentResult {
   margin-top: 16px;
   padding: 16px;
@@ -1051,15 +1203,18 @@
 }
 .copyBtn {
   margin-top: 12px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
   font-family: inherit;
   background: var(--card-bg);
+  transition: all 0.15s;
+  font-weight: 500;
 }
-.copyBtn:hover { background: var(--hover); }
+.copyBtn:hover { background: var(--hover); border-color: var(--primary); }
+.copyBtn:active { transform: scale(0.97); }
 
 /* ════════════════════════════════════════
    DASHBOARD / OUTCOME
@@ -1229,4 +1384,9 @@
   .quickActionsGroup { gap: 6px; }
   .quickActionBtn { font-size: 12px; padding: 7px 12px; }
   .aiCardActions { flex-wrap: wrap; }
+  .demoLanding { padding: 24px 16px 12px; }
+  .demoLandingContent { padding: 32px 20px; }
+  .demoLandingTitle { font-size: 22px; }
+  .demoLandingBtn { font-size: 15px; padding: 12px 28px; }
+  .demoLandingSteps { gap: 16px; flex-wrap: wrap; justify-content: center; }
 }

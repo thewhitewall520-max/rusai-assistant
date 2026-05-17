@@ -723,14 +723,67 @@ function BizKnowledgePanel() {
 }
 
 /* ──────────────────────────────────────────
+   AI Demo Entrance Card
+   ────────────────────────────────────────── */
+
+function AiDemoCard({ onStartDemo }) {
+  return (
+    <div className={styles.demoLanding}>
+      <div className={styles.demoLandingContent}>
+        <div className={styles.demoLandingBadge}>🎯 AI 实时演示</div>
+        <h2 className={styles.demoLandingTitle}>看看 AI 如何工作</h2>
+        <p className={styles.demoLandingDesc}>
+          点击下方按钮，AI 将自动演示如何回答客户关于
+          <strong>「莫斯科大学预科课程」</strong>的咨询
+        </p>
+        <button className={styles.demoLandingBtn} onClick={onStartDemo}>
+          🚀 看看 AI 如何工作 →
+        </button>
+        <div className={styles.demoLandingSteps}>
+          <div className={styles.demoLandingStep}>
+            <span className={styles.demoLandingStepNum}>1</span>
+            <span>自动填充咨询问题</span>
+          </div>
+          <div className={styles.demoLandingStep}>
+            <span className={styles.demoLandingStepNum}>2</span>
+            <span>AI 实时分析意图</span>
+          </div>
+          <div className={styles.demoLandingStep}>
+            <span className={styles.demoLandingStepNum}>3</span>
+            <span>生成中俄双语回复</span>
+          </div>
+        </div>
+        <p className={styles.demoLandingHint}>某俄罗斯留学机构 · Demo</p>
+      </div>
+    </div>
+  )
+}
+
+/* ──────────────────────────────────────────
    Copilot Tab v2 — Quick Actions + AI Card
    ────────────────────────────────────────── */
 
-function CopilotTab() {
+function CopilotTab({ onRunNow }) {
   const [input, setInput] = useState('')
   const [output, setOutput] = useState(null)
   const [loading, setLoading] = useState(false)
   const [activeScene, setActiveScene] = useState(null)
+  const inputRef = useRef(null)
+  const hasRunRef = useRef(false)
+
+  /* Auto-run demo from external trigger */
+  useEffect(() => {
+    if (onRunNow && !hasRunRef.current) {
+      hasRunRef.current = true
+      const demoQuestion = '莫斯科大学预科课程什么时候开课？'
+      setInput(demoQuestion)
+      // Small delay so state propagates, then trigger
+      const t = setTimeout(() => {
+        callCopilot({ input: demoQuestion })
+      }, 300)
+      return () => clearTimeout(t)
+    }
+  }, [onRunNow])
 
   const studyAbroadActions = [
     { id: 'enrollment_reply', icon: '🎓', label: '生成招生回复', desc: '自动生成俄语+中文回复' },
@@ -1358,20 +1411,21 @@ A：感谢您的提问！关于「${q}」，以下是详细解答：
 
 function DashboardTab() {
   const stats = [
-    { label: '今日线索', value: '28', change: '+12%', icon: '📈' },
-    { label: 'AI 处理', value: '342', change: '+67%', icon: '🤖' },
-    { label: '人工接管', value: '18', change: '-23%', icon: '👤' },
-    { label: '节省时间', value: '47h', change: '本周累计', icon: '⏱️' },
+    { label: '今日线索', value: '11', change: '+3', icon: '📈' },
+    { label: 'AI 处理', value: '9', change: '90%', icon: '🤖' },
+    { label: '人工接管', value: '2', change: '20%', icon: '👤' },
+    { label: '节省时间', value: '~6h', change: '本周累计', icon: '⏱️' },
   ]
 
   const insights = [
-    { title: '流量趋势', value: '本周咨询量 ↑ 34%', detail: '主要来自小红书和 TG 渠道', color: '#10b981' },
-    { title: 'AI 完成率', value: '95.2%', detail: '自动化处理成功率维持高位', color: '#6366f1' },
-    { title: '热门意图', value: '留学咨询 42%', detail: '预科课程和签证问询最多', color: '#f59e0b' },
+    { title: '流量趋势', value: '本周 ↑ 23%', detail: '主要来自小红书和 TG 渠道', color: '#10b981' },
+    { title: 'AI 完成率', value: '91%', detail: '自动化处理成功率', color: '#6366f1' },
+    { title: '热门意图', value: '留学咨询 38%', detail: '预科课程和签证问询最多', color: '#f59e0b' },
   ]
 
   return (
     <div className={styles.dashboardLayout}>
+      <div className={styles.dashboardDemoBadge}>某俄罗斯留学机构 · Demo 环境</div>
       <h2>📊 运营看板</h2>
       <p className={styles.dashboardDesc}>数据概览 & 业务洞察</p>
 
@@ -1381,7 +1435,7 @@ function DashboardTab() {
             <div className={styles.dashboardCardIcon}>{s.icon}</div>
             <div className={styles.dashboardCardValue}>{s.value}</div>
             <div className={styles.dashboardCardLabel}>{s.label}</div>
-            <div className={`${styles.dashboardCardChange} ${s.change.startsWith('+') ? styles.dashboardCardChangeUp : s.change.startsWith('-') ? styles.dashboardCardChangeDown : ''}`}>
+            <div className={`${styles.dashboardCardChange} ${!s.change.includes('累计') ? styles.dashboardCardChangeUp : ''}`}>
               {s.change}
             </div>
           </div>
@@ -1421,14 +1475,14 @@ function DashboardTab() {
           <div className={styles.dashboardActivityItem}>
             <span className={styles.dashboardActivityDot} style={{ background: '#f59e0b' }} />
             <div className={styles.dashboardActivityContent}>
-              <span className={styles.dashboardActivityText}>需要人工介入：王芳 要求特殊折扣</span>
+              <span className={styles.dashboardActivityText}>待跟进：王芳 咨询俄语邮件写作</span>
               <span className={styles.dashboardActivityTime}>1小时前</span>
             </div>
           </div>
           <div className={styles.dashboardActivityItem}>
             <span className={styles.dashboardActivityDot} style={{ background: '#10b981' }} />
             <div className={styles.dashboardActivityContent}>
-              <span className={styles.dashboardActivityText}>陈晓 报名了暑期预科班</span>
+              <span className={styles.dashboardActivityText}>陈晓 预约了预科课程试听</span>
               <span className={styles.dashboardActivityTime}>2小时前</span>
             </div>
           </div>
@@ -1444,22 +1498,30 @@ function DashboardTab() {
 
 export default function Demo() {
   const [activeTab, setActiveTab] = useState('dashboard')
+  // Track if AI demo has been triggered
+  const [copilotTrigger, setCopilotTrigger] = useState(null)
 
   const tabs = [
     { id: 'dashboard', label: '📊 运营看板', component: DashboardTab },
     { id: 'inbox', label: '💬 Inbox', component: InboxTab },
-    { id: 'copilot', label: '🤖 Copilot', component: CopilotTab },
+    { id: 'copilot', label: '🤖 Copilot', component: () => <CopilotTab onRunNow={copilotTrigger} /> },
     { id: 'knowledge', label: '📚 Knowledge', component: KnowledgeTab },
     { id: 'content', label: '📝 Content', component: ContentTab },
   ]
 
-  const ActiveComponent = tabs.find((t) => t.id === activeTab).component
+  const handleStartDemo = () => {
+    setActiveTab('copilot')
+    // Toggle trigger value to re-fire the effect
+    setCopilotTrigger(Date.now())
+  }
+
+  const ActiveComponent = activeTab === 'dashboard' ? () => <DashboardTab /> : tabs.find((t) => t.id === activeTab).component
 
   return (
     <div className={styles.demoContainer}>
       <Head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <title>RusAI Business Copilot · 你的中俄业务 AI 员工</title>
+        <title>RusAI Business Copilot · Demo · 某俄罗斯留学机构</title>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
 
@@ -1479,7 +1541,14 @@ export default function Demo() {
       </nav>
 
       <div className={styles.pageContent}>
-        <ActiveComponent />
+        {activeTab === 'dashboard' ? (
+          <>
+            <AiDemoCard onStartDemo={handleStartDemo} />
+            <DashboardTab />
+          </>
+        ) : (
+          <ActiveComponent />
+        )}
       </div>
     </div>
   )
